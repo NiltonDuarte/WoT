@@ -18,7 +18,7 @@ class Ball(DirectObject):
 	def __init__(self):
 		self.ball = loader.loadModel("models/ball")
 		self.ball.reparentTo(modelsNode)
-		self.position = Vec3(0, 30, 0)
+		self.position = Vec3(1, 10, 0)
 		self.ball.setPos(self.position)
 		#Array with the keys
 		self.keys = {"UP" : 0, "DOWN" : 0, "RIGHT" : 0, "LEFT" : 0}
@@ -64,7 +64,7 @@ class World(DirectObject):
 		deltaTime = task.time - task.last
 		task.last = task.time
 		#Interactions between different objects(different classes)
-		t.attachToObject(b.position)
+		t.attachToObject(b.ball, b.position)
 		b.moveBall()
 		return Task.cont
 

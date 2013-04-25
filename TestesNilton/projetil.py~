@@ -9,4 +9,3 @@ class Projetil:
 	massa = [None]
 	massaMin = 10
 	massaMax = 10
-

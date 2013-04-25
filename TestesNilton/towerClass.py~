@@ -1,5 +1,6 @@
-"""Tower Class File"""
+"""Arquivo da classe Torre"""
 from random import randint
+from funcoescomuns import *
 
 class Torre:
     """Classe que define os atributos e funcoes de uma torre"""
@@ -20,19 +21,12 @@ class Torre:
         self.txTropasMax = 20
         
         self.listaAtributos = [self.txDisparo,self.txTropas,self.alcanceVisao]
+
+  	self.pontosIniciais = 100
         
-    def iniciarAtributosAletatorios(self,pontos):
-        if (pontos <= (self.txDisparoMin+self.alcanceMin+self.txTropasMin) ):
-            print "error"
-        else:
-            pontos -= (self.txDisparoMin+self.alcanceMin+self.txTropasMin)
-            self.txDisparo[0] = self.txDisparoMin
-            self.txTropas[0] = self.txTropasMin
-            self.alcanceVisao[0] = self.alcanceMin
-            while pontos > 0:
-                self.listaAtributos[randint(0,2)][0] += 1
-                pontos -= 1
-        print self.listaAtributos[0],self.listaAtributos[1],self.listaAtributos[2]
+        if (pontos >= (self.txDisparoMin+self.alcanceMin+self.txTropasMin) ):
+            iniciarAtributosAletatorios(listaAtributos,pontosIniciais)
+
                     
                 
 torre = Torre()

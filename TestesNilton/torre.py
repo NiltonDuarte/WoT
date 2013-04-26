@@ -1,4 +1,5 @@
 """Tower Class File"""
+
 from random import randint
 from funcoesComuns import *
 
@@ -20,18 +21,19 @@ class Torre:
         self.txTropasMin = 10
         self.txTropasMax = 20
         
-        self.listaAtributos = [self.txDisparo,self.txTropas,self.alcanceVisao]
+        self.listaAtributos = [self.txDisparo, self.txTropas, self.alcanceVisao]
 
-	self.pontosIniciais = 100
-
-	if (self.pontosIniciais <= (self.txDisparoMin+self.alcanceMin+self.txTropasMin) ):
-	    self.txDisparo = self.txDisparoMin
-	    self.alcanceVisao = self.alcanceMin
-	    self.txTropas = self.txTropasMin
-	    iniciarAtributosAletatorios(self.listaAtributos,self.pontosIniciais)
+        self.pontosIniciais = 100
+        self.pontosIniciais -= (self.txDisparoMin + self.alcanceMin + self.txTropasMin)
+        
+        if (self.pontosIniciais >= (self.txDisparoMin + self.alcanceMin + self.txTropasMin)):
+            self.txDisparo[0] = self.txDisparoMin
+            self.alcanceVisao[0] = self.alcanceMin
+            self.txTropas[0] = self.txTropasMin
+            iniciarAtributosAleatorios(self.listaAtributos, self.pontosIniciais)
                      
                 
-torre = Torre()
+torre1 = Torre()
 
 
 

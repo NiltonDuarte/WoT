@@ -24,12 +24,12 @@ class Torre:
         self.listaAtributos = [self.txDisparo, self.txTropas, self.alcanceVisao]
 
         self.pontosIniciais = 100
-        self.pontosIniciais -= (self.txDisparoMin + self.alcanceMin + self.txTropasMin)
         
         if (self.pontosIniciais >= (self.txDisparoMin + self.alcanceMin + self.txTropasMin)):
             self.txDisparo[0] = self.txDisparoMin
             self.alcanceVisao[0] = self.alcanceMin
             self.txTropas[0] = self.txTropasMin
+            self.pontosIniciais -= (self.txDisparoMin + self.alcanceMin + self.txTropasMin)
             iniciarAtributosAleatorios(self.listaAtributos, self.pontosIniciais)
                      
                 

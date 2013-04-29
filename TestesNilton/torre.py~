@@ -41,7 +41,7 @@ class Torre:
     
     def iniciarTorre(self):
 		"""Inicia a torre com velores semi aleatorios"""
-		if (self.pontosIniciais >= (self.forcaDisparoMin + self.txDisparoMin + self.alcanceVisaoMin + self.txTropasMin) and self.pontosIniciais <= (self.forcaDisparoMax + self.txDisparoMax + self.alcanceVisaoMax + self.txTropasMax)):            
+		if (self.pontosIniciais >= (self.forcaDisparoMin + self.txDisparoMin + self.alcanceMin + self.txTropasMin) and self.pontosIniciais <= (self.forcaDisparoMax + self.txDisparoMax + self.alcanceMax + self.txTropasMax)):            
             #Atribuindo valores minimos
 			self.listaForcaDisparo[MIN] = self.forcaDisparoMin
 			self.listaTxDisparo[MIN] = self.txDisparoMin

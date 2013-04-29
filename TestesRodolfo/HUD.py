@@ -8,8 +8,8 @@ from panda3d.core import TextNode
 #Vec2 and Vec3 will help positioning the objects
 from panda3d.core import Vec2,Vec3
 from panda3d.core import Point2, Point3, CardMaker
-#This will help move the objects
-from direct.task.Task import Task
+#
+from direct.gui.DirectGui import *
 
 #hudTexts is the node that will hold all text nodes of the game
 hudTexts = render2d.attachNewNode("HUD Texts")
@@ -43,3 +43,13 @@ class gameText(DirectObject):
 		print r2d
 		self.position = a2d
 		self.textNodePath.setX(a2d[0]), self.textNodePath.setY(p3[1]), self.textNodePath.setZ(a2d[1])
+		
+	
+class gameButton(DirectObject):
+	'''Creates the buttons for the game's interface'''
+	def __init__(self, text, position, scale):
+		self.text = text
+		self.position = position
+		self.scale = scale
+		self.button = DirectButton(text=("%s")%self.text, pos = position, scale = scale)
+

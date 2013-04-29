@@ -50,6 +50,7 @@ class Ball(DirectObject):
 		self.ball.setPos(self.position)
 
 t = gameText('comida',"SUSHI",Vec3(0.5,0, 0), 0.07)
+bnt = gameButton("HUE HUE",Point3(1,0,0),.05)
 b = Ball()
 
 class World(DirectObject):

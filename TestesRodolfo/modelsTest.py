@@ -10,13 +10,21 @@ from direct.task.Task import Task
 #Vec2 and Vec3 will help positioning the objects
 from panda3d.core import Vec2,Vec3
 
+#Setting the window size
+from pandac.PandaModules import WindowProperties
+wp = WindowProperties()
+window_Width = 800
+window_Height = 600
+wp.setSize(window_Width, window_Height)
+base.win.requestProperties(wp)
+
 
 #modelsNode is a child node of render that will holds all models of the game
 modelsNode = render.attachNewNode("Models Node")
 
 class Ball(DirectObject):
 	def __init__(self):
-		self.ball = loader.loadModel("models/ball")
+		self.ball = loader.loadModel("Exported_Models/ball")
 		self.ball.reparentTo(modelsNode)
 		self.position = Vec3(1, 10, 0)
 		self.ball.setPos(self.position)
@@ -49,24 +57,42 @@ class Ball(DirectObject):
 			self.position += Vec3(-0.1,0,0)
 		self.ball.setPos(self.position)
 
-t = gameText('comida',"SUSHI",Vec3(0.5,0, 0), 0.07)
 bnt = gameButton("HUE HUE",Point3(1,0,0),.05)
-b = Ball()
+
 
 class World(DirectObject):
 	def __init__(self):
-		#Adding the main task of the game
+		#Adding the main task of the game (the game loop)
 		self.gameTask = taskMgr.add(self.gameLoop, "gameLoop")
 		self.gameTask.last = 0
+		#self.loadOnce makes the game load the objects only once -> type: boolean
+		self.loadOnce = True
+		
+	def loadObject(self):
+		'''Function that loads objects.
+		   We can create different functions like this for each scene
+		'''
+		t = gameText('comida',"SUSHI",Vec3(0.5,0, 0), 0.07)
+		b = Ball()
+		print "Once"
 			
 	def gameLoop(self, task):
 		'''This function run every frame of the game
 		'''
+		#Frame duration
 		deltaTime = task.time - task.last
 		task.last = task.time
 		#Interactions between different objects(different classes)
-		t.attachToObject(b.ball, b.position)
-		b.moveBall()
+		bnt.changeScene()
+		print stage
+		if(self.loadOnce and stage == 1):
+			self.loadObject()
+			self.loadOnce = False
+		
+		'''if(stage == 1):
+			t.attachToObject(b.ball, b.position)
+			b.moveBall()
+		'''
 		return Task.cont
 
 		

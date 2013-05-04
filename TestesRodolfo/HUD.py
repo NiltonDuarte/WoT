@@ -44,12 +44,33 @@ class gameText(DirectObject):
 		self.position = a2d
 		self.textNodePath.setX(a2d[0]), self.textNodePath.setY(p3[1]), self.textNodePath.setZ(a2d[1])
 		
-	
+
+#This number is just to test changing scenes
+stage = 0
+
 class gameButton(DirectObject):
-	'''Creates the buttons for the game's interface'''
+	'''Creates the buttons for the game's interface.
+	   gameButton can be used to change the game's scenes 
+	   or 
+	   to create objects like tower during gameplay action
+	'''
 	def __init__(self, text, position, scale):
+		#self.text contains the text to be displayed -> type: String
 		self.text = text
+		#self.position contains the position of the button -> type: Point2
 		self.position = position
+		#self.scale contains the size of the button -> type: Float
 		self.scale = scale
-		self.button = DirectButton(text=("%s")%self.text, pos = position, scale = scale)
+		#self.button is the button with our own properties above -> type: DirectButton 
+		self.button = DirectButton(text=("%s")%self.text, pos = position, scale = scale, command=self.changeScene)
+		
+	def changeScene(self):
+		global stage
+		stage = 1
+
+
+
+
+
+
 

@@ -1,0 +1,5 @@
+1. Set de atributos
+	Aleatórios
+	Normalizados em intervalos baseados nos atributos da torre
+
+2. Pathfinding vs Zona de Influência

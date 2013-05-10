@@ -1,5 +1,4 @@
 """Arquivo da classe projetil"""
-from random import randint
 
 class Projetil:
     """Classe que define os atributos e funcoes de um projetil"""
@@ -36,7 +35,7 @@ class Projetil:
 	
     def definirParametros(self,lista):
 	    """Atribui os valores da lista nos recpectivos parametros
-		    [@massa, @raioEspalho, @porcentagemEspalho,
+           [@massa, @raioEspalho, @porcentagemEspalho,
 			@dot, @dotDuracao,
 			@lentidao, @lentidaoDuracao,
 			@chanceCritico]

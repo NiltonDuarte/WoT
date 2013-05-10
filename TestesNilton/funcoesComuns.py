@@ -49,6 +49,7 @@ def iniciarAtributosAleatorios(lista, pontos):
         listaAtual = [x[:] for x in lista]
         pontosAtuais = 2*pontos
         dist = abs(pontosAtuais - pontos)
+	indice_NUM_IT = 0
         for i in range(NUM_IT):
                 pontosAtuais = 0
                 for indice in range(len(listaAtual)):
@@ -60,6 +61,7 @@ def iniciarAtributosAleatorios(lista, pontos):
                                 lista[indice][VALOR] = listaAtual[indice][VALOR]
                         dist = dist_atual
                         pontosFinais = pontosAtuais
-        print lista, pontosFinais
+			if dist == 0: return
+        print lista, pontosFinais,indice_NUM_IT
     
     

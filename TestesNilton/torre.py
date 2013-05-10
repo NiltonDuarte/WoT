@@ -10,21 +10,24 @@ class Torre:
 
     
     def __init__(self):
-		#Forca de disparo da Torre
+	#Forca de disparo da Torre
         self.forcaDisparo = 0
         self.forcaDisparoMin = 10
         self.forcaDisparoMax = 40
         self.listaForcaDisparo = [self.forcaDisparo, self.forcaDisparoMax, self.forcaDisparoMin]
+
         #Frequencia de diparo da Torre
         self.txDisparo = 0 #Nao usar esta variavel. Usar listaTxDisparo[0]
         self.txDisparoMin = 10
         self.txDisparoMax = 40
         self.listaTxDisparo = [self.txDisparo, self.txDisparoMax, self.txDisparoMin]
+
         #Alcance da visao da Torre
         self.alcanceVisao = 0 #Nao usar esta variavel! Usar listaAlcanceVisao[0]
         self.alcanceVisaoMin = 10
         self.alcanceVisaoMax = 40
         self.listaAlcanceVisao = [self.alcanceVisao, self.alcanceVisaoMax, self.alcanceVisaoMin]
+
         #Frequencia de criacao de Tropas
         self.txTropas = 0 #Nao usar esta variavel! Usar listaTxTropas[0]
         self.txTropasMin = 10

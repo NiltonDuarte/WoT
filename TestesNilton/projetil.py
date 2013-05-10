@@ -34,20 +34,20 @@ class Projetil:
 	#Chance de critico
 	self.chanceCritico = 0
 	
-	def definirParametros(self,lista):
-		"""Atribui os valores da lista nos recpectivos parametros
-			[@massa, @raioEspalho, @porcentagemEspalho,
-			 @dot, @dotDuracao,
-			 @lentidao, @lentidaoDuracao,
-			 @chanceCritico]
-		"""
-		if len(lista) != 8: print "Erro com tamanho da lista de parametros do projetil"; return
+    def definirParametros(self,lista):
+	    """Atribui os valores da lista nos recpectivos parametros
+		    [@massa, @raioEspalho, @porcentagemEspalho,
+			@dot, @dotDuracao,
+			@lentidao, @lentidaoDuracao,
+			@chanceCritico]
+	    """
+	    if len(lista) != 8: print "Erro com tamanho da lista de parametros do projetil"; return
 		
-		self.massa = lista[0]
-		self.raioEspalho = lista[1]
-		self.porcentagemEspalho = lista[2]
-		self.dot = lista[3]
-		self.dotDuracao = lista[4]
-		self.lentidao = lista[5]
-		self.lentidaoDuracao = lista[6]
-		self.chanceCritico = lista[7]
+	    self.massa = lista[0]
+	    self.raioEspalho = lista[1]
+	    self.porcentagemEspalho = lista[2]
+	    self.dot = lista[3]
+	    self.dotDuracao = lista[4]
+	    self.lentidao = lista[5]
+	    self.lentidaoDuracao = lista[6]
+	    self.chanceCritico = lista[7]

@@ -9,39 +9,49 @@ class Torre:
     """Classe que define os atributos e funcoes de uma torre"""
 
     
-    def __init__(self):
-		#Forca de disparo da Torre
+    def __init__(self, iniciarTorreFunc = False, pontos=0, lista=[]):
+	#Forca de disparo da Torre
         self.forcaDisparo = 0
         self.forcaDisparoMin = 10
         self.forcaDisparoMax = 40
         self.listaForcaDisparo = [self.forcaDisparo, self.forcaDisparoMax, self.forcaDisparoMin]
+
         #Frequencia de diparo da Torre
         self.txDisparo = 0 #Nao usar esta variavel. Usar listaTxDisparo[0]
         self.txDisparoMin = 10
         self.txDisparoMax = 40
         self.listaTxDisparo = [self.txDisparo, self.txDisparoMax, self.txDisparoMin]
+
         #Alcance da visao da Torre
         self.alcanceVisao = 0 #Nao usar esta variavel! Usar listaAlcanceVisao[0]
         self.alcanceVisaoMin = 10
         self.alcanceVisaoMax = 40
         self.listaAlcanceVisao = [self.alcanceVisao, self.alcanceVisaoMax, self.alcanceVisaoMin]
+
         #Frequencia de criacao de Tropas
         self.txTropas = 0 #Nao usar esta variavel! Usar listaTxTropas[0]
         self.txTropasMin = 10
         self.txTropasMax = 30
         self.listaTxTropas = [self.txTropas, self.txTropasMax, self.txTropasMin]
-		
+
         self.listaAtributos = [self.listaForcaDisparo, self.listaTxDisparo, self.listaAlcanceVisao, self.listaTxTropas]
 
         self.pontosIniciais = 300
         
         self.projetil = Projetil()
+        self.tropa = Tropa()
         
-        
-    
+        if (len(lista) > 0 and pontos and iniciarTorreFunc):
+            self.pontosIniciais = pontos
+            self.definirParametros(lista)
+            self.iniciarTorre()
+            
     def iniciarTorre(self):
 		"""Inicia a torre com velores semi aleatorios"""
-		if (self.pontosIniciais >= (self.forcaDisparoMin + self.txDisparoMin + self.alcanceVisaoMin + self.txTropasMin) and self.pontosIniciais <= (self.forcaDisparoMax + self.txDisparoMax + self.alcanceVisaoMax + self.txTropasMax)):            
+		if (self.pontosIniciais >= \
+            (self.forcaDisparoMin + self.txDisparoMin + self.alcanceVisaoMin + self.txTropasMin) \
+            and self.pontosIniciais <= \
+            (self.forcaDisparoMax + self.txDisparoMax + self.alcanceVisaoMax + self.txTropasMax)):            
             #Atribuindo valores minimos
 			self.listaForcaDisparo[MIN] = self.forcaDisparoMin
 			self.listaTxDisparo[MIN] = self.txDisparoMin
@@ -76,7 +86,10 @@ class Torre:
 		self.alcanceVisaoMax = lista[5]
 		self.txTropasMin = lista[6]
 		self.txTropasMax = lista[7]
-                     
+
+
+    def setPontosIniciais(self, pontos):
+        self.pontosIniciais = pontos
                 
 
 

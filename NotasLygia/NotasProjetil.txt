@@ -1,0 +1,5 @@
+1. Força de impacto
+	Alvo indeformável (ideal)
+	Velocidade e massa imediatamente antes do impacto -> a = dv/dt
+	Ser humano suporta 18g de força -> normalizar para dano
+	

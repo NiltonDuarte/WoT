@@ -1,5 +1,6 @@
 #importing our modules
 from HUD import *
+from Models import *
 #sys module will be used to close the game window
 import sys
 #importing panda3D modules
@@ -19,14 +20,26 @@ wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
 
-#modelsNode is a child node of render that will holds all models of the game
-modelsNode = render.attachNewNode("Models Node")
-
-
+class Camera(DirectObject):
+	'''This class uses the base.camera of panda3D to reuse
+	   existing methods and create new ones
+	'''
+	def __init__(self):
+		#Disabling mouse default function to enable moving the panda camera with our code
+		base.disableMouse()
+		#self.angle is the angle of the panda camera
+		self.angle = 45
+		#Setting our camera position to be top-down
+		base.camera.setZ(50)
+		base.camera.setY(-30)
+		base.camera.setHpr(0.0 , -self.angle, 0.0)
+		
+		
 class Ball(DirectObject):
 	def __init__(self):
 		self.ball = loader.loadModel("Exported_Models/ball")
-		self.ball.reparentTo(modelsNode)
+		self.ball.reparentTo(gameModelsNode)
+		#Setting the position of the tower and sphere
 		self.position = Vec3(1, 10, 0)
 		self.ball.setPos(self.position)
 		#Array with the keys
@@ -58,12 +71,23 @@ class Ball(DirectObject):
 		if ( self.keys["LEFT"] == 1):
 			self.position += Vec3(-0.1,0,0)
 		self.ball.setPos(self.position)
+		
+	def fall(self):
+		self.position[2]-=0.1
+		self.ball.setPos(self.position)
+		
 
-bnt = sceneButton("HUE HUE",Point3(1,0,0),.05)
-t = gameText('comida',"SUSHI",Vec3(0.5,0, 0), 0.07)
+
+sceneBtn = sceneButton("Play Game",Point3(-0.5, 0, -0.5),0.12)
+
+createBtn = createObjectButton("Create",Point3(1.0, 0, 0),0.12)
+
+t = gameText('comida',"SUSHI",Vec3(0.5,0, 0), 0.1)
 b = Ball()
 
 life = lifeBar(Vec3(0,10,2))
+
+myCam = Camera()
 
 class World(DirectObject):
 	def __init__(self):
@@ -87,9 +111,11 @@ class World(DirectObject):
 		task.last = task.time
 		#Interactions between different objects
 		b.moveBall()
+		#b.fall()
 		
 		life.changeColor()
-		
+		life.changeSize()
+		life.attachPosition(b.position)
 		#this function returns Task.cont
 		return Task.cont
 

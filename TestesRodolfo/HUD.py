@@ -53,15 +53,29 @@ class lifeBar(DirectObject):
 		self.lifebar.setSx(self.size)
 	
 	def changeColor(self):
-		if(self.size > 0.3):
-			self.size -= 0.01
-			self.lifebar.setSx(self.size)
-		else:
+		'''Changes the color of the lifebar from green to red
+		'''
+		if(self.size < 0.3):
 			self.color = 1.0
 			self.lifebar.setColor(self.color,1-self.color, 0, 1.0)
+			#print "Almost dying"
 		
-		print "Morreu"
+	def changeSize(self):
+		'''Change the size of the lifebar to tell the player
+		   when the troop will die
+		'''
+		if(self.size > 0):
+			self.size -= 0.01
+			self.lifebar.setSx(self.size)
+		#Here we kill our troop
+		#else:
+			#print "Died"
 		
+	def attachPosition(self, targetPosition):
+		'''Puts the lifebar above the troop
+		'''
+		self.position[0], self.position[1], self.position[2] = targetPosition[0], targetPosition[1], targetPosition[2]+2
+		self.lifebar.setPos(self.position)
 		
 
 
@@ -95,4 +109,23 @@ class sceneButton(gameButton):
 
 	def changeScene(self):
 		print "Scene Changed"
+		
+
+class createObjectButton(gameButton):
+	'''Creates a button that changes between scenes
+	'''
+	def __init__(self, text, position, scale):
+		#self.text contains the text to be displayed -> type: String
+		self.text = text
+		#self.position contains the position of the button -> type: Point2
+		self.position = position
+		#self.scale contains the size of the button -> type: Float
+		self.scale = scale
+		#self.image contais the image of the object that this button will be able to create
+		#self.image = img
+		#self.button is the button with our own properties above -> type: DirectButton 
+		self.button = DirectButton(text=("%s")%self.text, pos = position, scale = scale, command=self.createObject)
+
+	def createObject(self):
+		print "Object Created"
 

@@ -36,7 +36,11 @@ class Torre:
 
         self.listaAtributos = [self.listaForcaDisparo, self.listaTxDisparo, self.listaAlcanceVisao, self.listaTxTropas]
 
+        #Pontos inicias que serao atribuidos a torre
         self.pontosIniciais = 300
+        
+        #Posicao da torre
+        self.position = [0,0,0]
         
         self.projetil = Projetil()
         self.tropa = Tropa()

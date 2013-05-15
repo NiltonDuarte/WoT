@@ -32,6 +32,9 @@ class Projetil:
 	
 	#Chance de critico
 	self.chanceCritico = 0
+
+    #Posicao do projetil
+    self.position = [0,0,0]
 	
     def definirParametros(self,lista):
 	    """Atribui os valores da lista nos recpectivos parametros

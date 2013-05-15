@@ -11,7 +11,7 @@ class Torre:
     
     def __init__(self, iniciarTorreFunc = False, pontos=0, lista=[]):
 	#Forca de disparo da Torre
-        self.forcaDisparo = 0
+        self.forcaDisparo = 0 #Nao usar esta variavel. Usar listaForcaDisparo[0]
         self.forcaDisparoMin = 10
         self.forcaDisparoMax = 40
         self.listaForcaDisparo = [self.forcaDisparo, self.forcaDisparoMax, self.forcaDisparoMin]
@@ -36,7 +36,11 @@ class Torre:
 
         self.listaAtributos = [self.listaForcaDisparo, self.listaTxDisparo, self.listaAlcanceVisao, self.listaTxTropas]
 
+        #Pontos inicias que serao atribuidos a torre
         self.pontosIniciais = 300
+        
+        #Posicao da torre
+        self.position = [0,0,0]
         
         self.projetil = Projetil()
         self.tropa = Tropa()

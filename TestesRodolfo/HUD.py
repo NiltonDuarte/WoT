@@ -1,6 +1,10 @@
 ################################################################
 #This file will have all classes related to the HUD of our game
 ################################################################
+
+#Importing our modules
+from Models import *
+
 #importing panda3D
 import direct.directbase.DirectStart
 from direct.showbase.DirectObject import DirectObject
@@ -30,7 +34,7 @@ class gameText(DirectObject):
 		#now this gameText is child of hudTexts node
 		self.textNodePath = hudTexts.attachNewNode(self.name)
 		#positioning and scaling our gameText
-		self.position = Vec3(position)
+		self.position = Vec3(*position)
 		self.textNodePath.setX(self.position[0]), self.textNodePath.setZ(self.position[2])
 		self.textNodePath.setScale(scale)
 
@@ -42,7 +46,7 @@ class lifeBar(DirectObject):
 		self.lifebar = loader.loadModel("Exported_Models/LifeBar")
 		self.lifebar.reparentTo(HUD_models)
 		#self.position contains the position of the lifebar -> type: Vec3
-		self.position = position
+		self.position = Vec3(*position)
 		self.lifebar.setPos(self.position)
 		#self.color helps tinting the lifebar model
 		self.color = 0.0
@@ -101,11 +105,11 @@ class sceneButton(gameButton):
 		#self.text contains the text to be displayed -> type: String
 		self.text = text
 		#self.position contains the position of the button -> type: Point2
-		self.position = position
+		self.position = Point3(*position)
 		#self.scale contains the size of the button -> type: Float
 		self.scale = scale
 		#self.button is the button with our own properties above -> type: DirectButton 
-		self.button = DirectButton(text=("%s")%self.text, pos = position, scale = scale, command=self.changeScene)
+		self.button = DirectButton(text=("%s")%self.text, pos = self.position, scale = self.scale, command=self.changeScene)
 
 	def changeScene(self):
 		print "Scene Changed"
@@ -118,7 +122,7 @@ class createObjectButton(gameButton):
 		#self.text contains the text to be displayed -> type: String
 		self.text = text
 		#self.position contains the position of the button -> type: Point2
-		self.position = position
+		self.position = Point3(*position)
 		#self.scale contains the size of the button -> type: Float
 		self.scale = scale
 		#self.image contais the image of the object that this button will be able to create
@@ -127,5 +131,6 @@ class createObjectButton(gameButton):
 		self.button = DirectButton(text=("%s")%self.text, pos = position, scale = scale, command=self.createObject)
 
 	def createObject(self):
+		tow = TowerModel([-20,10,0], [0.0,1.0,0.0, 0.5])
 		print "Object Created"
 

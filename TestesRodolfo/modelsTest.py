@@ -31,7 +31,8 @@ class Camera(DirectObject):
 		self.angle = 45
 		#Setting our camera position to be top-down
 		base.camera.setZ(50)
-		base.camera.setY(-30)
+		base.camera.setY(-40)
+		base.camera.setX(1)
 		base.camera.setHpr(0.0 , -self.angle, 0.0)
 		
 		
@@ -78,16 +79,21 @@ class Ball(DirectObject):
 		
 
 
-sceneBtn = sceneButton("Play Game",Point3(-0.5, 0, -0.5),0.12)
+sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12)
 
-createBtn = createObjectButton("Create",Point3(1.0, 0, 0),0.12)
+createBtn = createObjectButton("Create",[1.0, 0, 0],0.12)
 
-t = gameText('comida',"SUSHI",Vec3(0.5,0, 0), 0.1)
+#t = gameText('comida',"SUSHI",[0.5,0, 0], 0.1)
 b = Ball()
 
-life = lifeBar(Vec3(0,10,2))
+life = lifeBar([0,10,2])
 
 myCam = Camera()
+
+terr = TerrainModel()
+tow2 = TowerModel([20,10,0], [0.5,0.0,0.5, 0.5])
+
+
 
 class World(DirectObject):
 	def __init__(self):

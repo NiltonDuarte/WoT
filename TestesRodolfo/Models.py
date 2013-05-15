@@ -10,20 +10,39 @@ from panda3d.core import Vec2,Vec3
 #modelsNode is a child node of render that will holds all models of the game
 gameModelsNode = render.attachNewNode("Game Models Node")
 
-class Tower(DirectObject):
-	def __init__(self):
+class TowerModel(DirectObject):
+	def __init__(self, position, color):
 		#Loading the tower model
 		self.tower = loader.loadModel("Exported_Models/Tower")
 		self.tower.reparentTo(gameModelsNode)
 		#loading the ball that stays above the tower
 		self.sphere = loader.loadModel("Exported_Models/Sphere")
 		self.sphere.reparentTo(gameModelsNode)
+		#self.color is the color of the sphere
+		self.color = color
+		#Tinting the sphere
+		self.sphere.setColor(*self.color)
 		#Setting the texture to the tower
 		self.texture = loader.loadTexture("Textures/tower_Texture.png")
 		self.tower.setTexture(self.texture, 1)
 		#Setting the position of the tower and sphere
-		self.position = Vec3(1, 10, 0)
+		self.position = Vec3(*position)
 		self.tower.setPos(self.position)
 		self.sphere.setPos(self.position)
-		#Tinting the sphere
-		self.sphere.setColor(0.5, 0.0, 0.5, 0.5)
+
+
+class TerrainModel(DirectObject):
+	def __init__(self):
+		#Loading the terrain model
+		self.terrain = loader.loadModel("Exported_Models/Terrain")
+		self.terrain.reparentTo(gameModelsNode)
+		#Setting the texture to the terrain
+		self.texture = loader.loadTexture("Textures/terrain_Texture.png")
+		self.terrain.setTexture(self.texture, 1)
+		#Setting the position of the terrain
+		self.position = Vec3(1, 10, 0)
+		self.terrain.setPos(self.position)
+		#Scaling the terrain
+		self.terrain.setSx(0.3)
+		self.terrain.setSy(0.3)
+		

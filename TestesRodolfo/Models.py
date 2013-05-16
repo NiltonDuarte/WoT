@@ -11,6 +11,9 @@ from panda3d.core import Vec2,Vec3
 gameModelsNode = render.attachNewNode("Game Models Node")
 
 class TowerModel(DirectObject):
+	'''This class imports the tower model and do the needed transformations
+	   to show it on the game screen.
+	'''
 	def __init__(self, position, color):
 		#Loading the tower model
 		self.tower = loader.loadModel("Exported_Models/Tower")
@@ -32,6 +35,9 @@ class TowerModel(DirectObject):
 
 
 class TerrainModel(DirectObject):
+	'''This class imports the terrain model and do the needed transformations
+	   to show it on the game screen.
+	'''
 	def __init__(self):
 		#Loading the terrain model
 		self.terrain = loader.loadModel("Exported_Models/Terrain")

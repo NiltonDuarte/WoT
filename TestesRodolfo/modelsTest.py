@@ -81,7 +81,7 @@ class Ball(DirectObject):
 
 sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12)
 
-createBtn = createObjectButton("Create",[1.0, 0, 0],0.12)
+createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2)
 
 #t = gameText('comida',"SUSHI",[0.5,0, 0], 0.1)
 b = Ball()

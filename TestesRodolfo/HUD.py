@@ -119,6 +119,8 @@ class createObjectButton(gameButton):
 	'''Creates a button that changes between scenes
 	'''
 	def __init__(self, text, position, scale):
+		#Setting the texture to the tower
+		self.texture = loader.loadTexture("Textures/greenTower_Button.png")
 		#self.text contains the text to be displayed -> type: String
 		self.text = text
 		#self.position contains the position of the button -> type: Point2
@@ -128,7 +130,7 @@ class createObjectButton(gameButton):
 		#self.image contais the image of the object that this button will be able to create
 		#self.image = img
 		#self.button is the button with our own properties above -> type: DirectButton 
-		self.button = DirectButton(text=("%s")%self.text, pos = position, scale = scale, command=self.createObject)
+		self.button = DirectButton(pos = position, scale = scale, image = self.texture, command=self.createObject)
 
 	def createObject(self):
 		tow = TowerModel([-20,10,0], [0.0,1.0,0.0, 0.5])

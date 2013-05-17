@@ -1,5 +1,5 @@
-
-from Mundo import *
+from imports import *
+from mundo import *
 
 
 w = World()

@@ -33,9 +33,15 @@ class Projetil:
 	#Chance de critico
 	self.chanceCritico = 0
 
-    #Posicao do projetil
-    self.posicao = [0,0,0]
-    self.posicaoAnterior = [0,0,0]
+        #Posicao do projetil
+        self.posicao = [0,0,0]
+        self.posicaoAnterior = [0,0,0]
+        
+        #Parte grafica------------------
+        
+        self.projetilModel = None
+        
+        #----------------------------------
 	
     def definirParametros(self,lista):
 	    """Atribui os valores da lista nos recpectivos parametros
@@ -54,3 +60,7 @@ class Projetil:
 	    self.lentidao = lista[5]
 	    self.lentidaoDuracao = lista[6]
 	    self.chanceCritico = lista[7]
+
+    def iniciarModelo(self, posicao, cor):
+        self.posicao = posicao
+        projetilModel = None

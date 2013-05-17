@@ -1,10 +1,8 @@
 """Tower Class File"""
 
 from random import randint
-from funcoesComuns import *
-from projetil import *
-from tropas import *
-from Models import TowerModel
+from imports import *
+
 
 class Torre:
     """Classe que define os atributos e funcoes de uma torre"""

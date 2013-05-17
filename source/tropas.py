@@ -4,7 +4,7 @@ from random import randint
 class Tropa:
     """Classe que define os atributos e funcoes de uma tropa"""
 
-    def __init__self, iniciarTorreFunc = False, pontos=0, lista=[]):
+    def __init__self(iniciarTropaFunc = False, pontos=0, listaParametros=[]):
         #Vida da tropa
         self.vida = 0
         self.vidaMin = 100
@@ -31,6 +31,12 @@ class Tropa:
         self.posicaoAnterior = [0,0,0]
     
         self.pontosIniciais = 230
+        
+        #Parte grafica------------------
+        
+        self.tropaModel = None
+        
+        #----------------------------------
 
     def definirParametros(self, lista):
         """Atribui os valores da lista nos respectivos parametros
@@ -71,6 +77,10 @@ class Tropa:
             
     def setPontosIniciais(self, pontos):
         self.pontosIniciais = pontos
+        
+    def iniciarModelo(self, posicao, cor):
+        self.posicao = posicao
+        tropaModel = None
  
 
 

@@ -3,13 +3,15 @@
 ################################################################
 
 #Importing our modules
-from Models import *
+from imports import *
+from torre import *
+
 
 #importing panda3D
 import direct.directbase.DirectStart
 from direct.showbase.DirectObject import DirectObject
-
 from panda3d.core import TextNode
+
 #Vec2 and Vec3 will help positioning the objects
 from panda3d.core import Vec2,Vec3
 from panda3d.core import Point2, Point3, CardMaker
@@ -137,7 +139,7 @@ class createObjectButton(gameButton):
 
         
 	def createObject(self):
-		self.lista.append(TowerModel([-20,10+self.var,0], [0.0,1.0,0.0, 0.5]))
+		self.lista.append(Torre().iniciarModelo([-20,10+self.var,0], [.0,1.0,.0, .5]))
 		self.var += 10
         	print "Object Created"
 

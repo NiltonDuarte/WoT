@@ -1,7 +1,6 @@
 #importing our modules
-from HUD import *
-from Models import *
-from camera import *
+#from imports import *
+
 #sys module will be used to close the game window
 import sys
 #importing panda3D modules
@@ -14,6 +13,7 @@ from panda3d.core import Vec2,Vec3
 
 #Setting the window size
 from pandac.PandaModules import WindowProperties
+
 wp = WindowProperties()
 window_Width = 800
 window_Height = 600
@@ -36,7 +36,8 @@ myCam = Camera()
 
 terr = TerrainModel()
 torres = []
-torres.append(TowerModel([20,10,0], [0.5,0.0,0.5, 0.5]))
+#torres.append(TowerModel([20,10,0], [0.5,0.0,0.5, 0.5]))
+torres.append(Torre().iniciarModelo([20,10,0], [0.5,0.0,0.5, 0.5]))
 
 createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,torres)
 

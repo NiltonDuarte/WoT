@@ -5,6 +5,8 @@ from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
 #Vec2 and Vec3 will help positioning the objects
 from panda3d.core import Vec2,Vec3
+from panda3d.core import Point2, Point3
+from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionBox, CollisionTraverser, BitMask32, CollisionRay
 
 
 #modelsNode is a child node of render that will holds all models of the game
@@ -51,6 +53,8 @@ class TerrainModel(DirectObject):
 		#Scaling the terrain
 		self.terrain.setSx(0.3)
 		self.terrain.setSy(0.3)
+        	terrainCollider = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
+        	terrainCollider.node().addSolid(CollisionBox(*self.terrain.getTightBounds()))
 		
 
 class Ball(DirectObject):

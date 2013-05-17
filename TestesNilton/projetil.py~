@@ -35,7 +35,7 @@ class Projetil:
 
     #Posicao do projetil
     self.posicao = [0,0,0]
-    self.posicaoAnterior = [0,0,0]
+    self.posicaoAnterios = [0,0,0]
 	
     def definirParametros(self,lista):
 	    """Atribui os valores da lista nos recpectivos parametros

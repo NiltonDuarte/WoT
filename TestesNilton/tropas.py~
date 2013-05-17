@@ -26,10 +26,6 @@ class Tropa:
         self.listaAtributos = [self.listaVida, self.listaVelocidade, self.listaResistencia]
 
 
-        #Posicao da tropa
-        self.posicao = [0,0,0]
-        self.posicaoAnterior = [0,0,0]
-    
         self.pontosIniciais = 230
 
     def definirParametros(self, lista):

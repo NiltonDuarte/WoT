@@ -42,8 +42,8 @@ class Torre:
         #Posicao da torre
         self.posicao = [0,0,0]
         
-        self.projeteis = [] #projeteis.append(Projetil())
-        self.tropas = [] #tropas.append(Tropa())
+        self.projeteis = [] #Projetil()
+        self.tropas = [] #Tropa()
         #Parte grafica------------------
         
         #----------------------------------

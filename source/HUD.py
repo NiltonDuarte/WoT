@@ -43,7 +43,7 @@ class gameText(DirectObject):
 class lifeBar(DirectObject):
 	def __init__(self, position):
 		#self.lifebar contains the model
-		self.lifebar = loader.loadModel("Exported_Models/LifeBar")
+		self.lifebar = loader.loadModel("../arquivos de modelo/LifeBar")
 		self.lifebar.reparentTo(HUD_models)
 		#self.position contains the position of the lifebar -> type: Vec3
 		self.position = Vec3(*position)
@@ -122,7 +122,7 @@ class createObjectButton(gameButton):
 	def __init__(self, text, position, scale, listToAppend):
 		self.lista = listToAppend
 		#Setting the texture to the tower
-		self.texture = loader.loadTexture("Textures/greenTower_Button.png")
+		self.texture = loader.loadTexture("../texturas/greenTower_Button.png")
 		#self.text contains the text to be displayed -> type: String
 		self.text = text
 		#self.position contains the position of the button -> type: Point2

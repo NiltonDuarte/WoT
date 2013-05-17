@@ -139,5 +139,5 @@ class createObjectButton(gameButton):
 	def createObject(self):
 		self.lista.append(TowerModel([-20,10+self.var,0], [0.0,1.0,0.0, 0.5]))
 		self.var += 10
-        	print "Object Created"
+        print "Object Created"
 

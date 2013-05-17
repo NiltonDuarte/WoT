@@ -1,5 +1,5 @@
 #importing our modules
-#from imports import *
+from imports import *
 
 #sys module will be used to close the game window
 import sys

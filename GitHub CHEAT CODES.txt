@@ -1,0 +1,12 @@
+Link para conseguir dar push em diferentes repositorios:
+http://stackoverflow.com/questions/10753268/github-error-failed-to-push-some-refs-to-gitgithub-commyrepo-git
+
+Lista de comandos:
+- "git init" -> inicializa um repositorio git na pasta selecionada(aberta com git bash)
+- "git add ." -> adiciona todos os arquivos que forem novos no repositorio
+- "git pull nome-repositorio" -> atualiza o repositorio local de acordo com o repositorio no git hub
+- "git push -u nome-repositorio" -> atualiza o repositorio no git hub de acordo com o repositorio local
+- "git rm -r "nome-diretorio" -> deleta o diretorio nome-diretorio do repositorio no git hub
+- "git commit -m message" -> atualiza os repositorios
+- "git commit -a -m message" -> atualiza todos os arquivos deletados do repositorio local. Depois dar git push para atualizar o repositorio remoto
+- "git add -f ." -> adiciona qualquer arquivo ignorando os diretorios ignorados gitignore

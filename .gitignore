@@ -134,7 +134,11 @@ Desktop.ini
 *.py[co]
 
 # Packages
+<<<<<<< HEAD
 
+=======
+#*.egg
+>>>>>>> b821b1cfc8a2dfba445a18b77b7391f69d513f45
 *.egg-info
 dist
 build

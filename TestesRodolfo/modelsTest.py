@@ -96,7 +96,9 @@ terr = TerrainModel()
 torres = []
 torres.append(TowerModel([20,10,0], [0.5,0.0,0.5, 0.5]))
 
-createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,torres)
+proj = Projectile()
+
+createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.12,torres)
 
 class World(DirectObject):
 	def __init__(self):
@@ -105,6 +107,7 @@ class World(DirectObject):
 		self.gameTask.last = 0
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
+		
 		
 	def loadObjects(self):
 		'''Function that loads objects.
@@ -123,9 +126,9 @@ class World(DirectObject):
 		b.moveBall()
 		#b.fall()
 		
-		#life.changeColor()
-		#life.changeSize()
-		#life.attachPosition(b.position)
+		life.changeColor()
+		life.changeSize()
+		life.attachPosition(b.position)
         
 		#this function returns Task.cont
 		return Task.cont

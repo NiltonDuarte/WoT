@@ -19,6 +19,20 @@ window_Height = 600
 wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
+#Arrumei a física, tava sendo criada uma nova gravidade cada vez que um projetil era criado, separei para poder criar varios projeteis sem adicionar mais gravidade
+class Physics:
+	def __init__(self):
+		self.setGravity()  #Now our world have gravitty
+	def setGravity(self):
+		'''This function sets the gravity force to our world
+		'''
+		self.gravityForceNode = ForceNode('gravity_Force')
+	#	self.gravityForceNodePath = self.projectile.attachNewNode(self.gravityForceNode)
+		#creating the gravity acceleration
+		self.gravityForce = LinearVectorForce(0,0,-9.81) 
+		#Now self.gravityForceNode will be transformed by the gravity
+		self.gravityForceNode.addForce(self.gravityForce)
+		base.physicsMgr.addLinearForce(self.gravityForce)
 
 class Camera(DirectObject):
 	'''This class uses the base.camera of panda3D to reuse
@@ -97,6 +111,7 @@ torres = []
 torres.append(TowerModel([20,10,0], [0.5,0.0,0.5, 0.5]))
 
 proj = Projectile()
+physic = Physics()
 
 createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.12,torres)
 
@@ -132,7 +147,6 @@ class World(DirectObject):
         
 		#this function returns Task.cont
 		return Task.cont
-
 
 
 		

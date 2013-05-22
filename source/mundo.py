@@ -43,27 +43,27 @@ createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,torres)
 collisionObj = CollisionWoT()
 
 mousePicking = MousePicking()
-
+collisionObj.addCollider(mousePicking.pickerNP)
 #** Let's manage now the collision events:
 DO=DirectObject()
 # if you went from step3 and step4, here should not be mysteries for you
-DO.accept('mouseRaycnode-into-terraincnode', collisionObj.pickingCollideEventIn)
-DO.accept('mouseRaycnode-out-terraincnode', collisionObj.pickingCollideEventOut)
+DO.accept('mouseRay_cnode-into-terrain_cnode', collisionObj.pickingCollideEventIn)
+DO.accept('mouseRay_cnode-out-terrain_cnode', collisionObj.pickingCollideEventOut)
 
-#** This is how we interact with mouse clicks - see the mousePick function above for details
-DO.accept('mouse1', collisionObj.mousePick, ['down'])
-DO.accept('mouse1-up', collisionObj.mousePick, ['up'])
+#** This is how we interact with mouse clicks
+DO.accept('mouse1', mousePicking.mousePick, ['down'])
+DO.accept('mouse1-up', mousePicking.mousePick, ['up'])
 
 
 class World(DirectObject):
 	def __init__(self):
 		#Adding the main task of the game (the game loop)
 		self.gameTask = taskMgr.add(self.gameLoop, "gameLoop")
-        	base.cTrav.addCollider(mousePicking.pickerNP, collisionObj.collisionHandler)
         	taskMgr.add(mousePicking.mouseRayUpdate, "updatePicker")
 		self.gameTask.last = 0
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
+		base.cTrav.showCollisions(render)
 		
 	def loadObjects(self):
 		'''Function that loads objects.

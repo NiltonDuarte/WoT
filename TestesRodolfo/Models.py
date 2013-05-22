@@ -82,11 +82,11 @@ class Projectile(DirectObject):
 		self.projectile = loader.loadModel("Exported_Models/Projectile")
 		self.projectile.reparentTo(gameModelsNode)
 		#Setting the position of the projectile
-		self.position = Vec3(3, 10, 40)
+		self.position = Vec3(-15, 10,15)
 		self.projectile.setPos(self.position)
 		#Setting the physics of the projectile
 		self.setPhysics()  #Now we can apply forces to the projectile
-		self.setGravity()  #Now our projectile falls
+		self.setImpulseForce([10,0,13])
 		
 	def setPhysics(self):
 		'''This function sets the projectile to be a child of physicsNode and 
@@ -101,18 +101,11 @@ class Projectile(DirectObject):
 		#Setting the mass of our projectile
 		self.actorNode.getPhysicsObject().setMass(100)   
 		
-	def setGravity(self):
-		'''This function sets the gravity force to our projectile
+		
+	def setImpulseForce(self,impulseForces):
+		'''This function sets the direcional force to our projectile
 		'''
-		self.gravityForceNode = ForceNode('gravity_Force')
-		self.gravityForceNodePath = self.projectile.attachNewNode(self.gravityForceNode)
-		#creating the gravity acceleration
-		self.gravityForce = LinearVectorForce(0,0,-9.81) 
-		#Now self.gravityForceNode will be transformed by the gravity
-		self.gravityForceNode.addForce(self.gravityForce)
-		base.physicsMgr.addLinearForce(self.gravityForce)
-		
-		
+		self.actorNode.getPhysicsObject().addImpulse(Vec3(*impulseForces))
 		
 		
 		

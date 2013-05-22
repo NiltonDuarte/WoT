@@ -112,6 +112,7 @@ class sceneButton(gameButton):
 		self.button = DirectButton(text=("%s")%self.text, pos = self.position, scale = self.scale, command=self.changeScene)
 
 	def changeScene(self):
+		proj = Projectile()
 		print "Scene Changed"
 		
 

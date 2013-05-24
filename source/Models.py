@@ -48,13 +48,28 @@ class TerrainModel(DirectObject):
 		self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
 		self.terrain.setTexture(self.texture, 1)
 		#Setting the position of the terrain
-		self.position = Vec3(1, 10, 0)
+		self.position = Vec3(0, 0, 0)
 		self.terrain.setPos(self.position)
 		#Scaling the terrain
-		self.terrain.setSx(0.3)
-		self.terrain.setSy(0.3)
-        	terrainCollider = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
-        	terrainCollider.node().addSolid(CollisionBox(*self.terrain.getTightBounds()))
+		#self.terrain.setSx(0.3)
+		#self.terrain.setSy(0.3)
+		terrainCollider = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
+		terrainCollider.node().addSolid(CollisionBox(*self.terrain.getTightBounds()))
+        	
+
+class ProjectileModel(DirectObject):
+	'''This class imports the projectile model
+	   that is shot by the towers
+	'''
+	def __init__(self, position):
+		#Loading the projectile model
+		self.projectile = loader.loadModel("../arquivos de modelo/Projectile")
+		self.projectile.reparentTo(gameModelsNode)
+		#Setting the position of the projectile
+		self.position = Vec3(*position)
+		self.projectile.setPos(self.position)
+		#Setting the physics of the projectile
+
 		
 
 class Ball(DirectObject):

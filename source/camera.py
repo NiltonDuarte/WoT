@@ -2,7 +2,7 @@
 
 from direct.showbase.DirectObject import DirectObject
 
-class Camera(DirectObject):
+class MyCamera(DirectObject):
 	'''This class uses the base.camera of panda3D to reuse
 	   existing methods and create new ones
 	'''
@@ -12,8 +12,8 @@ class Camera(DirectObject):
 		#self.angle is the angle of the panda camera
 		self.angle = 45
 		#Setting our camera position to be top-down
-		base.camera.setZ(50)
-		base.camera.setY(-40)
+		base.camera.setZ(250)
+		base.camera.setY(-240)
 		base.camera.setX(1)
 		base.camera.setHpr(0.0 , -self.angle, 0.0)
 		

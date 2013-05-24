@@ -104,6 +104,12 @@ class Torre:
     def iniciarModelo(self, posicao, cor):
         self.posicao = posicao
         torreModel = TowerModel(posicao,cor)
+        
+    def dispararProjetil(self,posicao, forcaImpulso, fisicaObj):
+		self.projeteis.append(Projetil())
+		self.projeteis[-1].posicao = posicao
+		self.projeteis[-1].forcaImpulso = forcaImpulso
+		self.projeteis[-1].iniciarProjetil(fisicaObj)
 
 
 

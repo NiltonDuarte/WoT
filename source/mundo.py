@@ -23,7 +23,7 @@ wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
 
-sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12)
+
 
 #t = gameText('comida',"SUSHI",[0.5,0, 0], 0.1)
 b = Ball()
@@ -32,27 +32,34 @@ bolas.append(Ball())
 
 life = lifeBar([0,10,2])
 
-myCam = Camera()
+myCam = MyCamera()
 
 terr = TerrainModel()
 torres = []
-torres.append(Torre().iniciarModelo([20,10,0], [0.5,0.0,0.5, 0.5]))
 
-createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,torres)
+#Torre roxa
+torres.append(Torre())
+torres[0].iniciarModelo([20,10,0], [0.5,0.0,0.5, 0.5])
+
+fisicaObj = Physics()
 
 collisionObj = CollisionWoT()
 
-mousePicking = MousePicking()
-collisionObj.addCollider(mousePicking.pickerNP)
+mousePicking = MousePicking(collisionObj)
+
+createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,torres, mousePicking)
+sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,torres,fisicaObj)
+
 #** Let's manage now the collision events:
 DO=DirectObject()
 # if you went from step3 and step4, here should not be mysteries for you
-DO.accept('mouseRay_cnode-into-terrain_cnode', collisionObj.pickingCollideEventIn)
-DO.accept('mouseRay_cnode-out-terrain_cnode', collisionObj.pickingCollideEventOut)
+DO.accept('mouseRay_cnode-into-terrain_cnode', collisionObj.collideEventIn)
+DO.accept('mouseRay_cnode-out-terrain_cnode', collisionObj.collideEventOut)
+DO.accept('mouseRay_cnode-again-terrain_cnode', collisionObj.collideEventAgain)
 
 #** This is how we interact with mouse clicks
-DO.accept('mouse1', mousePicking.mousePick, ['down'])
-DO.accept('mouse1-up', mousePicking.mousePick, ['up'])
+DO.accept('mouse1', mousePicking.mousePick, ['down',collisionObj])
+DO.accept('mouse1-up', mousePicking.mousePick, ['up',collisionObj])
 
 
 class World(DirectObject):
@@ -87,7 +94,6 @@ class World(DirectObject):
 		life.changeSize()
 		life.attachPosition(b.position)
         
-        	#collisionObj.pickingCollideEventIn()
 		#this function returns Task.cont
 		return Task.cont
 

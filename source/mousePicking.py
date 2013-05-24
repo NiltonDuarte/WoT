@@ -1,28 +1,33 @@
 from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionTraverser, CollisionRay
 
-
+"""Class to handle mouse picking, receiving a collision object to add the mouse ray to the collision handler"""
 class MousePicking:
-    def __init__(self):
-        self.pickerNode=CollisionNode('mouseRay_cnode')
-        self.pickerNP=base.camera.attachNewNode(self.pickerNode)
-        self.pickerRay=CollisionRay()
-        self.pickerNode.addSolid(self.pickerRay)
-	self.mpos = None
+	def __init__(self, collisionObj):
+		self.pickerNode=CollisionNode('mouseRay_cnode')
+		self.pickerNP=base.camera.attachNewNode(self.pickerNode)
+		self.pickerRay=CollisionRay()
+		self.pickerNode.addSolid(self.pickerRay)
+		collisionObj.addCollider(self.pickerNP)
+		self.mpos = None
+		self.pickingEnabled = True
+		self.picked3DPoint = [0,0,0]
         
 
 
-    #** This is the function called each frame by a task defined below to syncronize the shooting ray position with the mouse moving pointer.
-    def mouseRayUpdate(self,task):
-      if base.mouseWatcherNode.hasMouse():
-        self.mpos=base.mouseWatcherNode.getMouse()
-        # this is what set our ray to shoot from the actual camera lenses off the 3d scene, passing by the mouse pointer position, making  magically hit in the 3d space what is pointed by it
-        self.pickerRay.setFromLens(base.camNode, self.mpos.getX(),self.mpos.getY())
-      return task.cont
+	#** This is the function called each frame by a task defined below to syncronize the shooting ray position with the mouse moving pointer.
+	def mouseRayUpdate(self,task):
+		if base.mouseWatcherNode.hasMouse():
+			self.mpos=base.mouseWatcherNode.getMouse()
+			# this is what set our ray to shoot from the actual camera lenses off the 3d scene, passing by the mouse pointer position, making  magically hit in the 3d space what is pointed by it
+			self.pickerRay.setFromLens(base.camNode, self.mpos.getX(),self.mpos.getY())
+		return task.cont
 
-    def mousePick(self,status):
-      #if pickingEnabled:
-        if status == 'down' and self.mpos != None:
-          print "status down", self.mpos.getX(), self.mpos.getY()
+	def mousePick(self,status,collisionObj):
+		if self.pickingEnabled:
+			if status == 'down' and self.mpos != None:
+				self.picked3DPoint = collisionObj.collision3DPoint
+				print "status down", self.picked3DPoint 
 
-        if status == 'up' and self.mpos != None:
-            print "status up", self.mpos.getX(), self.mpos.getY()
+			if status == 'up' and self.mpos != None:
+				self.picked3DPoint = collisionObj.collision3DPoint
+				print "status up", self.picked3DPoint

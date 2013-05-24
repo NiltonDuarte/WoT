@@ -103,7 +103,7 @@ class gameButton(DirectObject):
 class sceneButton(gameButton):
 	'''Creates a button that changes between scenes
 	'''
-	def __init__(self, text, position, scale):
+	def __init__(self, text, position, scale, listaTorres,fisicaObj):
 		#self.text contains the text to be displayed -> type: String
 		self.text = text
 		#self.position contains the position of the button -> type: Point2
@@ -111,9 +111,11 @@ class sceneButton(gameButton):
 		#self.scale contains the size of the button -> type: Float
 		self.scale = scale
 		#self.button is the button with our own properties above -> type: DirectButton 
-		self.button = DirectButton(text=("%s")%self.text, pos = self.position, scale = self.scale, command=self.changeScene)
+		self.button = DirectButton(text=("%s")%self.text, pos = self.position, scale = self.scale, command=self.changeScene, extraArgs=[listaTorres,fisicaObj])
 
-	def changeScene(self):
+	def changeScene(self, listaTorres,fisicaObj):
+		for torres in listaTorres:
+			torres.dispararProjetil(torres.posicao, [10,0,13],fisicaObj)
 		print "Scene Changed"
 		
 
@@ -121,7 +123,7 @@ class createObjectButton(gameButton):
 	'''Creates a button that changes between scenes
 	'''
 
-	def __init__(self, text, position, scale, listToAppend):
+	def __init__(self, text, position, scale, listToAppend, mousePicking):
 		self.lista = listToAppend
 		#Setting the texture to the tower
 		self.texture = loader.loadTexture("../texturas/greenTower_Button.png")
@@ -134,12 +136,12 @@ class createObjectButton(gameButton):
 		#self.image contais the image of the object that this button will be able to create
 		#self.image = img
 		#self.button is the button with our own properties above -> type: DirectButton 
-		self.button = DirectButton(pos = position, scale = scale, image = self.texture, command=self.createObject)
-		self.var = 0
+		self.button = DirectButton(pos = position, scale = scale, image = self.texture, command=self.createObject, extraArgs=[mousePicking] )
+
 
         
-	def createObject(self):
-		self.lista.append(Torre().iniciarModelo([-20,10+self.var,0], [.0,1.0,.0, .5]))
-		self.var += 10
-        	print "Object Created"
+	def createObject(self, mousePicking):
+		self.lista.append(Torre())
+		self.lista[-1].iniciarModelo(mousePicking.picked3DPoint, [.0,1.0,.0, .5])
+		print "Object Created"
 

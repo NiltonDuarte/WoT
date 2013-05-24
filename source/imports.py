@@ -8,4 +8,5 @@ from HUD import *
 from Models import *
 from mousePicking import *
 from collision import *
+from physics import *
 

@@ -19,7 +19,7 @@ window_Height = 600
 wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
-#Arrumei a física, tava sendo criada uma nova gravidade cada vez que um projetil era criado, separei para poder criar varios projeteis sem adicionar mais gravidade
+#Arrumei a fisica, tava sendo criada uma nova gravidade cada vez que um projetil era criado, separei para poder criar varios projeteis sem adicionar mais gravidade
 class Physics:
 	def __init__(self):
 		self.setGravity()  #Now our world have gravitty

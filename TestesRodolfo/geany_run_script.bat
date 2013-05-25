@@ -1,4 +1,4 @@
-ppython "modelsTest.py"
+ppython "main.py"
 
 pause
 del "%0"

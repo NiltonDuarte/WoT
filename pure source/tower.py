@@ -1,10 +1,35 @@
 """Tower Class File"""
 
+#importing other modules
 from random import randint
+
+#importing our modules
 from commonFunctions import *
 from projectile import *
 from troops import *
-from Models import TowerModel
+from pandaImports import *
+
+class TowerModel(DirectObject):
+	'''This class imports the tower model and do the needed transformations
+	   to show it on the game screen.
+	'''
+	def __init__(self, position, color):
+		#Loading the tower model
+		self.tower = loader.loadModel("../arquivos de modelo/Tower")
+		self.tower.reparentTo(render)
+		#loading the ball that stays above the tower
+		self.sphere = loader.loadModel("../arquivos de modelo/Sphere")
+		self.sphere.reparentTo(render)
+		#self.color is the color of the sphere and tinting the sphere
+		self.color = color
+		self.sphere.setColor(*self.color)
+		#Setting the texture to the tower
+		self.texture = loader.loadTexture("../texturas/tower_Texture.png")
+		self.tower.setTexture(self.texture, 1)
+		#Setting the position of the tower and sphere
+		self.tower.setPos(Vec3(*position))
+		self.sphere.setPos(Vec3(*position))
+
 
 class Tower:
     """This class defines all attributes and functions

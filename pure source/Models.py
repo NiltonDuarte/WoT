@@ -1,38 +1,4 @@
-#importing panda3D modules
-import sys #to close the game screen with escape key
-import direct.directbase.DirectStart
-from direct.showbase.DirectObject import DirectObject
-#This will help move the objects
-from direct.task.Task import Task
-#Vec2 and Vec3 will help positioning the objects
-from panda3d.core import Vec2,Vec3
-from panda3d.core import Point2, Point3
-from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionBox, CollisionTraverser, BitMask32, CollisionRay
-
-
-#modelsNode is a child node of render that will holds all models of the game
-gameModelsNode = render.attachNewNode("Game Models Node")
-
-class TowerModel(DirectObject):
-	'''This class imports the tower model and do the needed transformations
-	   to show it on the game screen.
-	'''
-	def __init__(self, position, color):
-		#Loading the tower model
-		self.tower = loader.loadModel("../arquivos de modelo/Tower")
-		self.tower.reparentTo(gameModelsNode)
-		#loading the ball that stays above the tower
-		self.sphere = loader.loadModel("../arquivos de modelo/Sphere")
-		self.sphere.reparentTo(gameModelsNode)
-		#self.color is the color of the sphere and tinting the sphere
-		self.color = color
-		self.sphere.setColor(*self.color)
-		#Setting the texture to the tower
-		self.texture = loader.loadTexture("../texturas/tower_Texture.png")
-		self.tower.setTexture(self.texture, 1)
-		#Setting the position of the tower and sphere
-		self.tower.setPos(Vec3(*position))
-		self.sphere.setPos(Vec3(*position))
+from pandaImports import *
 
 
 class TerrainModel(DirectObject):
@@ -42,7 +8,7 @@ class TerrainModel(DirectObject):
 	def __init__(self):
 		#Loading the terrain model
 		self.terrain = loader.loadModel("../arquivos de modelo/Terrain")
-		self.terrain.reparentTo(gameModelsNode)
+		self.terrain.reparentTo(render)
 		#Setting the texture to the terrain
 		self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
 		self.terrain.setTexture(self.texture, 1)
@@ -54,23 +20,12 @@ class TerrainModel(DirectObject):
 		terrainCollider.node().addSolid(CollisionBox(*self.terrain.getTightBounds()))
         	
 
-class ProjectileModel(DirectObject):
-	'''This class imports the projectile model
-	   that is shot by the towers
-	'''
-	def __init__(self, position):
-		#Loading the projectile model
-		self.projectile = loader.loadModel("../arquivos de modelo/Projectile")
-		self.projectile.reparentTo(gameModelsNode)
-		#Setting the position of the projectile 
-		self.projectile.setPos(Vec3(*position))
-
 		
 
 class Ball(DirectObject):
 	def __init__(self):
 		self.ball = loader.loadModel("../arquivos de modelo/ball")
-		self.ball.reparentTo(gameModelsNode)
+		self.ball.reparentTo(render)
 		#Setting the position of the tower and sphere
 		self.position = Vec3(1, 10, 0)
 		self.ball.setPos(self.position)
@@ -86,7 +41,6 @@ class Ball(DirectObject):
 		self.accept("arrow_left", self.setKey, ["LEFT",1])
 		self.accept("arrow_left-up", self.setKey, ["LEFT",0])
 		
-		self.accept('escape', sys.exit ) # exit on esc
 		
 		self.ball.setColor(0,1.0,0,1.0)
 

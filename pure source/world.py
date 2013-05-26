@@ -1,20 +1,10 @@
 #importing our modules
 from imports import *
 
-#from mousePicking import *
+#Other modules
+import sys #to close the game screen with escape key
 
-#sys module will be used to close the game window
-import sys
-#importing panda3D modules
-import direct.directbase.DirectStart
-from direct.showbase.DirectObject import DirectObject
-#This will help move the objects
-from direct.task.Task import Task
-#Vec2 and Vec3 will help positioning the objects
-from panda3d.core import Vec2,Vec3
-
-#Setting the window size
-from pandac.PandaModules import WindowProperties
+from pandaImports import *
 
 #Setting the size of our game screen
 wp = WindowProperties()
@@ -72,6 +62,8 @@ class World(DirectObject):
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
 		base.cTrav.showCollisions(render)
+		
+		self.accept('escape', sys.exit ) # exit on esc
 		
 	def loadObjects(self):
 		'''Function that loads objects.

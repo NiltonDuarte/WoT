@@ -1,6 +1,8 @@
 """Everything related to Troop is here"""
 from random import randint
 
+from pandaImports import *
+
 class Troop:
     """This class defines all attributes and functions
 	   of a troop

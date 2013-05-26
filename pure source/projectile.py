@@ -1,5 +1,17 @@
 """Everything related to Projectile is here"""
-from Models import ProjectileModel
+
+from pandaImports import *
+
+class ProjectileModel(DirectObject):
+	'''This class imports the projectile model
+	   that is shot by the towers
+	'''
+	def __init__(self, position):
+		#Loading the projectile model
+		self.projectile = loader.loadModel("../arquivos de modelo/Projectile")
+		self.projectile.reparentTo(render)
+		#Setting the position of the projectile 
+		self.projectile.setPos(Vec3(*position))
 
 
 class Projectile:

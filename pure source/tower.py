@@ -29,7 +29,11 @@ class TowerModel(DirectObject):
 		#Setting the position of the tower and sphere
 		self.tower.setPos(Vec3(*position))
 		self.sphere.setPos(Vec3(*position))
-
+		
+	def moveTowerModel(self,position):
+		self.sphere.setColor(*self.color)
+		self.tower.setPos(Vec3(*position))
+		self.sphere.setPos(Vec3(*position))
 
 class Tower:
     """This class defines all attributes and functions
@@ -130,7 +134,11 @@ class Tower:
                 
     def initModel(self, position, color):
         self.position = position
-        towerModel = TowerModel(position,color)
+        self.towerModel = TowerModel(position,color)
+        
+    def moveTower(self,position):
+		self.position = position
+		self.towerModel.moveTowerModel(position)
         
     def shootProjectile(self,position, impulseForce, physicsObj):
 		self.projectiles.append(Projectile())

@@ -46,11 +46,11 @@ DO=DirectObject()
 # if you went from step3 and step4, here should not be mysteries for you
 DO.accept('mouseRay_cnode-into-terrain_cnode', collisionObj.collideEventIn)
 DO.accept('mouseRay_cnode-out-terrain_cnode', collisionObj.collideEventOut)
-DO.accept('mouseRay_cnode-again-terrain_cnode', collisionObj.collideEventAgain)
+DO.accept('mouseRay_cnode-again-terrain_cnode', collisionObj.collideEventAgain,[mousePicking,towers])
 
 #** This is how we interact with mouse clicks
-DO.accept('mouse1', mousePicking.mousePick, ['down',collisionObj])
-DO.accept('mouse1-up', mousePicking.mousePick, ['up',collisionObj])
+DO.accept('mouse1', mousePicking.mousePickCreateTower, ['down',collisionObj,towers])
+DO.accept('mouse1-up', mousePicking.mousePickCreateTower, ['up',collisionObj, towers])
 
 
 class World(DirectObject):

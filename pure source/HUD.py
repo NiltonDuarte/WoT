@@ -141,7 +141,10 @@ class createObjectButton(gameButton):
 
         
 	def createObject(self, mousePicking):
+		if (self.listOfObjects[-1].towerModel == None): print "no tower model"; return
 		self.listOfObjects.append(Tower())
-		self.listOfObjects[-1].initModel(mousePicking.picked3DPoint, [.0,1.0,.0, .5])
+		self.listOfObjects[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
+		mousePicking.towerFollowMouse = True
+
 		print "Object Created"
 

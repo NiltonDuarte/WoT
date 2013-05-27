@@ -5,8 +5,6 @@ class CollisionWoT():
 	   of our game
 	'''
 	def __init__(self):
-		#self.pickingEnabled tells when when the mouse pointer is colliding with an object and we click it (mousePicking)
-		self.pickingEnabled = False
 		#base.cTrav maintains a list of colliders of all solid objects in the world to check collisions (runs every frame)
 		base.cTrav=CollisionTraverser()
 		
@@ -39,13 +37,15 @@ class CollisionWoT():
 		print np_from, "started colliding with", np_into, "Ponto = ",self.collision3DPoint
 		
 	
-	def collideEventAgain(self,entry):
+	def collideEventAgain(self, mousePick, towerList, entry):
 		'''This function is called when the object (nodePath) is still colliding with another object 
 		'''
 		# here how we get the references of the two colliding objects to show their names ASA this happen
 		np_from=entry.getFromNodePath()
 		np_into=entry.getIntoNodePath()
 		self.collision3DPoint = [entry.getSurfacePoint(np_into).getX(), entry.getSurfacePoint(np_into).getY(), entry.getSurfacePoint(np_into).getZ()]
+		if mousePick.towerFollowMouse:
+			towerList[-1].moveTower(self.collision3DPoint)
 		#print np_from, "collideAGAIN", np_into, "Ponto = ",self.collision3DPoint
 
 

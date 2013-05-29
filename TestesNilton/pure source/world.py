@@ -47,6 +47,7 @@ DO=DirectObject()
 DO.accept('mouseRay_cnode-into-terrain_cnode', collisionObj.collideEventIn)
 DO.accept('mouseRay_cnode-out-terrain_cnode', collisionObj.collideEventOut)
 DO.accept('mouseRay_cnode-again-terrain_cnode', collisionObj.collideEventAgain,[mousePicking,towers])
+DO.accept('mouseRay_cnode-into-ClasseTorre_cnode', collisionObj.collideEventIn)
 
 #** This is how we interact with mouse clicks
 DO.accept('mouse1', mousePicking.mousePickCreateTower, ['down',collisionObj,towers])
@@ -57,7 +58,7 @@ class World(DirectObject):
 	def __init__(self):
 		#Adding the main task of the game (the game loop)
 		self.gameTask = taskMgr.add(self.gameLoop, "gameLoop")
-        	taskMgr.add(mousePicking.mouseRayUpdate, "updatePicker")
+		taskMgr.add(mousePicking.mouseRayUpdate, "updatePicker")
 		self.gameTask.last = 0
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True

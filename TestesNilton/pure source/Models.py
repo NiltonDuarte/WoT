@@ -7,7 +7,7 @@ class TerrainModel(DirectObject):
 	'''
 	def __init__(self):
 		#Loading the terrain model
-		self.terrain = loader.loadModel("../arquivos de modelo/Terrain")
+		self.terrain = loader.loadModel("../arquivos de modelo/Terrain1")
 		self.terrain.reparentTo(render)
 		#Setting the texture to the terrain
 		self.texture = loader.loadTexture("../texturas/terrain_Texture.png")

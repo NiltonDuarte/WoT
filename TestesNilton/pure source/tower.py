@@ -8,6 +8,7 @@ from commonFunctions import *
 from projectile import *
 from troops import *
 from pandaImports import *
+from pandac.PandaModules import CollisionSphere
 
 class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
@@ -34,6 +35,10 @@ class TowerModel(DirectObject):
 		self.sphere.setColor(*self.color)
 		self.tower.setPos(Vec3(*position))
 		self.sphere.setPos(Vec3(*position))
+		
+	def setCollisionNode (self, collisionNodeName, rangeView):
+		self.towerCollider = self.tower.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
+		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
 
 class Tower:
     """This class defines all attributes and functions
@@ -42,6 +47,8 @@ class Tower:
 
     
     def __init__(self, initTowerFunc = False, points=0, listOfParameters=[]):
+		
+        self.name = "ClasseTorre"
 		#Shooting power of the tower
         self.shootPower = 0 #Nao usar esta variavel. Usar listShootPower[0]
         self.shootPowerMin = 10
@@ -55,7 +62,7 @@ class Tower:
         self.listTxShoot = [self.txShoot, self.txShootMax, self.txShootMin]
 
         #Tower range of view
-        self.rangeView = 0 #Nao usar esta variavel! Usar listRangeView[0]
+        self.rangeView = 20 #Nao usar esta variavel! Usar listRangeView[0]
         self.rangeViewMin = 10
         self.rangeViewMax = 40
         self.listRangeView = [self.rangeView, self.rangeViewMax, self.rangeViewMin]
@@ -139,7 +146,13 @@ class Tower:
     def moveTower(self,position):
 		self.position = position
 		self.towerModel.moveTowerModel(position)
-        
+    
+    def setName(self,towerName):
+		self.name = towerName
+	
+    def initCollisionNode(self):
+		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], collisionObj);
+		    
     def shootProjectile(self,position, impulseForce, physicsObj):
 		self.projectiles.append(Projectile())
 		self.projectiles[-1].position = position

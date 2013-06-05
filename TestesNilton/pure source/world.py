@@ -8,8 +8,8 @@ from pandaImports import *
 
 #Setting the size of our game screen
 wp = WindowProperties()
-window_Width = 800
-window_Height = 600
+window_Width = 1200
+window_Height = 640
 wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
@@ -29,8 +29,9 @@ terr = TerrainModel()
 towers = []
 
 #Purple tower
-towers.append(Tower())
-towers[0].initModel([20,10,0], [0.5,0.0,0.5, 0.5])
+#towers.append(Tower())
+#towers[0].initModel([20,10,0], [0.5,0.0,0.5, 0.5])
+#towers[0].towerInicialized = True
 
 physicsObj = Physics()
 
@@ -51,9 +52,9 @@ DO.accept('mouseRay_cnode-into-ClasseTorre_cnode', collisionObj.collideEventIn)
 
 #** This is how we interact with mouse clicks
 DO.accept('mouse1', mousePicking.mousePickCreateTower, ['down',collisionObj,towers])
-DO.accept('mouse1-up', mousePicking.mousePickCreateTower, ['up',collisionObj, towers])
+#DO.accept('mouse1-up', mousePicking.mousePickCreateTower, ['up',collisionObj, towers])
 
-
+gameHud = GameHud()
 class World(DirectObject):
 	def __init__(self):
 		#Adding the main task of the game (the game loop)

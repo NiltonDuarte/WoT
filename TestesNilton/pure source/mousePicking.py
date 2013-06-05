@@ -31,9 +31,10 @@ class MousePicking:
 			if status == 'down' and self.mpos != None and self.towerFollowMouse == True:
 				self.towerFollowMouse = False
 				self.picked3DPoint = collisionObj.collision3DPoint
-				towerList[-1].towerModel.color = [.0,1.0,.0, .5]
+				towerList[-1].towerModel.color =  [0.77,0,1, 0.5]
 				towerList[-1].moveTower(self.picked3DPoint)
 				towerList[-1].initCollisionNode()
+				towerList[-1].towerInicialized = True
 				print "status down", self.picked3DPoint 
 
 			if status == 'up' and self.mpos != None:

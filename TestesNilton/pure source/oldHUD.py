@@ -10,11 +10,7 @@ from tower import *
 #importing panda3D
 import direct.directbase.DirectStart
 from direct.showbase.DirectObject import DirectObject
-from panda3d.core import TextNode, TransparencyAttrib
-
-#importing onscreenImage
-from direct.gui.OnscreenImage import OnscreenImage
-
+from panda3d.core import TextNode
 
 #Vec2 and Vec3 will help positioning the objects
 from panda3d.core import Vec2,Vec3
@@ -30,24 +26,6 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 #HUD_models holds all the models that HUD will use
 HUD_models = render.attachNewNode("HUD Models")
 
-class GameHud (DirectObject):
-	def __init__(self):
-		
-		self.screenImage = loader.loadModel('../HUD images/gameBackground.egg')
-		self.background = self.screenImage.find('**/gameBackground')
-		self.background.setScale(3.75,1,2)
-		self.background.reparentTo(aspect2d)
-		"""
-		self.myImage=OnscreenImage(image = '../HUD images/gameBackground.png', scale = (1.875,1,1) )
-		self.myImage.setTransparency(TransparencyAttrib.MAlpha)
-		
-		"""
-		"""
-		myFrame = DirectFrame(frameColor=(0, 0, 0, 0.5),
-								frameSize=(-2, 2, -1, 1),
-								image = '../HUD images/gameBackground.png')
-		"""
-		
 class gameText(DirectObject):
 	'''This class creates texts that will be part of the HUD of the game
 	'''
@@ -145,8 +123,8 @@ class createObjectButton(gameButton):
 	'''Creates a button that changes between scenes
 	'''
 
-	def __init__(self, text, position, scale, towerListToAppend, mousePicking):
-		self.towerList = towerListToAppend
+	def __init__(self, text, position, scale, listToAppend, mousePicking):
+		self.listOfObjects = listToAppend
 		#Setting the texture to the tower
 		self.texture = loader.loadTexture("../texturas/greenTower_Button.png")
 		#self.text contains the text to be displayed -> type: String
@@ -163,15 +141,10 @@ class createObjectButton(gameButton):
 
         
 	def createObject(self, mousePicking):
-		if (len(self.towerList) > 0):
-			if (self.towerList[-1].towerInicialized == False): print "last tower not inicialized"; return
-			self.towerList.append(Tower())
-			self.towerList[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
-			mousePicking.towerFollowMouse = True
-		else:
-			self.towerList.append(Tower())
-			self.towerList[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
-			mousePicking.towerFollowMouse = True
+		if (self.listOfObjects[-1].towerModel == None): print "no tower model"; return
+		self.listOfObjects.append(Tower())
+		self.listOfObjects[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
+		mousePicking.towerFollowMouse = True
 
-			print "Object Created"
+		print "Object Created"
 

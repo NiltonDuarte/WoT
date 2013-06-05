@@ -86,6 +86,7 @@ class Tower:
         #Graphical part------------------
         
         self.towerModel = None
+        self.towerInicialized = False
         
         #----------------------------------
         
@@ -151,7 +152,7 @@ class Tower:
 		self.name = towerName
 	
     def initCollisionNode(self):
-		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], collisionObj);
+		self.towerModel.setCollisionNode(self.name, self.listRangeView[0]);
 		    
     def shootProjectile(self,position, impulseForce, physicsObj):
 		self.projectiles.append(Projectile())

@@ -15,44 +15,19 @@ base.win.requestProperties(wp)
 
 
 
-
-#t = gameText('comida',"SUSHI",[0.5,0, 0], 0.1)
-b = Ball()
-balls = []
-balls.append(Ball())
-
 life = lifeBar([0,10,2])
 
-myCam = MyCamera()
-
 terr = TerrainModel()
-towers = []
-
-#Purple tower
-#towers.append(Tower())
-#towers[0].initModel([20,10,0], [0.5,0.0,0.5, 0.5])
-#towers[0].towerInicialized = True
+player = Player()
 
 physicsObj = Physics()
 
-collisionObj = CollisionWoT()
+mousePicking = MousePicking()
 
-mousePicking = MousePicking(collisionObj)
+collisionObj = CollisionWoT(mousePicking, player)
 
-createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,towers, mousePicking)
-sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,towers,physicsObj)
-
-#** Let's manage now the collision events:
-DO=DirectObject()
-# if you went from step3 and step4, here should not be mysteries for you
-DO.accept('mouseRay_cnode-into-terrain_cnode', collisionObj.collideEventIn)
-DO.accept('mouseRay_cnode-out-terrain_cnode', collisionObj.collideEventOut)
-DO.accept('mouseRay_cnode-again-terrain_cnode', collisionObj.collideEventAgain,[mousePicking,towers])
-DO.accept('mouseRay_cnode-into-ClasseTorre_cnode', collisionObj.collideEventIn)
-
-#** This is how we interact with mouse clicks
-DO.accept('mouse1', mousePicking.mousePickCreateTower, ['down',collisionObj,towers])
-#DO.accept('mouse1-up', mousePicking.mousePickCreateTower, ['up',collisionObj, towers])
+createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,player, mousePicking)
+sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,player,physicsObj)
 
 gameHud = GameHud()
 class World(DirectObject):
@@ -82,12 +57,6 @@ class World(DirectObject):
 
 		#Interactions between different objects
 
-		b.moveBall()
-		#b.fall()
-		
-		life.changeColor()
-		life.changeSize()
-		life.attachPosition(b.position)
         
 		#this function returns Task.cont
 		return Task.cont

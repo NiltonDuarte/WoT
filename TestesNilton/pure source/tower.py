@@ -9,12 +9,15 @@ from projectile import *
 from troops import *
 from pandaImports import *
 from pandac.PandaModules import CollisionSphere
+from panda3d.core import PandaNode
 
-class TowerModel(DirectObject):
+class TowerModel(DirectObject, PandaNode):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
-	def __init__(self, position, color):
+	def __init__(self, position, color, towerClass):
+		self.towerClass = towerClass
+		#PandaNode.__init__(self, "TowerModel")
 		#Loading the tower model
 		self.tower = loader.loadModel("../arquivos de modelo/Tower")
 		self.tower.reparentTo(render)
@@ -37,10 +40,22 @@ class TowerModel(DirectObject):
 		self.sphere.setPos(Vec3(*position))
 		
 	def setCollisionNode (self, collisionNodeName, rangeView):
-		self.towerCollider = self.tower.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
+		#self.tower.attachNewNode(self)
+		#print "self.tower.getNode(0).getChild(1) = ",self.tower.getNode(0).getChild(1)
+		#print "self = ", self
+		self.towerCollider = self.tower.attachNewNode(CollisionNode(collisionNodeName + '_Rangecnode'))
 		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
-
-class Tower:
+		self.towerCollider = self.tower.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
+		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,5.5),4,4,5.5))
+	
+	"""	
+	def setCollisionNode (self, collisionNodeName, rangeView):
+		self.towerCollider = self.tower.attachNewNode(Tower(collisionNodeName + '_Rangecnode'))
+		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
+		self.towerCollider = self.tower.attachNewNode(Tower(collisionNodeName + '_cnode'))
+		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,5.5),4,4,5.5))		
+	"""
+class Tower():
     """This class defines all attributes and functions
 	   of a tower
     """
@@ -142,7 +157,7 @@ class Tower:
                 
     def initModel(self, position, color):
         self.position = position
-        self.towerModel = TowerModel(position,color)
+        self.towerModel = TowerModel(position,color,self)
         
     def moveTower(self,position):
 		self.position = position

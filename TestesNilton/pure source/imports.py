@@ -9,4 +9,5 @@ from Models import *
 from mousePicking import *
 from collision import *
 from physics import *
+from player import *
 

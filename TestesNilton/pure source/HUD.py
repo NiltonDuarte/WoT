@@ -32,16 +32,16 @@ HUD_models = render.attachNewNode("HUD Models")
 
 class GameHud (DirectObject):
 	def __init__(self):
-		
+		"""
 		self.screenImage = loader.loadModel('../HUD images/gameBackground.egg')
 		self.background = self.screenImage.find('**/gameBackground')
-		self.background.setScale(3.75,1,2)
+		#self.background.setScale(3.75,1,2)
 		self.background.reparentTo(aspect2d)
 		"""
-		self.myImage=OnscreenImage(image = '../HUD images/gameBackground.png', scale = (1.875,1,1) )
+		self.myImage=OnscreenImage(image = '../HUD images/gameBackgroundQuadrada.png', scale = (3.2,1,3.2) )
 		self.myImage.setTransparency(TransparencyAttrib.MAlpha)
 		
-		"""
+		
 		"""
 		myFrame = DirectFrame(frameColor=(0, 0, 0, 0.5),
 								frameSize=(-2, 2, -1, 1),
@@ -125,7 +125,7 @@ class gameButton(DirectObject):
 class sceneButton(gameButton):
 	'''Creates a button that changes between scenes
 	'''
-	def __init__(self, text, position, scale, towersList,physicsObj):
+	def __init__(self, text, position, scale, player,physicsObj):
 		#self.text contains the text to be displayed -> type: String
 		self.text = text
 		#self.position contains the position of the button -> type: Point2
@@ -133,10 +133,10 @@ class sceneButton(gameButton):
 		#self.scale contains the size of the button -> type: Float
 		self.scale = scale
 		#self.button is the button with our own properties above -> type: DirectButton 
-		self.button = DirectButton(text=("%s")%self.text, pos = self.position, scale = self.scale, command=self.changeScene, extraArgs=[towersList,physicsObj])
+		self.button = DirectButton(text=("%s")%self.text, pos = self.position, scale = self.scale, command=self.changeScene, extraArgs=[player,physicsObj])
 
-	def changeScene(self, towersList, physicsObj):
-		for tower in towersList:
+	def changeScene(self, player, physicsObj):
+		for tower in player.getTowerList():
 			tower.shootProjectile(tower.position, [10,0,13],physicsObj)
 		print "Scene Changed"
 		
@@ -145,8 +145,7 @@ class createObjectButton(gameButton):
 	'''Creates a button that changes between scenes
 	'''
 
-	def __init__(self, text, position, scale, towerListToAppend, mousePicking):
-		self.towerList = towerListToAppend
+	def __init__(self, text, position, scale, player, mousePicking): 
 		#Setting the texture to the tower
 		self.texture = loader.loadTexture("../texturas/greenTower_Button.png")
 		#self.text contains the text to be displayed -> type: String
@@ -158,20 +157,12 @@ class createObjectButton(gameButton):
 		#self.image contais the image of the object that this button will be able to create
 		#self.image = img
 		#self.button is the button with our own properties above -> type: DirectButton 
-		self.button = DirectButton(pos = position, scale = scale, image = self.texture, command=self.createObject, extraArgs=[mousePicking] )
+		self.button = DirectButton(pos = position, scale = scale, image = self.texture, command=self.createObject, extraArgs=[mousePicking, player] )
 
 
         
-	def createObject(self, mousePicking):
-		if (len(self.towerList) > 0):
-			if (self.towerList[-1].towerInicialized == False): print "last tower not inicialized"; return
-			self.towerList.append(Tower())
-			self.towerList[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
-			mousePicking.towerFollowMouse = True
-		else:
-			self.towerList.append(Tower())
-			self.towerList[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
-			mousePicking.towerFollowMouse = True
-
-			print "Object Created"
+	def createObject(self, mousePicking, player):
+		player.addTower()
+		mousePicking.towerFollowMouse = True
+		print "Object Created"
 

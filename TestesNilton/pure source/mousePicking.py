@@ -5,16 +5,17 @@ class MousePicking:
 	"""Class to handle mouse picking, receiving a collision object 
 	   to add the mouse ray to the collision handler
 	"""
-	def __init__(self, collisionObj):
+	def __init__(self):
 		self.pickerNode=CollisionNode('mouseRay_cnode')
 		self.pickerNP=base.camera.attachNewNode(self.pickerNode)
 		self.pickerRay=CollisionRay()
 		self.pickerNode.addSolid(self.pickerRay)
-		collisionObj.addCollider(self.pickerNP)
 		self.mpos = None
 		self.pickingEnabled = True
-		self.picked3DPoint = [0,0,0]
 		self.towerFollowMouse = False
+		self.mousePickingOnTower = False
+		self.mousePickingOnTroop = False
+		self.collindingNode = None
         
 
 
@@ -26,17 +27,18 @@ class MousePicking:
 			self.pickerRay.setFromLens(base.camNode, self.mpos.getX(),self.mpos.getY())
 		return task.cont
 
-	def mousePickCreateTower(self,status,collisionObj, towerList):
-		if self.pickingEnabled:
-			if status == 'down' and self.mpos != None and self.towerFollowMouse == True:
-				self.towerFollowMouse = False
-				self.picked3DPoint = collisionObj.collision3DPoint
-				towerList[-1].towerModel.color =  [0.77,0,1, 0.5]
-				towerList[-1].moveTower(self.picked3DPoint)
-				towerList[-1].initCollisionNode()
-				towerList[-1].towerInicialized = True
-				print "status down", self.picked3DPoint 
-
-			if status == 'up' and self.mpos != None:
-				self.picked3DPoint = collisionObj.collision3DPoint
-				print "status up", self.picked3DPoint
+	def mouseClicked(self,collisionObj, player):
+		
+		if self.mpos != None and self.towerFollowMouse == True:
+			self.towerFollowMouse = False
+			player.getTower(-1).towerModel.color =  [0.77,0,1, 0.5]
+			player.getTower(-1).moveTower(collisionObj.collision3DPoint)
+			player.getTower(-1).initCollisionNode()
+			player.getTower(-1).towerInicialized = True
+			print "mouseClicked", collisionObj.collision3DPoint
+		elif self.mousePickingOnTower == True:
+			print "mouseClicked on ", self.collindingNode.getParent(0).getChild(0)
+		"""
+		if status == 'up' and self.mpos != None:
+			print "status up", collisionObj.collision3DPoint
+		"""

@@ -31,79 +31,74 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 HUD_models = render.attachNewNode("HUD Models")
 
 class GameHud (DirectObject):
-	def __init__(self):
+	def __init__(self,player, mousePicking):
 		"""
 		self.screenImage = loader.loadModel('../HUD images/gameBackground.egg')
 		self.background = self.screenImage.find('**/gameBackground')
 		#self.background.setScale(3.75,1,2)
 		self.background.reparentTo(aspect2d)
-		"""
 		self.myImage=OnscreenImage(image = '../HUD images/gameBackgroundQuadrada.png', scale = (3.2,1,3.2) )
 		self.myImage.setTransparency(TransparencyAttrib.MAlpha)
 		
 		
 		"""
-		myFrame = DirectFrame(frameColor=(0, 0, 0, 0.5),
-								frameSize=(-2, 2, -1, 1),
-								image = '../HUD images/gameBackground.png')
-		"""
 		
-class gameText(DirectObject):
-	'''This class creates texts that will be part of the HUD of the game
-	'''
-	def __init__(self, name, content, position, scale):
-		#Writing our gameText and giving it a name(to help identifying which text is this)
-		self.name = TextNode('%s'%name)
-		self.name.setText("%s"%content)
-		#now this gameText is child of hudTexts node
-		self.textNodePath = hudTexts.attachNewNode(self.name)
-		#positioning and scaling our gameText
-		self.position = Vec3(*position)
-		self.textNodePath.setX(self.position[0]), self.textNodePath.setZ(self.position[2])
-		self.textNodePath.setScale(scale)
+		self.player = player
+		self.mousePicking = mousePicking
+		self.gameFrame = DirectFrame(	image = '../HUD images/gameBackgroundQuadrada.png',
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								scale = (3.2,1,3.2)
+								)
+		self.gameFrame.setTransparency(TransparencyAttrib.MAlpha)
+		self.addAlphaTowerButton();
+		self.addBetaTowerButton();
+		self.addGamaTowerButton();
+		self.addOmegaTowerButton();
+		self.plusAttribButton();
+		self.minusAttribButton();
+		
+	def addAlphaTowerButton(self):
+		position = [-1.25, 0, -0.74]
+		scale = 0.14
+		texture = loader.loadTexture("../texturas/greenTower_Button.png")
+		button = DirectButton(pos = position, scale = scale, image = texture, command=self.createTower)
+	def addBetaTowerButton(self):
+		position = [-0.9, 0, -0.74]
+		scale = 0.14
+		texture = loader.loadTexture("../texturas/greenTower_Button.png")
+		button = DirectButton(pos = position, scale = scale, image = texture, command=self.createTower)
 
-#---------------------------------- TROOPS HUD ---------------------------------------------------------------		
+	def addGamaTowerButton(self):
+		position = [-0.55, 0, -0.74]
+		scale = 0.14
+		texture = loader.loadTexture("../texturas/greenTower_Button.png")
+		button = DirectButton(pos = position, scale = scale, image = texture, command=self.createTower)
 
-class lifeBar(DirectObject):
-	def __init__(self, position):
-		#self.lifebar contains the model
-		self.lifebar = loader.loadModel("../arquivos de modelo/LifeBar")
-		self.lifebar.reparentTo(HUD_models)
-		#self.position contains the position of the lifebar -> type: Vec3
-		self.position = Vec3(*position)
-		self.lifebar.setPos(self.position)
-		#self.color helps tinting the lifebar model
-		self.color = 0.0
-		#The initial color of the lifebar is green
-		self.lifebar.setColor(self.color,1-self.color, 0, 1.0)
-		#self.size is the size of the lifebar
-		self.size = 1.0
-		self.lifebar.setSx(self.size)
-	
-	def changeColor(self):
-		'''Changes the color of the lifebar from green to red
-		'''
-		if(self.size < 0.3):
-			self.color = 1.0
-			self.lifebar.setColor(self.color,1-self.color, 0, 1.0)
-			#print "Almost dying"
+	def addOmegaTowerButton(self):
+		position = [-0.2, 0, -0.74]
+		scale = 0.14
+		texture = loader.loadTexture("../texturas/greenTower_Button.png")
+		button = DirectButton(pos = position, scale = scale, image = texture, command=self.createTower)
+
+	def createTower(self):
+		self.player.addTower()
+		self.mousePicking.towerFollowMouse = True
+		print "Object Created"		
 		
-	def changeSize(self):
-		'''Change the size of the lifebar to tell the player
-		   when the troop will die
-		'''
-		if(self.size > 0):
-			self.size -= 0.01
-			self.lifebar.setSx(self.size)
-		#Here we kill our troop
-		#else:
-			#print "Died"
+	def plusAttribButton(self):
+		scale = 0.07
+		text = "+"
+		button = DirectButton(text=("%s")%text, pos = [0.55, 0, -0.612], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		button = DirectButton(text=("%s")%text, pos = [0.55, 0, -0.657 ], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
 		
-	def attachPosition(self, targetPosition):
-		'''Puts the lifebar above the troop
-		'''
-		self.position[0], self.position[1], self.position[2] = targetPosition[0], targetPosition[1], targetPosition[2]+2
-		self.lifebar.setPos(self.position)
+	def minusAttribButton(self):
+		scale = 0.07
+		text = "-"
+		button = DirectButton(text=("%s")%text, pos = [0.6, 0, -0.612], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		button = DirectButton(text=("%s")%text, pos = [0.6, 0, -0.657], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		
+		
 		
 
 

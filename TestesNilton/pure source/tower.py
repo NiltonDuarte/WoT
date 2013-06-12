@@ -15,8 +15,7 @@ class TowerModel(DirectObject, PandaNode):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
-	def __init__(self, position, color, towerClass):
-		self.towerClass = towerClass
+	def __init__(self, position, color):
 		#PandaNode.__init__(self, "TowerModel")
 		#Loading the tower model
 		self.tower = loader.loadModel("../arquivos de modelo/Tower")
@@ -40,9 +39,6 @@ class TowerModel(DirectObject, PandaNode):
 		self.sphere.setPos(Vec3(*position))
 		
 	def setCollisionNode (self, collisionNodeName, rangeView):
-		#self.tower.attachNewNode(self)
-		#print "self.tower.getNode(0).getChild(1) = ",self.tower.getNode(0).getChild(1)
-		#print "self = ", self
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(collisionNodeName + '_Rangecnode'))
 		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
@@ -91,7 +87,7 @@ class Tower():
         self.listAttributes = [self.listShootPower, self.listTxShoot, self.listRangeView, self.listTxTroops]
 
         #Number of points that the tower will receive
-        self.initialPoints = 300
+        self.initialPoints = 100
         
         #Position of the tower
         self.position = [0,0,0]
@@ -130,6 +126,11 @@ class Tower():
             
             #Attributing random values
 			startRandomAttributes(self.listAttributes, self.initialPoints)
+			
+			
+			self.initCollisionNode()
+			self.moveTower(self.position)
+			self.towerInicialized = True
 		else:
 			print "Error with the number of initial points of the tower"
 			
@@ -157,7 +158,7 @@ class Tower():
                 
     def initModel(self, position, color):
         self.position = position
-        self.towerModel = TowerModel(position,color,self)
+        self.towerModel = TowerModel(position,color)
         
     def moveTower(self,position):
 		self.position = position

@@ -22,6 +22,7 @@ class CollisionWoT(DirectObject):
 		self.collision3DPoint = [0,0,0]
 		
 		self.addCollider(mousePicking.pickerNP)
+		
 		#############################
 		#** Let's manage now the collision events:
 

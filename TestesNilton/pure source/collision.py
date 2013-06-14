@@ -1,5 +1,6 @@
 from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionTraverser, CollisionRay
 from pandaImports import DirectObject
+from tower import *
 
 class CollisionWoT(DirectObject):
 	'''This class handles all the collision events 
@@ -22,21 +23,25 @@ class CollisionWoT(DirectObject):
 		self.collision3DPoint = [0,0,0]
 		
 		self.addCollider(mousePicking.pickerNP)
-		
-		#############################
-		#** Let's manage now the collision events:
+		self.addCollider(player.getTower(-1).troop.troopModel.troopColliderNP)
 
+		
+		
+		"""def addCollisionEventAgain(self,fromName, intoName, function, extraArgs):
+		#Let's manage now the collision events:
+		self.accept(fromName+"-again-"+intoName, function, extraArgs)
+		"""
 		self.accept('mouseRay_cnode-again-terrain_cnode', self.collideMouseEventAgainTerrain,[mousePicking,player])
-		#DO.accept('mouseRay_cnode-into-ClasseTorre_Rangecnode', collisionObj.collideEventIn)
-		self.accept('mouseRay_cnode-into-ClasseTorre_cnode', self.collideMouseEventInTower,[mousePicking])
-		self.accept('mouseRay_cnode-out-ClasseTorre_cnode', self.collideMouseEventOutTower,[mousePicking])
+		self.accept('mouseRay_cnode-into-TowerClass_cnode', self.collideMouseEventInTower,[mousePicking])
+		self.accept('mouseRay_cnode-out-TowerClass_cnode', self.collideMouseEventOutTower,[mousePicking])
+		self.accept('TroopClass_cnode-again-TowerClass_Rangecnode', self.collideTroopEventAgainTowerRange)
 		
 		#** This is how we interact with mouse clicks
 		self.accept('mouse1', mousePicking.mouseClicked, [self,player])
 		#self.accept('mouse1', self.printmouse2)
 		#DO.accept('mouse1-up', mousePicking.mousePickCreateTower, ['up',collisionObj, towers])
 		#############################
-		
+		#"""
 	def printmouse2(self):
 		print "mouse2"
 		
@@ -65,6 +70,7 @@ class CollisionWoT(DirectObject):
 		self.collision3DPoint = [entry.getSurfacePoint(np_into).getX(), entry.getSurfacePoint(np_into).getY(), entry.getSurfacePoint(np_into).getZ()]
 		mousePicking.mousePickingOnTower = True
 		mousePicking.collindingNode = entry.getIntoNode()
+		print "TowerDict = ", Tower.towerDict[np_into.getTag("TowerID")]
 		print np_from, "started colliding with", np_into, "Ponto = ",self.collision3DPoint
 		
 	
@@ -77,6 +83,7 @@ class CollisionWoT(DirectObject):
 		np_into=entry.getIntoNodePath()
 		mousePicking.mousePickingOnTower = False
 		print np_from, "stopped colliding with", np_into
-
-
-
+		
+	def collideTroopEventAgainTowerRange(self,entry):
+		#print entry.getFromNodePath(), "started colliding with", entry.getIntoNodePath()
+		return

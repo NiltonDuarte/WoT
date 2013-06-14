@@ -1,5 +1,5 @@
 from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionTraverser, CollisionRay
-
+from tower import *
 
 class MousePicking:
 	"""Class to handle mouse picking, receiving a collision object 

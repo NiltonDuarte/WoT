@@ -133,6 +133,7 @@ class sceneButton(gameButton):
 	def changeScene(self, player, physicsObj):
 		for tower in player.getTowerList():
 			tower.shootProjectile(tower.position, [10,0,13],physicsObj)
+			tower.createTroop()
 		print "Scene Changed"
 		
 

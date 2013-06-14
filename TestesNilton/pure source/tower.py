@@ -2,16 +2,16 @@
 
 #importing other modules
 from random import randint
-
+import uuid
 #importing our modules
 from commonFunctions import *
 from projectile import *
-from troops import *
+from troop import *
 from pandaImports import *
 from pandac.PandaModules import CollisionSphere
 from panda3d.core import PandaNode
 
-class TowerModel(DirectObject, PandaNode):
+class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
@@ -44,11 +44,12 @@ class TowerModel(DirectObject, PandaNode):
 		self.sphere.setPos(Vec3(*position))
 		self.canons.setPos(Vec3(*position))
 		
-	def setCollisionNode (self, collisionNodeName, rangeView):
-		self.towerCollider = self.tower.attachNewNode(CollisionNode(collisionNodeName + '_Rangecnode'))
+	def setCollisionNode (self, nodeName, rangeView, ID):
+		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
 		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
-		self.towerCollider = self.tower.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
-		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,5.5),4,4,5.5))
+		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_cnode'))
+		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
+		self.towerCollider.setTag("TowerID", ID)
 	
 	"""	
 	def setCollisionNode (self, collisionNodeName, rangeView):
@@ -62,10 +63,12 @@ class Tower():
 	   of a tower
     """
 
-    
+    towerDict = {}
     def __init__(self, initTowerFunc = False, points=0, listOfParameters=[]):
 		
-        self.name = "ClasseTorre"
+        self.name = "TowerClass"
+        self.ID = str(uuid.uuid4())
+        Tower.towerDict[self.ID] = self
 		#Shooting power of the tower
         self.shootPower = 0 #Nao usar esta variavel. Usar listShootPower[0]
         self.shootPowerMin = 10
@@ -81,7 +84,7 @@ class Tower():
         #Tower range of view
         self.rangeView = 20 #Nao usar esta variavel! Usar listRangeView[0]
         self.rangeViewMin = 10
-        self.rangeViewMax = 40
+        self.rangeViewMax = 30
         self.listRangeView = [self.rangeView, self.rangeViewMax, self.rangeViewMin]
 
         #Speed of troop crafting
@@ -97,16 +100,15 @@ class Tower():
         
         #Position of the tower
         self.position = [0,0,0]
-        
-        self.projectiles = [] #projeteis.append(Projetil())
-        self.tropas = [] #tropas.append(Tropa())
+        self.projectiles = [] #projectiles.append(Projectile())
+        self.troop = Troop()
         #Graphical part------------------
         
         self.towerModel = None
         self.towerInicialized = False
         
         #----------------------------------
-        
+
         if (len(listOfParameters) > 0 and points and initTowerFunc):
             self.initialPoints = points
             self.defineParameters(listOfParameters)
@@ -174,13 +176,17 @@ class Tower():
 		self.name = towerName
 	
     def initCollisionNode(self):
-		self.towerModel.setCollisionNode(self.name, self.listRangeView[0]);
+		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], self.ID);
 		    
     def shootProjectile(self,position, impulseForce, physicsObj):
 		self.projectiles.append(Projectile())
 		self.projectiles[-1].position = position
 		self.projectiles[-1].impulseForce = impulseForce
 		self.projectiles[-1].initProjectile(physicsObj)
+		
+    def createTroop(self):
+		self.troop = Troop()
+		self.troop.initModel([self.position[0]+5, self.position[1],self.position[2]],[0,0,0])
 
 
 

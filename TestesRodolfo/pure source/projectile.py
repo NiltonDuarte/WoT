@@ -12,7 +12,9 @@ class ProjectileModel(DirectObject):
 		self.projectile.reparentTo(render)
 		#Setting the position of the projectile 
 		self.projectile.setPos(Vec3(*position))
-
+		#Setting the color
+		self.projectile.setColor(0.61, 0.59, 0.59)
+		
 
 class Projectile:
 	"""This class defines all attributes and functions

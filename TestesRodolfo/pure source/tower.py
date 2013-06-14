@@ -178,7 +178,7 @@ class Tower():
 		    
     def shootProjectile(self,position, impulseForce, physicsObj):
 		self.projectiles.append(Projectile())
-		self.projectiles[-1].position = position
+		self.projectiles[-1].position = [position[0],position[1],position[2]+10]
 		self.projectiles[-1].impulseForce = impulseForce
 		self.projectiles[-1].initProjectile(physicsObj)
 

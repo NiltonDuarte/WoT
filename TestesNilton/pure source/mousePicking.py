@@ -32,9 +32,10 @@ class MousePicking:
 		if self.mpos != None and self.towerFollowMouse == True:
 			self.towerFollowMouse = False
 			player.getTower(-1).towerModel.color =  [0.77,0,1, 0.5]
-			player.getTower(-1).moveTower(collisionObj.collision3DPoint)
-			player.getTower(-1).initCollisionNode()
-			player.getTower(-1).towerInicialized = True
+			player.getTower(-1).initTower()
+			#player.getTower(-1).moveTower(collisionObj.collision3DPoint)
+			#player.getTower(-1).initCollisionNode()
+			#player.getTower(-1).towerInicialized = True
 			print "mouseClicked", collisionObj.collision3DPoint
 		elif self.mousePickingOnTower == True:
 			print "mouseClicked on ", self.collindingNode.getParent(0).getChild(0)

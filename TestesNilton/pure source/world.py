@@ -14,9 +14,6 @@ wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
 
-
-life = lifeBar([0,10,2])
-
 terr = TerrainModel()
 player = Player()
 
@@ -26,10 +23,10 @@ mousePicking = MousePicking()
 
 collisionObj = CollisionWoT(mousePicking, player)
 
-createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,player, mousePicking)
+#createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,player, mousePicking)
 sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,player,physicsObj)
 
-gameHud = GameHud()
+gameHud = GameHud(player, mousePicking)
 class World(DirectObject):
 	def __init__(self):
 		#Adding the main task of the game (the game loop)

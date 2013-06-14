@@ -18,10 +18,11 @@ class Player:
 		self.health += sumHealth
 		
 	def addTower(self):
-		if self.towerList[-1].towerModel != None:
+		if self.towerList[-1].towerInicialized:
+			print "If towerInicialized = ", self.towerList[-1].towerInicialized
 			self.towerList.append(Tower())
 			self.towerList[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
-		else:
+		elif (self.towerList[-1].towerModel == None):
 			self.towerList[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
 			
 	def getTower(self,index):

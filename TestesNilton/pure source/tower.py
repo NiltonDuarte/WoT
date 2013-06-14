@@ -24,20 +24,26 @@ class TowerModel(DirectObject, PandaNode):
 		#loading the ball that stays above the tower
 		self.sphere = loader.loadModel("../arquivos de modelo/Sphere")
 		self.sphere.reparentTo(render)
+		#loading the canons that stays inside the ball
+		self.canons = loader.loadModel("../arquivos de modelo/Canons")
+		self.canons.reparentTo(render)
 		#self.color is the color of the sphere and tinting the sphere
 		self.color = color
 		self.sphere.setColor(*self.color)
+		self.canons.setColor(0,0,0)
 		#Setting the texture to the tower
 		self.texture = loader.loadTexture("../texturas/tower_Texture.png")
 		self.tower.setTexture(self.texture, 1)
-		#Setting the position of the tower and sphere
+		#Setting the position of the tower, sphere and canons
 		self.tower.setPos(Vec3(*position))
 		self.sphere.setPos(Vec3(*position))
+		self.canons.setPos(Vec3(*position))
 		
 	def moveTowerModel(self,position):
 		self.sphere.setColor(*self.color)
 		self.tower.setPos(Vec3(*position))
 		self.sphere.setPos(Vec3(*position))
+		self.canons.setPos(Vec3(*position))
 		
 	def setCollisionNode (self, collisionNodeName, rangeView):
 		#self.tower.attachNewNode(self)

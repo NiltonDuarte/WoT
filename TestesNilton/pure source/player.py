@@ -4,8 +4,12 @@ from camera import *
 
 class Player:
 	"""Player class that holds his towers, health and camera"""
-	
-	def __init__(self):
+	playerDict = []
+	currPlayer = None
+	def __init__(self, name):
+		Player.playerDict[self.name] = self
+		self.name = name
+		Player.currPlayer = self
 		self.health = 100
 		self.towerList = [Tower()]
 		self.camera = MyCamera()
@@ -36,4 +40,6 @@ class Player:
 
 	def sumToCurrency (self, sumCurrency):
 		self.currency += sumCurrency
-		
+	
+	def setCurrentPlayer(self):
+		Player.currPlayer = self	

@@ -19,11 +19,11 @@ player = Player()
 
 physicsObj = Physics()
 
-mousePicking = MousePicking()
+#mousePicking = MousePicking()
 
-collisionObj = CollisionWoT(mousePicking, player)
+#collisionObj = CollisionWoT(mousePicking, player)
 
-#createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,player, mousePicking)
+
 sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,player,physicsObj)
 
 gameHud = GameHud(player, mousePicking)

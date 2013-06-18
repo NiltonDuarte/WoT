@@ -1,0 +1,20 @@
+Tower
+Dimenções
+	Centro
+	Distancia do centro para as bordas
+
+
+
+------------------------------------
+
+Botão
+Imagem Botão
+	Path
+Localização
+	Posição
+Dimenções
+	Altura
+	Largura
+Tipo de Torre
+	Tower1
+	Tower2

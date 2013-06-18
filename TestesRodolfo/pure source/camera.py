@@ -11,8 +11,43 @@ class MyCamera(DirectObject):
 		self.angle = 45
 		base.camera.setHpr(0.0 , -self.angle, 0.0)
 		#Setting our camera position to be top-down
-		base.camera.setX(1)     
-		base.camera.setY(-240)  #depth
-		base.camera.setZ(250)	#height
+		self.X = 1
+		self.Y = -240
+		self.Z = 250
+		base.camera.setX(self.X)     
+		base.camera.setY(self.Y)  #depth
+		base.camera.setZ(self.Z)	#height
+		#Variables to help moving the camera
+		self.mouseX = 0
+		self.mouseY = 0
 		
-		
+	def moveCameraXY(self):
+		#Getting the position of the mouse
+		if base.mouseWatcherNode.hasMouse():
+			self.mouseX = base.mouseWatcherNode.getMouseX()
+			self.mouseY = base.mouseWatcherNode.getMouseY()
+		#Creating 2 invisible borders on the right and left side (x axis)	
+		if(self.mouseX > 0.9):
+			self.X += 5
+			base.camera.setX(self.X)
+			#print "Moving rightwards"
+		elif(self.mouseX < -0.9):
+			self.X -= 5
+			base.camera.setX(self.X)
+			#print "Moving leftwards"
+		else:
+			print "Not moving in X direction"
+		#Creating 2 invisible borders to the vertical axis (y axis)	
+		if(self.mouseY > 0.9):
+			self.Y += 5
+			base.camera.setY(self.Y)
+			#print "Moving rightwards"
+		elif(self.mouseY < -0.9):
+			self.Y -= 5
+			base.camera.setY(self.Y)
+			#print "Moving leftwards"
+		else:
+			print "Not moving in the Y direction"
+			
+			
+

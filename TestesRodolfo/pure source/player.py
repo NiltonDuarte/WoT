@@ -37,3 +37,5 @@ class Player:
 	def sumToCurrency (self, sumCurrency):
 		self.currency += sumCurrency
 		
+	def moveCamera(self):
+		self.camera.moveCameraXY()

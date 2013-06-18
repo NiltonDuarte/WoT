@@ -52,8 +52,7 @@ class World(DirectObject):
 		deltaTime = task.time - task.last
 		task.last = task.time
 
-		#Interactions between different objects
-
+		player.moveCamera()
         
 		#this function returns Task.cont
 		return Task.cont

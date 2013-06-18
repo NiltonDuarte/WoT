@@ -84,7 +84,7 @@ class GameHud (DirectObject):
 	def createTower(self):
 		self.player.addTower()
 		self.mousePicking.towerFollowMouse = True
-		print "Object Created"		
+		print "Tower Created"		
 		
 	def plusAttribButton(self):
 		scale = 0.07

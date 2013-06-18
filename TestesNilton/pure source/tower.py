@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 from commonFunctions import *
 from projectile import *
 from troop import *
+import collision
 from pandaImports import *
 from pandac.PandaModules import CollisionSphere
 from panda3d.core import PandaNode
@@ -65,6 +66,7 @@ class Tower():
 	"""
 
 	towerDict = {}
+
 	def __init__(self, initTowerFunc = False, points=0, listOfParameters=[], confFile='torre.xml', towerType='Torre Inicial'):
 
 		self.name = "TowerClass"
@@ -92,36 +94,31 @@ class Tower():
 		self.shootPowerTag = self.typ.find('shootPower')
 		self.shootPowerMin = int(self.shootPowerTag.find('Min').text)
 		self.shootPowerMax = int(self.shootPowerTag.find('Max').text)
-		self.listShootPower = [self.shootPower, int(self.shootPowerMax), int(self.shootPowerMin)]
+		self.listShootPower = [self.shootPower, self.shootPowerMax, self.shootPowerMin]
 
-		print self.shootPowerMin, " - ", self.shootPowerMax
 
 		#Frequency of shooting
 		self.txShoot = 0 #Nao usar esta variavel. Usar listTxShoot[0]
 		self.txShootTag = self.typ.find('txShoot')
 		self.txShootMin = int(self.txShootTag.find('Min').text)
 		self.txShootMax = int(self.txShootTag.find('Max').text)
-		self.listTxShoot = [self.txShoot, int(self.txShootMax), int(self.txShootMin)]
+		self.listTxShoot = [self.txShoot, self.txShootMax, self.txShootMin]
 
-		print self.txShootMin, " - ", self.txShootMax
 
 		#Tower range of view
 		self.rangeView = 20 #Nao usar esta variavel! Usar listRangeView[0]
 		self.rangeViewTag = self.typ.find('rangeView')
 		self.rangeViewMin = int(self.rangeViewTag.find('Min').text)
 		self.rangeViewMax = int(self.rangeViewTag.find('Max').text)
-		self.listRangeView = [self.rangeView, int(self.rangeViewMax), int(self.rangeViewMin)]
+		self.listRangeView = [self.rangeView, self.rangeViewMax, self.rangeViewMin]
 
-		print self.rangeViewMin, " - ", self.rangeViewMax
 
 		#Speed of troop crafting
 		self.txTroops = 0 #Nao usar esta variavel! Usar listTxTroops[0]
 		self.txTroopsTag = self.typ.find('txTroops')
 		self.txTroopsMin = int(self.txTroopsTag.find('Min').text)
 		self.txTroopsMax = int(self.txTroopsTag.find('Max').text)
-		self.listTxTroops = [self.txTroops, int(self.txTroopsMax), int(self.txTroopsMin)]
-
-		print self.txTroopsMin, " - ", self.txTroopsMax
+		self.listTxTroops = [self.txTroops, self.txTroopsMax, self.txTroopsMin]
 
 		self.listAttributes = [self.listShootPower, self.listTxShoot, self.listRangeView, self.listTxTroops]
 
@@ -132,7 +129,7 @@ class Tower():
 		#Position of the tower
 		self.position = [0,0,0]
 		self.projectiles = [] #projectiles.append(Projectile())
-		self.troop = Troop()
+		self.troop = None
 		#Graphical part------------------
 
 		self.towerModel = None
@@ -220,5 +217,5 @@ class Tower():
 		self.troop = Troop()
 		self.troop.initModel([self.position[0]+5, self.position[1],self.position[2]],[0,0,0])
 
-
+	
 

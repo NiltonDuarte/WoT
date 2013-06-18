@@ -5,6 +5,8 @@
 #Importing our modules
 from imports import *
 from tower import *
+import mousePicking
+import player
 
 
 #importing panda3D
@@ -31,7 +33,7 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 HUD_models = render.attachNewNode("HUD Models")
 
 class GameHud (DirectObject):
-	def __init__(self,player, mousePicking):
+	def __init__(self):
 		"""
 		self.screenImage = loader.loadModel('../HUD images/gameBackground.egg')
 		self.background = self.screenImage.find('**/gameBackground')
@@ -43,8 +45,6 @@ class GameHud (DirectObject):
 		
 		"""
 		
-		self.player = player
-		self.mousePicking = mousePicking
 		self.gameFrame = DirectFrame(	image = '../HUD images/gameBackgroundQuadrada.png',
 								frameColor=(0,0,0,0.0),
 								frameSize=(-1, 1, -1, 1),
@@ -82,8 +82,8 @@ class GameHud (DirectObject):
 		button = DirectButton(pos = position, scale = scale, image = texture, command=self.createTower)
 
 	def createTower(self):
-		self.player.addTower()
-		self.mousePicking.towerFollowMouse = True
+		player.Player.currPlayer.addTower()
+		mousePicking.towerFollowMouse = True
 		print "Tower Created"		
 		
 	def plusAttribButton(self):
@@ -131,34 +131,11 @@ class sceneButton(gameButton):
 		self.button = DirectButton(text=("%s")%self.text, pos = self.position, scale = self.scale, command=self.changeScene, extraArgs=[player,physicsObj])
 
 	def changeScene(self, player, physicsObj):
-		for tower in player.getTowerList():
-			tower.shootProjectile(tower.position, [10,0,13],physicsObj)
-			tower.createTroop()
+		for tower in player.Player.currPlayer.getTowerList():
+			if tower.towerInicialized:
+				tower.shootProjectile(tower.position, [10,0,13],physicsObj)
+				tower.createTroop()
 		print "Scene Changed"
 		
 
-class createObjectButton(gameButton):
-	'''Creates a button that changes between scenes
-	'''
-
-	def __init__(self, text, position, scale, player, mousePicking): 
-		#Setting the texture to the tower
-		self.texture = loader.loadTexture("../texturas/greenTower_Button.png")
-		#self.text contains the text to be displayed -> type: String
-		self.text = text
-		#self.position contains the position of the button -> type: Point2
-		self.position = Point3(*position)
-		#self.scale contains the size of the button -> type: Float
-		self.scale = scale
-		#self.image contais the image of the object that this button will be able to create
-		#self.image = img
-		#self.button is the button with our own properties above -> type: DirectButton 
-		self.button = DirectButton(pos = position, scale = scale, image = self.texture, command=self.createObject, extraArgs=[mousePicking, player] )
-
-
-        
-	def createObject(self, mousePicking, player):
-		player.addTower()
-		mousePicking.towerFollowMouse = True
-		print "Object Created"
 

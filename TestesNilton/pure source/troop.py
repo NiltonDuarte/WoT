@@ -1,6 +1,7 @@
 """Everything related to Troop is here"""
 from random import randint
-
+import uuid
+import collision
 from pandaImports import *
 
 class TroopModel(DirectObject):
@@ -22,15 +23,16 @@ class TroopModel(DirectObject):
 		self.troop.setPos(Vec3(*position))
 		
 		self.troopColliderNP = None
-		
+
 	def moveTroopModel(self,position):
 		self.troop.setPos(Vec3(*position))
 
 		
-	def setCollisionNode (self, collisionNodeName):
+	def setCollisionNode (self, collisionNodeName, ID):
 		self.troopColliderNP = self.troop.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
 		self.troopColliderNP.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
-	
+		self.troopColliderNP.setTag("TroopID", ID)
+		collision.addCollider(self.troopColliderNP)
 
 class Troop:
 	"""This class defines all attributes and functions
@@ -39,6 +41,8 @@ class Troop:
 	troopDict = {}
 	def __init__(self, position = [0,0,0], initTroopFunc = False, initialPoints=230, listOfParameters=[]):
 		self.name = "TroopClass"
+		self.ID = str(uuid.uuid4())
+		Troop.troopDict[self.ID] = self
 		#Life of a troop
 		self.life = 0
 		self.lifeMin = 100
@@ -69,7 +73,7 @@ class Troop:
 		#Graphical part------------------
 
 		self.troopModel = TroopModel(position,[0,0,0])
-		self.troopModel.setCollisionNode(self.name)
+		self.troopModel.setCollisionNode(self.name, self.ID)
 
 		#----------------------------------
 
@@ -122,7 +126,7 @@ class Troop:
 
 
 	def initCollisionNode(self):
-		self.troopModel.setCollisionNode(self.name);
+		self.troopModel.setCollisionNode(self.name, self.ID);
 
 
 

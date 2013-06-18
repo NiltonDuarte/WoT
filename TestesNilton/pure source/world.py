@@ -15,8 +15,9 @@ base.win.requestProperties(wp)
 
 
 terr = TerrainModel()
-player = Player()
-
+player1 = Player("Lyly")
+player2 = Player("Niltin")
+print "player = ",Player.currPlayer.name
 physicsObj = Physics()
 
 #mousePicking = MousePicking()
@@ -24,9 +25,9 @@ physicsObj = Physics()
 #collisionObj = CollisionWoT(mousePicking, player)
 
 
-sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,player,physicsObj)
+sceneBtn = sceneButton("Teste Game",[-0.5, 0, -0.5],0.12,player,physicsObj)
 
-gameHud = GameHud(player, mousePicking)
+gameHud = GameHud()
 class World(DirectObject):
 	def __init__(self):
 		#Adding the main task of the game (the game loop)

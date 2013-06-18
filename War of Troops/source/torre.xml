@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<data>
+    <torre tipo="Torre Inicial">
+	<model>
+		<base>../arquivos de modelo/Tower.egg</base>
+		<sphere>../arquivos de modelo/Sphere.egg</sphere>
+		<canon>../arquivos de modelo/Canons.egg</canon>
+		<color></color>
+		<texture>../texturas/tower_Texture.png</texture>
+	</model>
+        <shootPower>
+            <Min>10</Min>
+            <Max>40</Max>
+        </shootPower>
+        <txShoot>
+            <Min>10</Min>
+            <Max>40</Max>
+        </txShoot>
+        <rangeView>
+            <Min>10</Min>
+            <Max>30</Max>
+        </rangeView>
+        <txTroops>
+            <Min>10</Min>
+            <Max>30</Max>
+        </txTroops>
+    </torre>
+
+    <torre tipo="Torre Teste">
+	<model>
+		<base>../arquivos de modelo/Tower</base>
+		<sphere>../arquivos de modelo/Sphere</sphere>
+		<canon>../arquivos de modelo/Canons</canon>
+		<color></color>
+		<texture>../texturas/tower_Texture.png</texture>
+	</model>
+        <shootPower>
+            <Min>20</Min>
+            <Max>80</Max>
+        </shootPower>
+        <txShoot>
+            <Min>20</Min>
+            <Max>80</Max>
+        </txShoot>
+        <rangeView>
+            <Min>20</Min>
+            <Max>70</Max>
+        </rangeView>
+        <txTroops>
+            <Min>20</Min>
+            <Max>70</Max>
+        </txTroops>
+    </torre>
+</data>

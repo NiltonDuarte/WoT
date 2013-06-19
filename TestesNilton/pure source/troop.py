@@ -2,6 +2,7 @@
 from random import randint
 import uuid
 import collision
+import physics
 from pandaImports import *
 
 class TroopModel(DirectObject):
@@ -127,6 +128,7 @@ class Troop:
 
 	def initCollisionNode(self):
 		self.troopModel.setCollisionNode(self.name, self.ID);
+		
 
 
 

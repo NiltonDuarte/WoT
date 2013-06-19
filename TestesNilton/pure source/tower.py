@@ -207,15 +207,18 @@ class Tower():
 	def initCollisionNode(self):
 		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], self.ID);
 
-	def shootProjectile(self,position, impulseForce, physicsObj):
+	def shootProjectile(self,position, impulseForce):
 		self.projectiles.append(Projectile())
 		self.projectiles[-1].position = position
 		self.projectiles[-1].impulseForce = impulseForce
-		self.projectiles[-1].initProjectile(physicsObj)
-
+		self.projectiles[-1].initProjectile()
+		
 	def createTroop(self):
 		self.troop = Troop()
-		self.troop.initModel([self.position[0]+5, self.position[1],self.position[2]],[0,0,0])
+		self.troop.initModel([self.position[0]+randint(-15,15), self.position[1]+randint(-15,15),self.position[2]],[0,0,0])
 
-	
+	def aimShoot(self, targetPosition):
+		directionVector = vector3Sub(targetPosition, self.position)
+		#aimImpulseForce 
+
 

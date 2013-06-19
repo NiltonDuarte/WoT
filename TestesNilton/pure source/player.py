@@ -57,4 +57,4 @@ class Player:
 	#DO.accept('TroopClass_cnode-again-TowerClass_Rangecnode', collideTroopEventAgainTowerRange)
 	collision.addCollisionEventAgain("TroopClass_cnode","TowerClass_Rangecnode",collideTroopEventAgainTowerRange)
 	collision.addCollisionEventAgain("TroopClass_cnode","ProjectileClass_cnode",collideTroopEventAgainProjectile)
-	print "collisionTroop-Tower added"
+

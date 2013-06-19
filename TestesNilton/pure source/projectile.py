@@ -3,6 +3,7 @@ import uuid
 from pandaImports import *
 from pandac.PandaModules import CollisionSphere
 import collision
+import physics
 
 class ProjectileModel(DirectObject):
 	'''This class imports the projectile model
@@ -77,11 +78,9 @@ class Projectile:
 		
 		#----------------------------------
                
-	def initProjectile(self,physicsObj):
+	def initProjectile(self):
 		self.initModel(self.position)
-		self.actorNode, self.actorNodePath = physicsObj.setPhysicNodes("Projectile_FromTower", self.projectileModel.projectile)
-		physicsObj.setImpulseForce(self.actorNode,self.impulseForce)
-		physicsObj.setMass(self.actorNode,self.mass)
+		self.initPhysics()
 		self.initCollisionNode()
 	
 	def defineParameters(self,listParam):
@@ -108,6 +107,11 @@ class Projectile:
         
 	def initCollisionNode(self):
 		self.projectileModel.setCollisionNode(self.name, self.ID);
+	
+	def initPhysics(self):
+		self.actorNode, self.actorNodePath = physics.setPhysicNodes("Projectile_pnode", self.projectileModel.projectile)
+		physics.setImpulseForce(self.actorNode,self.impulseForce)
+		physics.setMass(self.actorNode,self.mass)
 
 
 

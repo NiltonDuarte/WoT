@@ -1,6 +1,9 @@
 """Everything related to Projectile is here"""
-
+import uuid
 from pandaImports import *
+from pandac.PandaModules import CollisionSphere
+import collision
+import physics
 
 class ProjectileModel(DirectObject):
 	'''This class imports the projectile model
@@ -12,14 +15,22 @@ class ProjectileModel(DirectObject):
 		self.projectile.reparentTo(render)
 		#Setting the position of the projectile 
 		self.projectile.setPos(Vec3(*position))
-
+		self.projectileNP = None
+	def setCollisionNode (self, collisionNodeName, ID):
+		self.projectileNP = self.projectile.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
+		self.projectileNP.node().addSolid(CollisionSphere(Point3(0,0,0),2))
+		self.projectileNP.setTag("ProjectileID", ID)
+		#collision.addCollider(self.projectileNP)
 
 class Projectile:
 	"""This class defines all attributes and functions
 	   of a projectile
     """
-
+	projectileDict = {}
 	def __init__(self):
+		self.name = "ProjectileClass"
+		self.ID = str(uuid.uuid4())
+		Projectile.projectileDict[self.ID] = self
 		#Mass of projectile
 		self.mass = 100
 		#self.massMin = 5
@@ -65,14 +76,12 @@ class Projectile:
  		#self.actorNodePath will be attached to the physicsNode
 		self.actorNodePath = None 
 		
-
 		#----------------------------------
                
-	def initProjectile(self,physicsObj):
+	def initProjectile(self):
 		self.initModel(self.position)
-		self.actorNode, self.actorNodePath = physicsObj.setPhysicNodes("Projectile_FromTower", self.projectileModel.projectile)
-		physicsObj.setImpulseForce(self.actorNode,self.impulseForce)
-		physicsObj.setMass(self.actorNode,self.mass)
+		self.initPhysics()
+		self.initCollisionNode()
 	
 	def defineParameters(self,listParam):
 		"""Gets the values of listParam and puts them in this order
@@ -96,7 +105,13 @@ class Projectile:
 		self.position = position
 		self.projectileModel = ProjectileModel(self.position)
         
-
+	def initCollisionNode(self):
+		self.projectileModel.setCollisionNode(self.name, self.ID);
+	
+	def initPhysics(self):
+		self.actorNode, self.actorNodePath = physics.setPhysicNodes("Projectile_pnode", self.projectileModel.projectile)
+		physics.setImpulseForce(self.actorNode,self.impulseForce)
+		physics.setMass(self.actorNode,self.mass)
 
 
 

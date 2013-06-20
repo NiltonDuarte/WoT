@@ -15,18 +15,18 @@ base.win.requestProperties(wp)
 
 
 terr = TerrainModel()
-player = Player()
+player1 = Player("Lyly")
+player2 = Player("Niltin")
+print "player = ",Player.currPlayer.name
 
-physicsObj = Physics()
 
-mousePicking = MousePicking()
+sceneBtn = sceneButton("Teste Game",[-0.5, 0, -0.5],0.12)
 
-collisionObj = CollisionWoT(mousePicking, player)
+gameFSM = gameFSM()
+gameFSM.request("InitScreen")
+gameFSM.request("PlayScreen")
 
-#createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,player, mousePicking)
-sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,player,physicsObj)
 
-gameHud = GameHud(player, mousePicking)
 class World(DirectObject):
 	def __init__(self):
 		#Adding the main task of the game (the game loop)
@@ -35,6 +35,7 @@ class World(DirectObject):
 		self.gameTask.last = 0
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
+		base.enableParticles()
 		base.cTrav.showCollisions(render)
 		
 		self.accept('escape', sys.exit ) # exit on esc
@@ -51,8 +52,6 @@ class World(DirectObject):
 		#Frame duration
 		deltaTime = task.time - task.last
 		task.last = task.time
-
-		#Interactions between different objects
 
         
 		#this function returns Task.cont

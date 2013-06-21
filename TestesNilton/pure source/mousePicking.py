@@ -96,9 +96,12 @@ def mouseClicked():
 	#picking troop	
 	elif MousePicking.mousePickingOnTroop and MousePicking.gameHUD != None:
 		if MousePicking.lastClickedTower != None:
-			MousePicking.lastClickedTower.towerModel.resetColor()		
-		MousePicking.gameHUD.updateArtImage(troop.Troop.troopDict[MousePicking.collindingNode.getTag("TroopID")].artPath)
-		MousePicking.gameHUD.updateTroopAttributeTexts(troop.Troop.troopDict[MousePicking.collindingNode.getTag("TroopID")])
+			MousePicking.lastClickedTower.towerModel.resetColor()
+		troopObj = troop.Troop.troopDict[MousePicking.collindingNode.getTag("TroopID")]
+		MousePicking.lastClickedTower = troopObj.sourceTower
+		troopObj.sourceTower.towerModel.changeColor([0,0,1])
+		MousePicking.gameHUD.updateArtImage(troopObj.artPath)
+		MousePicking.gameHUD.updateTroopAttributeTexts(troopObj)
 		#print "TroopTag = ",MousePicking.collindingNode.getTag("TroopID")		
 		
 	elif MousePicking.gameHUD != None:

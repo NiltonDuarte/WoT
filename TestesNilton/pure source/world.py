@@ -24,7 +24,7 @@ sceneBtn = sceneButton("Teste Game",[-0.5, 0, -0.5],0.12)
 
 gameFSM = gameFSM()
 gameFSM.request("InitScreen")
-gameFSM.request("PlayScreen")
+#gameFSM.request("PlayScreen")
 
 
 class World(DirectObject):

@@ -33,7 +33,7 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 HUD_models = render.attachNewNode("HUD Models")
 
 class PlayScreenHUD (DirectObject):
-	def __init__(self):
+	def __init__(self, gameFSM):
 		self.playScreenFrame=None
 		self.isoScale = 3.2
 		self.scale = (self.isoScale,1,self.isoScale)
@@ -100,7 +100,8 @@ class PlayScreenHUD (DirectObject):
 
 		
 class InitialScreenHUD(DirectObject):
-	def __init__(self):
+	def __init__(self, gameFSM):
+		self.gameFSM = gameFSM
 		self.initialScreenFrame = None
 		self.isoScale = 1
 		self.scale = (self.isoScale,1,self.isoScale)
@@ -115,9 +116,10 @@ class InitialScreenHUD(DirectObject):
 								frameSize=(-1, 1, -1, 1),
 								scale = (1.9,1,1.2)
 								)		
-		button = DirectButton(text=("PLAY GAME"), pos = [0/self.isoScale,0,-0.25/self.isoScale], scale = 0.12/self.isoScale, command= self.changeScene)
+		button = DirectButton(self.initialScreenFrame, text=("PLAY GAME"), pos = [0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
 
-	def changeScene(self):	
+	def changeScene(self):
+		self.gameFSM.request("PlayScreen")
 		print "Scene Changed"
 		
 #---------------------------------- BUTTONS ------------------------------------------------------------------

@@ -10,14 +10,14 @@ class gameFSM(FSM):
 		self.currHUD = None
 
 	def enterInitScreen(self):
-		self.currHUD = InitialScreenHUD()
+		self.currHUD = InitialScreenHUD(self)
 		self.currHUD.initHUD()
 		
 	def exitInitScreen(self):
 		self.currHUD.__del__()
 		
 	def enterPlayScreen(self):
-		self.currHUD = PlayScreenHUD()
+		self.currHUD = PlayScreenHUD(self)
 		self.currHUD.initHUD()
 		
 	def exitPlayScreen(self):

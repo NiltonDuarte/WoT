@@ -25,6 +25,7 @@ class MousePicking:
 	mousePickingOnTroop = False
 	collindingNode = None
 	gameHUD = None
+	lastClickedTower = None
 	
 
         
@@ -38,7 +39,7 @@ def collideMouseEventAgainTerrain(entry):
 	if MousePicking.towerFollowMouse:
 		player.Player.currPlayer.getTower(-1).moveTower(collision.collision3DPoint)
 
-def collideMouseEventInTower(entry):
+def collideMouseEventAgainTower(entry):
 	'''This function will be called by the CollisionHandlerEvent object as soon as the object (nodePath) collides with another object
 	'''
 	MousePicking.mousePickingOnTroop = False
@@ -54,7 +55,7 @@ def collideMouseEventOutTower(entry):
 	MousePicking.mousePickingOnTower = False
 
 
-def collideMouseEventInTroop(entry):
+def collideMouseEventAgainTroop(entry):
 	MousePicking.mousePickingOnTower = False
 	MousePicking.mousePickingOnTroop = True
 	MousePicking.collindingNode = entry.getIntoNode()
@@ -71,25 +72,44 @@ def mouseRayUpdate(task):
 	return task.cont
 
 def mouseClicked():
+	
+	#posicioning tower
 	if MousePicking.mpos != None and MousePicking.towerFollowMouse == True:
 		MousePicking.towerFollowMouse = False
 		player.Player.currPlayer.getTower(-1).towerModel.color =  [0.77,0,1, 0.5]
 		player.Player.currPlayer.getTower(-1).initTower()
-
-		print "mouseClicked - tower inicialized in ", collision.collision3DPoint
+		#print "mouseClicked - tower inicialized in ", collision.collision3DPoint
+	
+	#picking tower	
 	elif MousePicking.mousePickingOnTower and MousePicking.gameHUD != None:
-		print "TowerTag = ",MousePicking.collindingNode.getTag("TowerID")
-		MousePicking.gameHUD.updateArtImage(tower.Tower.towerDict[MousePicking.collindingNode.getTag("TowerID")].artPath)
-		print "mouseClicked on tower ", MousePicking.collindingNode.getTag("TowerID")
+		#print "TowerTag = ",MousePicking.collindingNode.getTag("TowerID")
+		if MousePicking.lastClickedTower != None:
+			MousePicking.lastClickedTower.towerModel.resetColor()
+		towerObj = tower.Tower.towerDict[MousePicking.collindingNode.getTag("TowerID")]
+		MousePicking.lastClickedTower = towerObj
+		MousePicking.gameHUD.updateArtImage(towerObj.artPath)
+		MousePicking.gameHUD.updateTowerAttributeTexts(towerObj)
+		towerObj.towerModel.changeColor([0,0,1])
+		
+		#print "mouseClicked on tower ", MousePicking.collindingNode.getTag("TowerID")
+	
+	#picking troop	
 	elif MousePicking.mousePickingOnTroop and MousePicking.gameHUD != None:
-		print "TroopTag = ",MousePicking.collindingNode.getTag("TroopID")
+		if MousePicking.lastClickedTower != None:
+			MousePicking.lastClickedTower.towerModel.resetColor()		
 		MousePicking.gameHUD.updateArtImage(troop.Troop.troopDict[MousePicking.collindingNode.getTag("TroopID")].artPath)
+		MousePicking.gameHUD.updateTroopAttributeTexts(troop.Troop.troopDict[MousePicking.collindingNode.getTag("TroopID")])
+		#print "TroopTag = ",MousePicking.collindingNode.getTag("TroopID")		
+		
 	elif MousePicking.gameHUD != None:
+		if MousePicking.lastClickedTower != None:
+			MousePicking.lastClickedTower.towerModel.resetColor()		
 		MousePicking.gameHUD.updateArtImage()
+		MousePicking.gameHUD.resetAttributeTexts()
 	
 collision.addMouseClickEvent(mouseClicked)
 collision.addCollisionEventAgain("mouseRay_cnode","terrain_cnode", collideMouseEventAgainTerrain)
-collision.addCollisionEventInto("mouseRay_cnode","TowerClass_cnode",collideMouseEventInTower)
+collision.addCollisionEventAgain("mouseRay_cnode","TowerClass_cnode",collideMouseEventAgainTower)
 collision.addCollisionEventOut("mouseRay_cnode","TowerClass_cnode",collideMouseEventOutTower)
-collision.addCollisionEventInto("mouseRay_cnode","TroopClass_cnode",collideMouseEventInTroop)
+collision.addCollisionEventAgain("mouseRay_cnode","TroopClass_cnode",collideMouseEventAgainTroop)
 collision.addCollisionEventOut("mouseRay_cnode","TroopClass_cnode",collideMouseEventOutTroop)

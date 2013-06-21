@@ -6,6 +6,7 @@
 from imports import *
 from tower import *
 import player
+from commonFunctions import *
 
 
 #importing panda3D
@@ -38,7 +39,11 @@ class PlayScreenHUD (DirectObject):
 		self.isoScale = 3.2
 		self.scale = (self.isoScale,1,self.isoScale)
 		self.artImage = None
-		return
+		self.labelShootPower = self.labelTxShoot = self.labelRangeView = self.labelTxTroops = None
+		self.labelMass = self.labelSpreadRay = self.labelSpreadPercentage = self.labelDot = self.labelDamageDuration = self.labelSlow = self.labelSlowDuration = self.labelChanceCritical = None
+		self.labelLifeParam = self.labelSpeedParam = self.labelResistenceParam = None
+		self.labelLife = self.labelSpeed = self.labelResistence = None
+		
 	def __del__(self):
 		if (self.playScreenFrame != None):
 			self.playScreenFrame.destroy()	
@@ -59,6 +64,7 @@ class PlayScreenHUD (DirectObject):
 		self.plusAttribButton();
 		self.minusAttribButton();
 		self.addArtImage();
+		self.addAttributeTexts();
 			
 	def addAlphaTowerButton(self):
 		position = [-1.25/self.isoScale, 0, -0.74/self.isoScale]
@@ -90,14 +96,14 @@ class PlayScreenHUD (DirectObject):
 	def plusAttribButton(self):
 		scale = 0.07/self.isoScale
 		text = "+"
-		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.55/self.isoScale, 0, -0.612/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
-		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.55/self.isoScale, 0, -0.657/self.isoScale ], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.55/self.isoScale, 0, -0.615/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.55/self.isoScale, 0, -0.660/self.isoScale ], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
 		
 	def minusAttribButton(self):
 		scale = 0.07/self.isoScale
 		text = "-"
-		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.612/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
-		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.657/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.615/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.660/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
 	
 	def addArtImage(self):
 		self.artImage = DirectFrame(self.playScreenFrame, 
@@ -116,7 +122,80 @@ class PlayScreenHUD (DirectObject):
 								pos = [-1.675/self.isoScale, 0, -0.74/self.isoScale],
 								scale = 0.16/self.isoScale
 								)
-
+	def addAttributeTexts(self):
+		#Tower
+		self.labelShootPower = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.35/self.isoScale, 0, -0.615/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelTxShoot = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.35/self.isoScale, 0, -0.660/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelRangeView = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.35/self.isoScale, 0, -0.705/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelTxTroops = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.5/self.isoScale, 0, -0.750/self.isoScale], scale = 0.05/self.isoScale)
+		#Projectile
+		self.labelMass = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1/self.isoScale, 0, -0.615/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelSpreadRay = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1/self.isoScale, 0, -0.660/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelSpreadPercentage = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.25/self.isoScale, 0, -0.660/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelDot = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1/self.isoScale, 0, -0.705/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelDamageDuration = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.25/self.isoScale, 0, -0.705/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelSlow = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1/self.isoScale, 0, -0.750/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelSlowDuration = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.25/self.isoScale, 0, -0.750/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelChanceCritical = DirectLabel(self.playScreenFrame, text="=-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1/self.isoScale, 0, -0.795/self.isoScale], scale = 0.05/self.isoScale)
+		#Troop
+		self.labelLifeParam = DirectLabel(self.playScreenFrame, text="---", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.6/self.isoScale, 0, -0.615/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelSpeedParam = DirectLabel(self.playScreenFrame, text="---", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.6/self.isoScale, 0, -0.660/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelResistenceParam = DirectLabel(self.playScreenFrame, text="---", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.6/self.isoScale, 0, -0.705/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelLife = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.8/self.isoScale, 0, -0.615/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelSpeed = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.8/self.isoScale, 0, -0.660/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelResistence = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.8/self.isoScale, 0, -0.705/self.isoScale], scale = 0.05/self.isoScale)
+		
+	def updateTowerAttributeTexts(self, towerObj):
+		#Tower
+		self.labelShootPower["text"] = str(towerObj.listShootPower[VALUE])
+		self.labelTxShoot["text"] = str(towerObj.listTxShoot[VALUE])
+		self.labelRangeView["text"] = str(towerObj.listRangeView[VALUE])
+		self.labelTxTroops["text"] = str(towerObj.listTxTroops[VALUE])
+		#Projectile
+		self.labelMass["text"] = str(towerObj.projectileParameters[0])
+		self.labelSpreadRay["text"] = str(towerObj.projectileParameters[1])
+		self.labelSpreadPercentage["text"] = str(towerObj.projectileParameters[2])
+		self.labelDot["text"] = str(towerObj.projectileParameters[3])
+		self.labelDamageDuration["text"] = str(towerObj.projectileParameters[4])
+		self.labelSlow["text"] = str(towerObj.projectileParameters[5])
+		self.labelSlowDuration["text"] = str(towerObj.projectileParameters[6])
+		self.labelChanceCritical["text"] = str(towerObj.projectileParameters[7])
+		#Troop
+		self.labelLifeParam["text"] = str(towerObj.troopParameters[0]) + "-" + str(towerObj.troopParameters[1])
+		self.labelSpeedParam["text"] = str(towerObj.troopParameters[2]) + "-" + str(towerObj.troopParameters[3])
+		self.labelResistenceParam["text"] = str(towerObj.troopParameters[4]) + "-" + str(towerObj.troopParameters[5])
+		self.labelLife["text"] = "-"
+		self.labelSpeed["text"] = "-"
+		self.labelResistence["text"] = "-"				
+		
+	def updateTroopAttributeTexts(self,troopObj):
+		self.updateTowerAttributeTexts(troopObj.sourceTower)
+		self.labelLife["text"] = str(troopObj.listLife[VALUE])
+		self.labelSpeed["text"] = str(troopObj.listSpeed[VALUE])
+		self.labelResistence["text"] = str(troopObj.listResistence[VALUE])
+		
+	def resetAttributeTexts(self):
+		#Tower
+		self.labelShootPower["text"] = "-"
+		self.labelTxShoot["text"] = "-"
+		self.labelRangeView["text"] = "-"
+		self.labelTxTroops["text"] = "-"
+		#Projectile
+		self.labelMass["text"] = "-"
+		self.labelSpreadRay["text"] = "-"
+		self.labelSpreadPercentage["text"] = "-"
+		self.labelDot["text"] = "-"
+		self.labelDamageDuration["text"] = "-"
+		self.labelSlow["text"] = "-"
+		self.labelSlowDuration["text"] = "-"
+		self.labelChanceCritical["text"] = "-"	
+		#Troop
+		self.labelLifeParam["text"] = "---"
+		self.labelSpeedParam["text"] = "---"
+		self.labelResistenceParam["text"] = "---"	
+		self.labelLife["text"] = "-"
+		self.labelSpeed["text"] = "-"
+		self.labelResistence["text"] = "-"		
 		
 class InitialScreenHUD(DirectObject):
 	def __init__(self, gameFSM):

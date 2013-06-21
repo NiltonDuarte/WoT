@@ -1,11 +1,18 @@
 """File that holds the player class"""
 from tower import *
 from camera import *
+import collision
 
 class Player:
 	"""Player class that holds his towers, health and camera"""
 	
-	def __init__(self):
+	playerDict = {}
+	currPlayer = None
+
+	def __init__(self, name):
+		Player.playerDict[name] = self
+		self.name = name
+		Player.currPlayer = self
 		self.health = 100
 		self.towerList = [Tower()]
 		self.camera = MyCamera()
@@ -36,6 +43,18 @@ class Player:
 
 	def sumToCurrency (self, sumCurrency):
 		self.currency += sumCurrency
+	
+	def setCurrentPlayer(self):
+		Player.currPlayer = self	
+	
+	def collideTroopEventAgainTowerRange(entry):
+		#print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
+		return
 		
-	def moveCamera(self):
-		self.camera.moveCameraXY()
+	def collideTroopEventAgainProjectile(entry):
+		print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
+
+	#DO.accept('TroopClass_cnode-again-TowerClass_Rangecnode', collideTroopEventAgainTowerRange)
+	collision.addCollisionEventAgain("TroopClass_cnode","TowerClass_Rangecnode",collideTroopEventAgainTowerRange)
+	collision.addCollisionEventAgain("TroopClass_cnode","ProjectileClass_cnode",collideTroopEventAgainProjectile)
+

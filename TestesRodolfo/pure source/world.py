@@ -27,6 +27,7 @@ collisionObj = CollisionWoT(mousePicking, player)
 sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,player,physicsObj)
 
 gameHud = GameHud(player, mousePicking)
+
 class World(DirectObject):
 	def __init__(self):
 		#Adding the main task of the game (the game loop)

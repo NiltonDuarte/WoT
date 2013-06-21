@@ -14,6 +14,7 @@ from panda3d.core import TextNode, TransparencyAttrib
 
 #importing onscreenImage
 from direct.gui.OnscreenImage import OnscreenImage
+from direct.gui.DirectGui import DirectFrame
 
 
 #Vec2 and Vec3 will help positioning the objects
@@ -29,6 +30,7 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 
 #HUD_models holds all the models that HUD will use
 HUD_models = render.attachNewNode("HUD Models")
+
 
 class GameHud (DirectObject):
 	def __init__(self,player, mousePicking):

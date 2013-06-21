@@ -5,7 +5,6 @@
 #Importing our modules
 from imports import *
 from tower import *
-import mousePicking
 import player
 
 
@@ -30,13 +29,15 @@ from panda3d.core import ColorAttrib
 hudTexts = render2d.attachNewNode("HUD Texts")
 
 #HUD_models holds all the models that HUD will use
-HUD_models = render.attachNewNode("HUD Models")
+HUD_models = aspect2d.attachNewNode("HUD Models")
 
 class PlayScreenHUD (DirectObject):
-	def __init__(self, gameFSM):
+	def __init__(self, gameFSM, mousePicking):
+		self.mousePicking = mousePicking
 		self.playScreenFrame=None
 		self.isoScale = 3.2
 		self.scale = (self.isoScale,1,self.isoScale)
+		self.artImage = None
 		return
 	def __del__(self):
 		if (self.playScreenFrame != None):
@@ -44,7 +45,8 @@ class PlayScreenHUD (DirectObject):
 		return
 		
 	def initHUD(self):
-		self.playScreenFrame = DirectFrame(	image = '../HUD images/gameBackgroundQuadrada.png',
+		self.playScreenFrame = DirectFrame(HUD_models,
+								image = '../HUD images/gameBackgroundQuadrada.png',
 								frameColor=(0,0,0,0.0),
 								frameSize=(-1, 1, -1, 1),
 								scale = self.scale
@@ -56,6 +58,7 @@ class PlayScreenHUD (DirectObject):
 		self.addOmegaTowerButton();
 		self.plusAttribButton();
 		self.minusAttribButton();
+		self.addArtImage();
 			
 	def addAlphaTowerButton(self):
 		position = [-1.25/self.isoScale, 0, -0.74/self.isoScale]
@@ -67,7 +70,6 @@ class PlayScreenHUD (DirectObject):
 		scale = 0.14/self.isoScale
 		texture = loader.loadTexture("../HUD images/ultimatePurpleTower_Button.png")
 		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
-
 	def addGamaTowerButton(self):
 		position = [-0.55/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
@@ -82,7 +84,7 @@ class PlayScreenHUD (DirectObject):
 
 	def createTower(self):
 		player.Player.currPlayer.addTower()
-		mousePicking.towerFollowMouse = True
+		self.mousePicking.towerFollowMouse = True
 		print "Tower Created"		
 		
 	def plusAttribButton(self):
@@ -96,7 +98,24 @@ class PlayScreenHUD (DirectObject):
 		text = "-"
 		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.612/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
 		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.657/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
-		
+	
+	def addArtImage(self):
+		self.artImage = DirectFrame(self.playScreenFrame, 
+								image = '../HUD images/defaultArt.png',
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								pos = [-1.675/self.isoScale, 0, -0.74/self.isoScale],
+								scale = 0.16/self.isoScale
+								)
+	def updateArtImage(self, artPath = "../HUD images/defaultArt.png"):
+		self.artImage.destroy()
+		self.artImage = DirectFrame(self.playScreenFrame, 
+								image = artPath,
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								pos = [-1.675/self.isoScale, 0, -0.74/self.isoScale],
+								scale = 0.16/self.isoScale
+								)
 
 		
 class InitialScreenHUD(DirectObject):
@@ -111,7 +130,8 @@ class InitialScreenHUD(DirectObject):
 			self.initialScreenFrame.destroy()
 		
 	def initHUD(self):
-		self.initialScreenFrame = DirectFrame(	image = '../HUD images/initialScreen.png',
+		self.initialScreenFrame = DirectFrame(HUD_models,
+								image = '../HUD images/initialScreen.png',
 								frameColor=(0,0,0,0.0),
 								frameSize=(-1, 1, -1, 1),
 								scale = (1.9,1,1.2)

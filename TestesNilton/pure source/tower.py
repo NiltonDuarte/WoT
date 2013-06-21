@@ -52,6 +52,7 @@ class TowerModel(DirectObject):
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
 		self.towerCollider.setTag("TowerID", ID)
+		print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
 	
 	"""	
 	def setCollisionNode (self, collisionNodeName, rangeView):
@@ -134,6 +135,7 @@ class Tower():
 
 		self.towerModel = None
 		self.towerInicialized = False
+		self.artPath = "../HUD images/purpleTowerArt.png"
 
 		#----------------------------------
 

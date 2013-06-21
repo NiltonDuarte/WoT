@@ -75,6 +75,7 @@ class Troop:
 
 		self.troopModel = TroopModel(position,[0,0,0])
 		self.troopModel.setCollisionNode(self.name, self.ID)
+		self.artPath = "../HUD images/troopArt.png"
 
 		#----------------------------------
 

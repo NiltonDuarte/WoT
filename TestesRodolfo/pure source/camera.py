@@ -34,23 +34,23 @@ class MyCamera(DirectObject):
 		#The camera only moves when the mouse is on the screen
 		if(self.mouseOnScreen):
 			#Creating 2 invisible borders on the right and left side (x axis)	
-			if(self.mouseX > 0.97):
-				self.X += 5
+			if(self.mouseX > 0.90):
+				self.X += 4
 				base.camera.setX(self.X)
 				#print "Moving rightwards"
-			elif(self.mouseX < -0.97):
-				self.X -= 5
+			elif(self.mouseX < -0.90):
+				self.X -= 4
 				base.camera.setX(self.X)
 				#print "Moving leftwards"
 			else:
 				print "Not moving in X direction"
 			#Creating 2 invisible borders to the vertical axis (y axis)	
-			if(self.mouseY > 0.97):
-				self.Y += 5
+			if(self.mouseY > 0.90):
+				self.Y += 4
 				base.camera.setY(self.Y)
 				#print "Moving rightwards"
-			elif(self.mouseY < -0.97):
-				self.Y -= 5
+			elif(self.mouseY < -0.90):
+				self.Y -= 4
 				base.camera.setY(self.Y)
 				#print "Moving leftwards"
 			else:

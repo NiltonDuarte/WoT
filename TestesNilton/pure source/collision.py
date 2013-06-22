@@ -2,9 +2,7 @@ from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionT
 from pandaImports import DirectObject
 from tower import *
 
-from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionTraverser, CollisionRay
-from pandaImports import DirectObject
-from tower import *
+
 
 '''This file handles all the collision events 
    of our game

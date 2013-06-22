@@ -3,6 +3,7 @@ from random import randint
 import uuid
 import collision
 import physics
+from commonFunctions import *
 from pandaImports import *
 
 class TroopModel(DirectObject):
@@ -21,6 +22,7 @@ class TroopModel(DirectObject):
 		#self.texture = loader.loadTexture("../texturas/tower_Texture.png")
 		#self.troop.setTexture(self.texture, 1)
 		#Setting the position of the tower, sphere and canons
+		print "position = ", position
 		self.troop.setPos(Vec3(*position))
 		
 		self.troopColliderNP = None
@@ -31,7 +33,7 @@ class TroopModel(DirectObject):
 		
 	def setCollisionNode (self, collisionNodeName, ID):
 		self.troopColliderNP = self.troop.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
-		self.troopColliderNP.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
+		self.troopColliderNP.node().addSolid(CollisionBox(Point3(0,0,3.5),2,2,3.5))
 		self.troopColliderNP.setTag("TroopID", ID)
 		collision.addCollider(self.troopColliderNP)
 
@@ -40,10 +42,11 @@ class Troop:
 	of a troop
 	"""
 	troopDict = {}
-	def __init__(self, position = [0,0,0], initTroopFunc = False, initialPoints=230, listOfParameters=[]):
+	def __init__(self, sourceTower, position = [0,0,0], initTroopFunc = False, initialPoints=230, listOfParameters=[]):
 		self.name = "TroopClass"
 		self.ID = str(uuid.uuid4())
 		Troop.troopDict[self.ID] = self
+		self.sourceTower = sourceTower
 		#Life of a troop
 		self.life = 0
 		self.lifeMin = 100
@@ -72,9 +75,10 @@ class Troop:
 		self.initialPoints = initialPoints
 
 		#Graphical part------------------
-
-		self.troopModel = TroopModel(position,[0,0,0])
-		self.troopModel.setCollisionNode(self.name, self.ID)
+		self.color = [0,0,0]
+		self.troopModel = None #TroopModel(position,[0,0,0])
+		#self.troopModel.setCollisionNode(self.name, self.ID)
+		self.artPath = "../HUD images/troopArt.png"
 
 		#----------------------------------
 
@@ -112,6 +116,9 @@ class Troop:
 
 			#Attributing random values
 			startRandomAttributes(self.listAttributes, self.initialPoints)
+			
+			self.initModel(self.position,self.color)
+			self.initCollisionNode()
 		else:
 			print "Error with the number of initial points of the tower" 
 
@@ -119,7 +126,7 @@ class Troop:
 		self.initialPoints = points
 
 	def initModel(self, position, color):
-		self.moveTroop(position)
+		self.troopModel = TroopModel(position,color)
 
 	def moveTroop(self,position):
 		self.position = position

@@ -46,12 +46,19 @@ class TowerModel(DirectObject):
 		self.sphere.setPos(Vec3(*position))
 		self.canons.setPos(Vec3(*position))
 		
+	def changeColor(self,color):
+		self.sphere.setColor(*color)
+
+	def resetColor(self):
+		self.sphere.setColor(*self.color)
+		
 	def setCollisionNode (self, nodeName, rangeView, ID):
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
-		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
+		#self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
 		self.towerCollider.setTag("TowerID", ID)
+		print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
 	
 	"""	
 	def setCollisionNode (self, collisionNodeName, rangeView):
@@ -128,12 +135,27 @@ class Tower():
 
 		#Position of the tower
 		self.position = [0,0,0]
+		
+		self.projectileParameters = [100, #@mass
+									5, #@spreadRay
+									0, #@spreadPercentage
+									0, #@dot
+									50, #@damageDuration
+									0, #@slow
+									30, #@slowDuration
+									0, #@chanceCritical
+									]
 		self.projectiles = [] #projectiles.append(Projectile())
+		
+		#[@lifeMin, @lifeMax, @speedMin, @speedMax,	@resistenceMin, @resistenceMax]
+		self.troopParameters = [100,250,10,30,10,25]
 		self.troop = None
+		
 		#Graphical part------------------
 
 		self.towerModel = None
 		self.towerInicialized = False
+		self.artPath = "../HUD images/purpleTowerArt.png"
 
 		#----------------------------------
 
@@ -209,13 +231,16 @@ class Tower():
 
 	def shootProjectile(self,position, impulseForce):
 		self.projectiles.append(Projectile())
+		self.projectiles[-1].defineParameters(self.projectileParameters)
 		self.projectiles[-1].position = position
 		self.projectiles[-1].impulseForce = impulseForce
 		self.projectiles[-1].initProjectile()
 		
 	def createTroop(self):
-		self.troop = Troop()
-		self.troop.initModel([self.position[0]+randint(-15,15), self.position[1]+randint(-15,15),self.position[2]],[0,0,0])
+		self.troop = Troop(self)
+		self.troop.defineParameters(self.troopParameters)
+		self.troop.position = [self.position[0]+randint(-15,15), self.position[1]+randint(-15,15),self.position[2]]
+		self.troop.initTroop()
 
 	def aimShoot(self, targetPosition):
 		directionVector = vector3Sub(targetPosition, self.position)

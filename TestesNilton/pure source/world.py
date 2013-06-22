@@ -20,7 +20,7 @@ player2 = Player("Niltin")
 print "player = ",Player.currPlayer.name
 
 
-sceneBtn = sceneButton("Teste Game",[-0.5, 0, -0.5],0.12)
+sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
 
 gameFSM = gameFSM()
 gameFSM.request("InitScreen")
@@ -53,7 +53,7 @@ class World(DirectObject):
 		deltaTime = task.time - task.last
 		task.last = task.time
 
-        
+		player.Player.currPlayer.camera.moveCameraXY()
 		#this function returns Task.cont
 		return Task.cont
 

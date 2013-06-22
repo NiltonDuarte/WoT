@@ -13,12 +13,13 @@ from pandaImports import *
 from pandac.PandaModules import CollisionSphere
 from panda3d.core import PandaNode
 
+from direct.actor.Actor import Actor #this module enalbes animation
+
 class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
 	def __init__(self, position, color, model):
-		#PandaNode.__init__(self, "TowerModel")
 		#Loading the tower model
 		self.tower = loader.loadModel(model[0])
 		self.tower.reparentTo(render)
@@ -26,19 +27,27 @@ class TowerModel(DirectObject):
 		self.sphere = loader.loadModel(model[1])
 		self.sphere.reparentTo(render)
 		#loading the canons that stays inside the ball
-		self.canons = loader.loadModel(model[2])
+		self.canons = Actor()
+		self.canons.loadModel(model[2])
 		self.canons.reparentTo(render)
+		self.canons.loadAnims({'canons_spin': model[2]})
+		self.canons.loop('canons_spin')
+		#loading the holder of the canons 
+		self.canons_holder = loader.loadModel(model[3])                    
+		self.canons_holder.reparentTo(render)
 		#self.color is the color of the sphere and tinting the sphere
 		self.color = color
 		self.sphere.setColor(*self.color)
+		self.canons_holder.setColor(*self.color)
 		self.canons.setColor(0,0,0)
 		#Setting the texture to the tower
-		self.texture = loader.loadTexture(model[3])
+		self.texture = loader.loadTexture(model[4])
 		self.tower.setTexture(self.texture, 1)
 		#Setting the position of the tower, sphere and canons
 		self.tower.setPos(Vec3(*position))
 		self.sphere.setPos(Vec3(*position))
 		self.canons.setPos(Vec3(*position))
+		self.canons_holder.setPos(Vec3(*position))
 		
 	def moveTowerModel(self,position):
 		self.sphere.setColor(*self.color)
@@ -86,7 +95,8 @@ class Tower():
 		self.model.append(self.modelTag.find('base').text)
 		self.model.append(self.modelTag.find('sphere').text)
 		self.model.append(self.modelTag.find('canon').text)
-		self.model.append(self.modelTag.find('texture').text)
+		self.model.append(self.modelTag.find('canon_holder').text)
+		self.model.append(self.modelTag.find('texture').text) 
 
 
 		#Shooting power of the tower

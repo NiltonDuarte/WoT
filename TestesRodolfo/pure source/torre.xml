@@ -5,6 +5,7 @@
 		<base>../arquivos de modelo/Tower.egg</base>
 		<sphere>../arquivos de modelo/Sphere.egg</sphere>
 		<canon>../arquivos de modelo/Canons.egg</canon>
+		<canon_holder>../arquivos de modelo/Canons_Holder.egg</canon_holder>
 		<color></color>
 		<texture>../texturas/tower_Texture.png</texture>
 	</model>
@@ -31,6 +32,7 @@
 		<base>../arquivos de modelo/Tower</base>
 		<sphere>../arquivos de modelo/Sphere</sphere>
 		<canon>../arquivos de modelo/Canons</canon>
+		<canon_holder>../arquivos de modelo/Canons_Holder.egg</canon_holder>
 		<color></color>
 		<texture>../texturas/tower_Texture.png</texture>
 	</model>

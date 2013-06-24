@@ -30,8 +30,10 @@ class TowerModel(DirectObject):
 		self.canons = Actor()
 		self.canons.loadModel(model[2])
 		self.canons.reparentTo(render)
-		self.canons.loadAnims({'canons_spin': model[2]})
-		self.canons.loop('canons_spin')
+		#print "find = ", str(self.canons.find('**/Shoot'))
+		self.canons.loadAnims({'Shoot': model[2]})
+		self.canons.loop('Shoot')
+		self.canons.hprInterval(15, Point3(360, 0,0)).loop()
 		#loading the holder of the canons 
 		self.canons_holder = loader.loadModel(model[3])                    
 		self.canons_holder.reparentTo(render)

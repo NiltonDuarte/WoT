@@ -13,6 +13,9 @@ class ProjectileModel(DirectObject):
 		#Loading the projectile model
 		self.projectile = loader.loadModel("../arquivos de modelo/Projectile")
 		self.projectile.reparentTo(render)
+		#Setting the texture to the tower
+		self.texture = loader.loadTexture("../texturas/projectile_Texture.png")
+		self.projectile.setTexture(self.texture, 1)
 		#Setting the position of the projectile 
 		self.projectile.setPos(Vec3(*position))
 		self.projectileNP = None

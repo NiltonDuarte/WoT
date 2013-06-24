@@ -13,6 +13,9 @@ class ProjectileModel(DirectObject):
 		#Loading the projectile model
 		self.projectile = loader.loadModel("../arquivos de modelo/Projectile")
 		self.projectile.reparentTo(render)
+		#Setting the texture to the projectile
+		self.texture = loader.loadTexture("../texturas/projectile_Texture.png")
+		self.projectile.setTexture(self.texture, 1)
 		#self.projectile.hprInterval(15,Point3(360,0,0)).loop()
 		#Setting the position of the projectile 
 		self.projectile.setPos(Vec3(*position))

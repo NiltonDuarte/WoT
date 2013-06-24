@@ -13,6 +13,7 @@ class ProjectileModel(DirectObject):
 		#Loading the projectile model
 		self.projectile = loader.loadModel("../arquivos de modelo/Projectile")
 		self.projectile.reparentTo(render)
+		#self.projectile.hprInterval(15,Point3(360,0,0)).loop()
 		#Setting the position of the projectile 
 		self.projectile.setPos(Vec3(*position))
 		self.projectileNP = None

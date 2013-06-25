@@ -10,4 +10,5 @@ from collision import *
 from physics import *
 from player import *
 from gameFSM import *
+from lighting import *
 

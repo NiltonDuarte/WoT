@@ -1,5 +1,5 @@
 from pandaImports import *
-
+from panda3d.core import Point3
 
 class TerrainModel(DirectObject):
 	'''This class imports the terrain model and do the needed transformations
@@ -16,9 +16,22 @@ class TerrainModel(DirectObject):
 		self.position = Vec3(0, 0, 0)
 		self.terrain.setPos(self.position)
 		#Scaling the terrain
-		terrainCollider = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
-		terrainCollider.node().addSolid(CollisionBox(*self.terrain.getTightBounds()))
-        	
+		terrainBoundLower, terrainBoundUpper = self.terrain.getTightBounds()
+		terrainBoundMiddleUpper, terrainBoundMiddleLower = list(terrainBoundUpper), list(terrainBoundLower)
+		#terrainBoundUpper[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
+		terrainBoundMiddleUpper[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
+		terrainBoundMiddleLower[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
+
+		self.terrainColliderLeftNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
+		self.terrainColliderLeftNP.node().addSolid(CollisionBox(terrainBoundLower, Point3(*terrainBoundMiddleUpper)))
+		
+		self.terrainColliderRightNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
+		self.terrainColliderRightNP.node().addSolid(CollisionBox(Point3(*terrainBoundMiddleLower), terrainBoundUpper))
+     
+     def detachLeft()
+		return
+     
+     def detachRight()   	
 
 		
 

@@ -13,7 +13,7 @@ class MyCamera(DirectObject):
 		#Setting our camera position to be top-down
 		self.X = 1
 		self.Y = -240
-		self.Z = 250
+		self.Z = 200
 		base.camera.setX(self.X)     
 		base.camera.setY(self.Y)  #depth
 		base.camera.setZ(self.Z)	#height

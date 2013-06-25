@@ -76,7 +76,7 @@ def mouseClicked():
 	#posicioning tower
 	if MousePicking.mpos != None and MousePicking.towerFollowMouse == True:
 		MousePicking.towerFollowMouse = False
-		player.Player.currPlayer.getTower(-1).towerModel.color =  [0.77,0,1, 0.5]
+		player.Player.currPlayer.getTower(-1).towerModel.resetColor()
 		player.Player.currPlayer.getTower(-1).initTower()
 		#print "mouseClicked - tower inicialized in ", collision.collision3DPoint
 	
@@ -89,7 +89,7 @@ def mouseClicked():
 		MousePicking.lastClickedTower = towerObj
 		MousePicking.gameHUD.updateArtImage(towerObj.artPath)
 		MousePicking.gameHUD.updateTowerAttributeTexts(towerObj)
-		towerObj.towerModel.changeColor([0,0,1])
+		towerObj.towerModel.towerSelectedColor()
 		
 		#print "mouseClicked on tower ", MousePicking.collindingNode.getTag("TowerID")
 	
@@ -99,7 +99,7 @@ def mouseClicked():
 			MousePicking.lastClickedTower.towerModel.resetColor()
 		troopObj = troop.Troop.troopDict[MousePicking.collindingNode.getTag("TroopID")]
 		MousePicking.lastClickedTower = troopObj.sourceTower
-		troopObj.sourceTower.towerModel.changeColor([0,0,1])
+		troopObj.sourceTower.towerModel.towerSelectedColor()
 		MousePicking.gameHUD.updateArtImage(troopObj.artPath)
 		MousePicking.gameHUD.updateTroopAttributeTexts(troopObj)
 		#print "TroopTag = ",MousePicking.collindingNode.getTag("TroopID")		

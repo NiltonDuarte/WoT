@@ -22,7 +22,6 @@ class TroopModel(DirectObject):
 		#self.texture = loader.loadTexture("../texturas/tower_Texture.png")
 		#self.troop.setTexture(self.texture, 1)
 		#Setting the position of the tower, sphere and canons
-		print "position = ", position
 		self.troop.setPos(Vec3(*position))
 		
 		self.troopColliderNP = None

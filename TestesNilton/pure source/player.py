@@ -7,11 +7,14 @@ class Player:
 	"""Player class that holds his towers, health and camera"""
 	
 	playerDict = {}
-	currPlayer = None
+	currPlayer = None #Holds the current player object
+	inactivePlayer = None #Holds the inactive player object
 
-	def __init__(self, name):
-		Player.playerDict[name] = self
+	def __init__(self, playerNumber,name):
+		self.playerNumber = playerNumber
+		Player.playerDict[self.playerNumber] = self
 		self.name = name
+		Player.inactivePlayer = Player.currPlayer
 		Player.currPlayer = self
 		self.health = 100
 		self.towerList = [Tower()]

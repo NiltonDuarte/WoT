@@ -33,7 +33,8 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 HUD_models = aspect2d.attachNewNode("HUD Models")
 
 class PlayScreenHUD (DirectObject):
-	def __init__(self, gameFSM, mousePicking):
+	def __init__(self, gameScreenFSM, mousePicking):
+		self.gameScreenFSM = gameScreenFSM
 		self.mousePicking = mousePicking
 		self.playScreenFrame=None
 		self.isoScale = 3.2
@@ -65,6 +66,7 @@ class PlayScreenHUD (DirectObject):
 		self.minusAttribButton();
 		self.addArtImage();
 		self.addAttributeTexts();
+		self.turnPassButton();
 			
 	def addAlphaTowerButton(self):
 		position = [-1.25/self.isoScale, 0, -0.74/self.isoScale]
@@ -104,6 +106,16 @@ class PlayScreenHUD (DirectObject):
 		text = "-"
 		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.615/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
 		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.660/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+	
+	def turnPassButton(self):
+		position = [1.5, 0, -0.5]
+		text = "End Turn"
+		scale = 0.12
+		button = DirectButton(text=("%s")%text, pos = position, scale = scale, command=self.turnPass)
+		
+	def turnPass(self):
+		self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
+		return
 	
 	def addArtImage(self):
 		self.artImage = DirectFrame(self.playScreenFrame, 
@@ -197,9 +209,12 @@ class PlayScreenHUD (DirectObject):
 		self.labelSpeed["text"] = "-"
 		self.labelResistence["text"] = "-"		
 		
+	def resetHUD(self):
+		self.resetAttributeTexts()
+		
 class InitialScreenHUD(DirectObject):
-	def __init__(self, gameFSM):
-		self.gameFSM = gameFSM
+	def __init__(self, gameScreenFSM):
+		self.gameScreenFSM = gameScreenFSM
 		self.initialScreenFrame = None
 		self.isoScale = 1
 		self.scale = (self.isoScale,1,self.isoScale)
@@ -218,7 +233,7 @@ class InitialScreenHUD(DirectObject):
 		button = DirectButton(self.initialScreenFrame, text=("PLAY GAME"), pos = [0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
 
 	def changeScene(self):
-		self.gameFSM.request("PlayScreen")
+		self.gameScreenFSM.request("PlayScreen")
 		print "Scene Changed"
 		
 #---------------------------------- BUTTONS ------------------------------------------------------------------

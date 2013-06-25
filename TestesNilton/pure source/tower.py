@@ -28,7 +28,7 @@ class TowerModel(DirectObject):
 		#loading the canons that stays inside the ball
 		self.canons = loader.loadModel(model[2])
 		self.canons.reparentTo(render)
-		self.canons.hprInterval(15,Point3(360,0,0)).loop()
+		self.canons.hprInterval(5,Point3(360,0,0)).loop()
 		#self.color is the color of the sphere and tinting the sphere
 		self.color = [1,0,0]
 		self.sphere.setColor(*self.color)

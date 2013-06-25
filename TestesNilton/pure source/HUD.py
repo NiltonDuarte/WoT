@@ -69,23 +69,23 @@ class PlayScreenHUD (DirectObject):
 	def addAlphaTowerButton(self):
 		position = [-1.25/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
-		texture = loader.loadTexture("../HUD images/ultimateGreenTower_Button.png")
+		texture = loader.loadTexture("../HUD images/AlphaTower_Button.png")
 		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
 	def addBetaTowerButton(self):
 		position = [-0.9/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
-		texture = loader.loadTexture("../HUD images/ultimatePurpleTower_Button.png")
+		texture = loader.loadTexture("../HUD images/BetaTower_Button.png")
 		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
 	def addGamaTowerButton(self):
 		position = [-0.55/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
-		texture = loader.loadTexture("../HUD images/ultimateGreenTower_Button.png")
+		texture = loader.loadTexture("../HUD images/GamaTower_Button.png")
 		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
 
 	def addOmegaTowerButton(self):
 		position = [-0.2/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
-		texture = loader.loadTexture("../HUD images/ultimatePurpleTower_Button.png")
+		texture = loader.loadTexture("../HUD images/OmegaTower_Button.png")
 		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
 
 	def createTower(self):

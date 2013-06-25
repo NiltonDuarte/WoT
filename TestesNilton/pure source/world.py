@@ -17,7 +17,7 @@ base.win.requestProperties(wp)
 terr = TerrainModel()
 player1 = Player("Lyly")
 player2 = Player("Niltin")
-print "player = ",Player.currPlayer.name
+
 
 
 sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)

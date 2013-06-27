@@ -5,14 +5,20 @@ import collision
 import physics
 from pandaImports import *
 
+from direct.actor.Actor import Actor #this module enalbes animation
+
 class TroopModel(DirectObject):
 	"""This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	"""
 	def __init__(self, position, color):
 		#Loading the troop model
-		self.troop = loader.loadModel("../arquivos de modelo/Troop")
+		self.troop = Actor()
+		self.troop.loadModel("../arquivos de modelo/Troop")
 		self.troop.reparentTo(render)
+		#print "find = ", str(self.canons.find('**/Shoot'))
+		self.troop.loadAnims({'Key 1': "../arquivos de modelo/Troop"})
+		self.troop.loop('Key 1')
 
 		#self.color is the color of the sphere and tinting the sphere
 		self.color = color

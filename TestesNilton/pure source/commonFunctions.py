@@ -67,7 +67,7 @@ def startRandomAttributes(attrList, points):
                         dist = current_dist
                         finalPoints = currentPoints
 			if dist == 0: return
-        print attrList, finalPoints, index_NUM_IT
+        #print attrList, finalPoints, index_NUM_IT
     
 def vector3Sub(vector1, vector2):
 	retVector = [0,0,0]

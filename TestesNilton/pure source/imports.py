@@ -9,5 +9,7 @@ from mousePicking import *
 from collision import *
 from physics import *
 from player import *
-from gameFSM import *
+from gameScreenFSM import *
+from gamePlayFSM import *
+from lighting import *
 

@@ -17,7 +17,7 @@ class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
-	def __init__(self, position, color, model):
+	def __init__(self, position, model):
 		#PandaNode.__init__(self, "TowerModel")
 		#Loading the tower model
 		self.tower = loader.loadModel(model[0])
@@ -28,9 +28,9 @@ class TowerModel(DirectObject):
 		#loading the canons that stays inside the ball
 		self.canons = loader.loadModel(model[2])
 		self.canons.reparentTo(render)
-		self.canons.hprInterval(15,Point3(360,0,0)).loop()
+		self.canons.hprInterval(5,Point3(360,0,0)).loop()
 		#self.color is the color of the sphere and tinting the sphere
-		self.color = color
+		self.color = [1,0,0]
 		self.sphere.setColor(*self.color)
 		self.canons.setColor(0,0,0)
 		#Setting the texture to the tower
@@ -42,20 +42,22 @@ class TowerModel(DirectObject):
 		self.canons.setPos(Vec3(*position))
 		
 	def moveTowerModel(self,position):
-		self.sphere.setColor(*self.color)
 		self.tower.setPos(Vec3(*position))
 		self.sphere.setPos(Vec3(*position))
 		self.canons.setPos(Vec3(*position))
 		
-	def changeColor(self,color):
+	def towerSelectedColor(self,color = [0,0,1]):
 		self.sphere.setColor(*color)
 
+	def towerMovingColor(self, color = [0,1,0]):
+		self.sphere.setColor(*color)
+		
 	def resetColor(self):
 		self.sphere.setColor(*self.color)
 		
 	def setCollisionNode (self, nodeName, rangeView, ID):
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
-		#self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
+		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
 		self.towerCollider.setTag("TowerID", ID)
@@ -165,12 +167,12 @@ class Tower():
 			self.defineParameters(listOfParameters)
 			self.initTower()
             
-        def initTower(self):
-                """Initialize the tower with random values inside a interval"""
+	def initTower(self):
+		"""Initialize the tower with random values inside a interval"""
 		if (self.initialPoints >= \
-            (self.shootPowerMin + self.txShootMin + self.rangeViewMin + self.txTroopsMin) \
-            and self.initialPoints <= \
-            (self.shootPowerMax + self.txShootMax + self.rangeViewMax + self.txTroopsMax)):  
+			(self.shootPowerMin + self.txShootMin + self.rangeViewMin + self.txTroopsMin) \
+			and self.initialPoints <= \
+			(self.shootPowerMax + self.txShootMax + self.rangeViewMax + self.txTroopsMax)):  
                       
 			#Attributing the minimum values
 			self.listShootPower[MIN] = self.shootPowerMin
@@ -216,9 +218,9 @@ class Tower():
 	def setInitialPoints(self, points):
 		self.initialPoints = points
 
-	def initModel(self, position, color):
+	def initModel(self, position):
 		self.position = position
-		self.towerModel = TowerModel(position,color,self.model)
+		self.towerModel = TowerModel(position,self.model)
 
 	def moveTower(self,position):
 		self.position = position

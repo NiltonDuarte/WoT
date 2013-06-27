@@ -15,15 +15,15 @@ base.win.requestProperties(wp)
 
 
 terr = TerrainModel()
-player1 = Player("Lyly")
-player2 = Player("Niltin")
-print "player = ",Player.currPlayer.name
+player1 = Player("Player1", "lylyh")
+player2 = Player("Player2", "Niltin")
+
 
 
 sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
 
-gameFSM = gameFSM()
-gameFSM.request("InitScreen")
+gameScreenFSM = gameScreenFSM()
+gameScreenFSM.request("InitScreen")
 #gameFSM.request("PlayScreen")
 
 
@@ -36,7 +36,7 @@ class World(DirectObject):
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
 		base.enableParticles()
-		base.cTrav.showCollisions(render)
+		#base.cTrav.showCollisions(render)
 		
 		self.accept('escape', sys.exit ) # exit on esc
 		

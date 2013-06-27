@@ -12,14 +12,15 @@ class ProjectileModel(DirectObject):
 	def __init__(self, position):
 		#Loading the projectile model
 		self.projectile = loader.loadModel("../arquivos de modelo/Projectile")
-		self.projectile.reparentTo(render)
+		self.projectile.reparentTo(render)		
 		#Setting the texture to the projectile
 		self.texture = loader.loadTexture("../texturas/projectile_Texture.png")
 		self.projectile.setTexture(self.texture, 1)
-		#self.projectile.hprInterval(15,Point3(360,0,0)).loop()
+		self.projectile.hprInterval(1,Point3(200,160,260)).loop()
 		#Setting the position of the projectile 
 		self.projectile.setPos(Vec3(*position))
 		self.projectileNP = None
+		
 	def setCollisionNode (self, collisionNodeName, ID):
 		self.projectileNP = self.projectile.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
 		self.projectileNP.node().addSolid(CollisionSphere(Point3(0,0,0),2))

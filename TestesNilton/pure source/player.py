@@ -7,11 +7,14 @@ class Player:
 	"""Player class that holds his towers, health and camera"""
 	
 	playerDict = {}
-	currPlayer = None
+	currPlayer = None #Holds the current player object
+	inactivePlayer = None #Holds the inactive player object
 
-	def __init__(self, name):
-		Player.playerDict[name] = self
+	def __init__(self, playerNumber,name):
+		self.playerNumber = playerNumber
+		Player.playerDict[self.playerNumber] = self
 		self.name = name
+		Player.inactivePlayer = Player.currPlayer
 		Player.currPlayer = self
 		self.health = 100
 		self.towerList = [Tower()]
@@ -26,11 +29,12 @@ class Player:
 		
 	def addTower(self):
 		if self.towerList[-1].towerInicialized:
-			print "If towerInicialized = ", self.towerList[-1].towerInicialized
 			self.towerList.append(Tower())
-			self.towerList[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
+			self.towerList[-1].initModel([-300,-300,-300])
+			self.towerList[-1].towerModel.towerMovingColor()
 		elif (self.towerList[-1].towerModel == None):
-			self.towerList[-1].initModel([-300,-300,-300], [.0,.5,.0, .5])
+			self.towerList[-1].initModel([-300,-300,-300])
+			self.towerList[-1].towerModel.towerMovingColor()
 			
 	def getTower(self,index):
 		return	self.towerList[index]
@@ -52,7 +56,8 @@ class Player:
 		return
 		
 	def collideTroopEventAgainProjectile(entry):
-		print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
+		#print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
+		return
 
 	#DO.accept('TroopClass_cnode-again-TowerClass_Rangecnode', collideTroopEventAgainTowerRange)
 	collision.addCollisionEventAgain("TroopClass_cnode","TowerClass_Rangecnode",collideTroopEventAgainTowerRange)

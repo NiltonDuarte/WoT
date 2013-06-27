@@ -1,15 +1,18 @@
 from HUD import *
 import player
 import mousePicking
+import gamePlayFSM
 from direct.fsm.FSM import FSM
-"""This Module control the Finite State Machines. Game states, initial state(initial screen) and the play state(player 1 and player 2)"""
+"""This Module control the Play Finite State Machines. Player 1 and Player 2 state"""
 
 
-class gameFSM(FSM):
+class gameScreenFSM(FSM):
 	
 	def __init__(self):
-		FSM.__init__(self, "WoT")
+		FSM.__init__(self, "WoT Screens")
 		self.currHUD = None
+		self.gamePlayFSM = None
+		
 
 	def enterInitScreen(self):
 		self.currHUD = InitialScreenHUD(self)
@@ -21,6 +24,7 @@ class gameFSM(FSM):
 		
 	def enterPlayScreen(self):
 		self.currHUD = PlayScreenHUD(self,mousePicking.MousePicking)
+		self.gamePlayFSM = gamePlayFSM.gamePlayFSM(self.currHUD)
 		self.currHUD.initHUD()
 		mousePicking.MousePicking.gameHUD = self.currHUD
 		player.Player.currPlayer.camera.cameraEnabled = True
@@ -34,6 +38,12 @@ class gameFSM(FSM):
 	
 	def exitEndScreen(self):
 		return
+	
+	
+	
+
+		
+
 	
 	
 	

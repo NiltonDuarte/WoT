@@ -29,3 +29,4 @@ class Mesh:
 
 	def initMesh(self)
 		"""Read the XML file, create the nodes and add them to the mesh"""
+		pass

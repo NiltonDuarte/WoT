@@ -9,7 +9,7 @@ LEFT = 3
 class Node:
 	"""Node class, a node hold information that will be needed for mesh"""
 	def __init__ (self):
-		self.centerPosXYZ = [0,0,0]
+		self.centerPosXY = [0,0]
 		self.blocked = False
 		self.vertexNeighbor = [None,None,None,None]
 		

@@ -1,5 +1,5 @@
 from pandaImports import *
-from panda3d.core import Point3
+
 
 class TerrainModel(DirectObject):
 	'''This class imports the terrain model and do the needed transformations
@@ -10,8 +10,8 @@ class TerrainModel(DirectObject):
 		self.terrain = loader.loadModel("../arquivos de modelo/Terrain1")
 		self.terrain.reparentTo(render)
 		#Setting the texture to the terrain
-		self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
-		self.terrain.setTexture(self.texture, 1)
+		#self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
+		#self.terrain.setTexture(self.texture, 1)
 		#Setting the position of the terrain
 		self.position = Vec3(0, 0, 0)
 		self.terrain.setPos(self.position)

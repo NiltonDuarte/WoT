@@ -18,9 +18,9 @@ class TroopModel(DirectObject):
 		#self.color is the color of the sphere and tinting the sphere
 		self.color = color
 
-		#Setting the texture to the tower
-		#self.texture = loader.loadTexture("../texturas/tower_Texture.png")
-		#self.troop.setTexture(self.texture, 1)
+		#Setting the texture to the troop
+		self.texture = loader.loadTexture("../texturas/troop_Texture.png")
+		self.troop.setTexture(self.texture, 1)
 		#Setting the position of the tower, sphere and canons
 		self.troop.setPos(Vec3(*position))
 		

@@ -8,7 +8,11 @@ from direct.task.Task import Task
 #Position and collision need these modules
 from panda3d.core import Vec2,Vec3
 from panda3d.core import Point2, Point3
-from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionBox, CollisionTraverser, BitMask32, CollisionRay
+from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionBox, CollisionTraverser, BitMask32, CollisionRay, NodePath
 
 #WindowProperties is needed to set the size of the screen
 from pandac.PandaModules import WindowProperties
+
+#This will help create the HUDMap camera
+from panda3d.core import Camera
+from direct.showbase.ShowBase import ShowBase

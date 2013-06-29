@@ -5,9 +5,13 @@
 		<base>../arquivos de modelo/Tower.egg</base>
 		<sphere>../arquivos de modelo/Sphere.egg</sphere>
 		<canon>../arquivos de modelo/Canons.egg</canon>
-		<color></color>
 		<texture>../texturas/tower_Texture.png</texture>
 	</model>
+		<color>
+			<r> 0 </r>
+			<g> 0 </g>
+			<b> 1 </b>
+		</color>
         <shootPower>
             <Min>10</Min>
             <Max>40</Max>

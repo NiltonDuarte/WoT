@@ -29,13 +29,13 @@ class TowerModel(DirectObject):
 		self.canons = loader.loadModel(model[2])
 		self.canons.reparentTo(render)
 		self.canons.hprInterval(5,Point3(360,0,0)).loop()
+		#Setting the texture to the tower
+		self.texture = loader.loadTexture(model[3])
+		self.tower.setTexture(self.texture, 1)
 		#self.color is the color of the sphere and tinting the sphere
 		self.color = [1,0,0]
 		self.sphere.setColor(*self.color)
 		self.canons.setColor(0,0,0)
-		#Setting the texture to the tower
-		self.texture = loader.loadTexture(model[3])
-		self.tower.setTexture(self.texture, 1)
 		#Setting the position of the tower, sphere and canons
 		self.tower.setPos(Vec3(*position))
 		self.sphere.setPos(Vec3(*position))

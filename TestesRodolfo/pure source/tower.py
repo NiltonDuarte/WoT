@@ -17,7 +17,7 @@ class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
-	def __init__(self, position, model):
+	def __init__(self, position, model, color):
 		#PandaNode.__init__(self, "TowerModel")
 		#Loading the tower model
 		self.tower = loader.loadModel(model[0])
@@ -30,7 +30,7 @@ class TowerModel(DirectObject):
 		self.canons.reparentTo(render)
 		self.canons.hprInterval(5,Point3(360,0,0)).loop()
 		#self.color is the color of the sphere and tinting the sphere
-		self.color = [1,0,0]
+		self.color = color
 		self.sphere.setColor(*self.color)
 		self.canons.setColor(0,0,0)
 		#Setting the texture to the tower
@@ -97,7 +97,11 @@ class Tower():
 		self.model.append(self.modelTag.find('sphere').text)
 		self.model.append(self.modelTag.find('canon').text)
 		self.model.append(self.modelTag.find('texture').text)
-
+		self.colorTag = self.typ.find('color')
+		self.color = [int(self.colorTag.find('r').text), 
+					  int(self.colorTag.find('g').text),
+					  int(self.colorTag.find('b').text)]
+		
 
 		#Shooting power of the tower
 		self.shootPower = 0 #Nao usar esta variavel. Usar listShootPower[0]
@@ -220,7 +224,7 @@ class Tower():
 
 	def initModel(self, position):
 		self.position = position
-		self.towerModel = TowerModel(position,self.model)
+		self.towerModel = TowerModel(position,self.model,self.color)
 
 	def moveTower(self,position):
 		self.position = position

@@ -87,7 +87,7 @@ class MeshGen:
 				center = (pX + self.cellSizeX/2, pY + self.cellSizeY/2)
 				#Escrever no XML  neighbors = [FRONT, RIGHT, BACK, LEFT] Verificar se BACK existe, 0 < BACK < xDivs*yDivs
 				cellET = ET.SubElement(cellsET,'Cell')
-				cellIndexET = ET.SubElement(cellET,'Cell')
+				cellIndexET = ET.SubElement(cellET,'Index')
 				cellIndexET.text = 	str(cellIndex)
 				centerET = ET.SubElement(cellET,'Center')
 				centerET.text = str(center)

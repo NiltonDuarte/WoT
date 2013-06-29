@@ -1,4 +1,4 @@
-ppython "meshGenXML.py"
+ppython "main.py"
 
 pause
 del "%0"

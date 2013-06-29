@@ -77,7 +77,7 @@ class Tower():
 
 	towerDict = {}
 
-	def __init__(self, initTowerFunc = False, points=0, listOfParameters=[], confFile='torre.xml', towerType='Torre Inicial'):
+	def __init__(self, towerType='Torre Inicial', confFile='torre.xml'):
 
 		self.name = "TowerClass"
 		self.ID = str(uuid.uuid4())
@@ -162,10 +162,6 @@ class Tower():
 
 		#----------------------------------
 
-		if (len(listOfParameters) > 0 and points and initTowerFunc):
-			self.initialPoints = points
-			self.defineParameters(listOfParameters)
-			self.initTower()
             
 	def initTower(self):
 		"""Initialize the tower with random values inside a interval"""

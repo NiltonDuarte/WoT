@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<data>
+    
+    <tower type="Alpha Tower">
+	<model>
+		<base>../arquivos de modelo/Tower.egg</base>
+		<sphere>../arquivos de modelo/Sphere.egg</sphere>
+		<canon>../arquivos de modelo/Canons.egg</canon>
+		<texture>../texturas/tower_Texture.png</texture>
+	</model>
+		<color>
+			<r> 0 </r>
+			<g> 0 </g>
+			<b> 1 </b>
+		</color>
+		<selectedColor>
+			<r> 0 </r>
+			<g> 0 </g>
+			<b> 0.7 </b>
+		</selectedColor>
+        <shootPower>
+            <Min>10</Min>
+            <Max>40</Max>
+        </shootPower>
+        <txShoot>
+            <Min>10</Min>
+            <Max>40</Max>
+        </txShoot>
+        <rangeView>
+            <Min>10</Min>
+            <Max>30</Max>
+        </rangeView>
+        <txTroops>
+            <Min>10</Min>
+            <Max>30</Max>
+        </txTroops>
+    </tower>
+
+    <tower type="Beta Tower">
+	<model>
+		<base>../arquivos de modelo/Tower</base>
+		<sphere>../arquivos de modelo/Sphere</sphere>
+		<canon>../arquivos de modelo/Canons</canon>
+		<color></color>
+		<texture>../texturas/tower_Texture.png</texture>
+	</model>
+		<color>
+			<r> 1 </r>
+			<g> 0 </g>
+			<b> 0 </b>
+		</color>
+        <shootPower>
+            <Min>20</Min>
+            <Max>80</Max>
+        </shootPower>
+        <txShoot>
+            <Min>20</Min>
+            <Max>80</Max>
+        </txShoot>
+        <rangeView>
+            <Min>20</Min>
+            <Max>70</Max>
+        </rangeView>
+        <txTroops>
+            <Min>20</Min>
+            <Max>70</Max>
+        </txTroops>
+    </tower>
+    
+    <tower type="Gama Tower">
+	<model>
+		<base>../arquivos de modelo/Tower</base>
+		<sphere>../arquivos de modelo/Sphere</sphere>
+		<canon>../arquivos de modelo/Canons</canon>
+		<color></color>
+		<texture>../texturas/tower_Texture.png</texture>
+	</model>
+		<color>
+			<r> 0 </r>
+			<g> 1 </g>
+			<b> 0 </b>
+		</color>
+        <shootPower>
+            <Min>20</Min>
+            <Max>80</Max>
+        </shootPower>
+        <txShoot>
+            <Min>20</Min>
+            <Max>80</Max>
+        </txShoot>
+        <rangeView>
+            <Min>20</Min>
+            <Max>70</Max>
+        </rangeView>
+        <txTroops>
+            <Min>20</Min>
+            <Max>70</Max>
+        </txTroops>
+    </tower>
+    
+    <tower type="Omega Tower">
+	<model>
+		<base>../arquivos de modelo/Tower</base>
+		<sphere>../arquivos de modelo/Sphere</sphere>
+		<canon>../arquivos de modelo/Canons</canon>
+		<color></color>
+		<texture>../texturas/tower_Texture.png</texture>
+	</model>
+		<color>
+			<r> 0.5 </r>
+			<g> 0 </g>
+			<b> 0.5 </b>
+		</color>
+        <shootPower>
+            <Min>20</Min>
+            <Max>80</Max>
+        </shootPower>
+        <txShoot>
+            <Min>20</Min>
+            <Max>80</Max>
+        </txShoot>
+        <rangeView>
+            <Min>20</Min>
+            <Max>70</Max>
+        </rangeView>
+        <txTroops>
+            <Min>20</Min>
+            <Max>70</Max>
+        </txTroops>
+    </tower>
+    
+</data>

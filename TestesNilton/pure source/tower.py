@@ -77,7 +77,7 @@ class Tower():
 
 	towerDict = {}
 
-	def __init__(self, towerType='Torre Inicial', confFile='torre.xml'):
+	def __init__(self, towerType='Torre Inicial', confFile='tower.xml'):
 
 		self.name = "TowerClass"
 		self.ID = str(uuid.uuid4())

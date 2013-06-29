@@ -1,1 +1,25 @@
 
+<?xml version="1.0"?>
+<data>
+	<troop type="Troop 06">
+		<model>
+			<path>../arquivos de modelo/Troop</path>
+			<texture>../texturas/troop_Texture.png</texture>
+		</model>
+		<artPath>../HUD images/troopArt.png</artPath>
+		<initialPoints>250</initialPoints>
+		
+		<life>
+			<lifeMin>100</lifeMin>
+			<lifeMax>250</lifeMax>
+		</life>
+		<speed>
+			<speedMin>10</speedMin>
+			<speedMax>30</speedMax>
+		</speed>
+		<resistence>
+			<resistenceMin>10</resistenceMin>
+			<resistenceMax>25</resistenceMax>
+		</resistence>
+	</troop>
+</data>

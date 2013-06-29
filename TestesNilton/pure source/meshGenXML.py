@@ -132,11 +132,11 @@ class MeshGen:
 				
 				#Noh cellIndex,3 ; p3 ; center ; neighbors = [cellIndex,1 ; cellIndex,4 ; (cellIndex+self.xDivs),1 ; cellIndex,2]
 				pointET = ET.SubElement(cellET,'Point')
-				pointIndexET = ET.SubElement(pointET,'PointIndex')
+				pointIndexET = ET.SubElement(pointET,'Index')
 				pointIndexET.text = str(cellIndex) + ",3"
-				pointPosET = ET.SubElement(pointET,'PointPos')
+				pointPosET = ET.SubElement(pointET,'Pos')
 				pointPosET.text = str(p3)
-				pointNeighborsET = ET.SubElement(pointET,'pointNeighbors')
+				pointNeighborsET = ET.SubElement(pointET,'Neighbors')
 				pointNeighborIndexET = ET.SubElement(pointNeighborsET,'FrontIndex')
 				pointNeighborIndexET.text = str(cellIndex) + ",1"
 				pointNeighborIndexET = ET.SubElement(pointNeighborsET,'RightIndex')

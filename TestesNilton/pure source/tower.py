@@ -17,25 +17,32 @@ class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
-	def __init__(self, position, model):
-		#PandaNode.__init__(self, "TowerModel")
+	def __init__(self, position, modelTag):
+		self.colorTag = modelTag.find('color')
+		self.color = [float(self.colorTag.find('r').text), 
+					  float(self.colorTag.find('g').text),
+					  float(self.colorTag.find('b').text)]
+		self.selectedColorTag = modelTag.find('selectedColor')
+		self.selectedColor = [float(self.selectedColorTag.find('r').text), 
+							  float(self.selectedColorTag.find('g').text),
+							  float(self.selectedColorTag.find('b').text)]
+		self.movingColor = self.selectedColor
 		#Loading the tower model
-		self.tower = loader.loadModel(model[0])
+		self.tower = loader.loadModel(modelTag.find('base').text)
 		self.tower.reparentTo(render)
 		#loading the ball that stays above the tower
-		self.sphere = loader.loadModel(model[1])
+		self.sphere = loader.loadModel(modelTag.find('sphere').text)
 		self.sphere.reparentTo(render)
 		#loading the canons that stays inside the ball
-		self.canons = loader.loadModel(model[2])
+		self.canons = loader.loadModel(modelTag.find('canon').text)
 		self.canons.reparentTo(render)
 		self.canons.hprInterval(5,Point3(360,0,0)).loop()
-		#Setting the texture to the tower
-		self.texture = loader.loadTexture(model[3])
-		self.tower.setTexture(self.texture, 1)
 		#self.color is the color of the sphere and tinting the sphere
-		self.color = [1,0,0]
 		self.sphere.setColor(*self.color)
 		self.canons.setColor(0,0,0)
+		#Setting the texture to the tower
+		self.texture = loader.loadTexture(modelTag.find('texture').text)
+		self.tower.setTexture(self.texture, 1)
 		#Setting the position of the tower, sphere and canons
 		self.tower.setPos(Vec3(*position))
 		self.sphere.setPos(Vec3(*position))
@@ -46,10 +53,14 @@ class TowerModel(DirectObject):
 		self.sphere.setPos(Vec3(*position))
 		self.canons.setPos(Vec3(*position))
 		
-	def towerSelectedColor(self,color = [0,0,1]):
+	def towerSelectedColor(self,color = None):
+		if color is None:
+			color = self.selectedColor
 		self.sphere.setColor(*color)
 
-	def towerMovingColor(self, color = [0,1,0]):
+	def towerMovingColor(self, color = None):
+		if color is None:
+			color = self.movingColor
 		self.sphere.setColor(*color)
 		
 	def resetColor(self):
@@ -77,27 +88,22 @@ class Tower():
 
 	towerDict = {}
 
-	def __init__(self, towerType='Torre Inicial', confFile='tower.xml'):
+	def __init__(self, towerType, confFile='tower.xml'):
 
 		self.name = "TowerClass"
 		self.ID = str(uuid.uuid4())
 		Tower.towerDict[self.ID] = self
 
 		#Getting configuration
+		self.typ = None
 		self.cfTree = ET.parse(confFile)
 		self.cfRoot = self.cfTree.getroot()
-		for element in self.cfRoot.findall('torre'):
-			if (element.get('tipo') == towerType):
+		for element in self.cfRoot.findall('tower'):
+			if (element.get('type') == towerType):
 				self.typ = element
-
+		if self.typ == None: print "Tower Type do not exist"; return
 		#Getting model configuration
-		self.modelTag = self.typ.find('model')
-		self.model = []
-		self.model.append(self.modelTag.find('base').text)
-		self.model.append(self.modelTag.find('sphere').text)
-		self.model.append(self.modelTag.find('canon').text)
-		self.model.append(self.modelTag.find('texture').text)
-
+		self.modelTag = self.typ.find('model')		
 
 		#Shooting power of the tower
 		self.shootPower = 0 #Nao usar esta variavel. Usar listShootPower[0]
@@ -216,7 +222,7 @@ class Tower():
 
 	def initModel(self, position):
 		self.position = position
-		self.towerModel = TowerModel(position,self.model)
+		self.towerModel = TowerModel(position, self.modelTag)
 
 	def moveTower(self,position):
 		self.position = position

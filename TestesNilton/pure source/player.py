@@ -17,7 +17,7 @@ class Player:
 		Player.inactivePlayer = Player.currPlayer
 		Player.currPlayer = self
 		self.health = 100
-		self.towerList = [Tower()]
+		self.towerList = []
 		self.camera = MyCamera()
 		self.currency = 100
 	
@@ -27,14 +27,18 @@ class Player:
 	def sumToHealth(self, sumHealth):
 		self.health += sumHealth
 		
-	def addTower(self):
-		if self.towerList[-1].towerInicialized:
-			self.towerList.append(Tower())
+	def addTower(self, towerType):
+		if len(self.towerList) == 0:
+			self.towerList.append(Tower(towerType))
+			self.towerList[-1].initModel([-300,-300,-300])
+			self.towerList[-1].towerModel.towerMovingColor()			
+		elif self.towerList[-1].towerInicialized:
+			self.towerList.append(Tower(towerType))
 			self.towerList[-1].initModel([-300,-300,-300])
 			self.towerList[-1].towerModel.towerMovingColor()
-		elif (self.towerList[-1].towerModel == None):
+		"""elif (self.towerList[-1].towerModel == None):
 			self.towerList[-1].initModel([-300,-300,-300])
-			self.towerList[-1].towerModel.towerMovingColor()
+			self.towerList[-1].towerModel.towerMovingColor()"""
 			
 	def getTower(self,index):
 		return	self.towerList[index]

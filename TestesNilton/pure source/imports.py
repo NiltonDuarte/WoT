@@ -12,4 +12,5 @@ from player import *
 from gameScreenFSM import *
 from gamePlayFSM import *
 from lighting import *
+from HUDMap import *
 

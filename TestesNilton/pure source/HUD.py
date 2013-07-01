@@ -72,26 +72,26 @@ class PlayScreenHUD (DirectObject):
 		position = [-1.25/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
 		texture = loader.loadTexture("../HUD images/AlphaTower_Button.png")
-		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
+		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower, extraArgs = ["Alpha Tower"])
 	def addBetaTowerButton(self):
 		position = [-0.9/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
 		texture = loader.loadTexture("../HUD images/BetaTower_Button.png")
-		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
+		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower, extraArgs = ["Beta Tower"])
 	def addGamaTowerButton(self):
 		position = [-0.55/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
 		texture = loader.loadTexture("../HUD images/GamaTower_Button.png")
-		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
+		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower, extraArgs = ["Gama Tower"])
 
 	def addOmegaTowerButton(self):
 		position = [-0.2/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
 		texture = loader.loadTexture("../HUD images/OmegaTower_Button.png")
-		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower)
+		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower, extraArgs = ["Omega Tower"])
 
-	def createTower(self):
-		player.Player.currPlayer.addTower()
+	def createTower(self, towerType):
+		player.Player.currPlayer.addTower(towerType)
 		self.mousePicking.towerFollowMouse = True
 		print "Tower Created"		
 		
@@ -267,7 +267,7 @@ class sceneButton(gameButton):
 	def changeScene(self):
 		for tower in player.Player.currPlayer.getTowerList():
 			if tower.towerInicialized:
-				tower.shootProjectile(tower.position, [10,0,13])
+				tower.shootProjectile([10,0,13])
 				tower.createTroop()
 		print "Scene Changed"
 		

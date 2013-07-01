@@ -13,20 +13,20 @@ window_Height = 640
 wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
-
+miniMap = HUDMap()
 terr = TerrainModel()
-player = Player()
+player1 = Player("Player1", "lylyh")
+player2 = Player("Player2", "Niltin")
 
-physicsObj = Physics()
 
-mousePicking = MousePicking()
 
-collisionObj = CollisionWoT(mousePicking, player)
+sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
 
-#createBtn = createObjectButton("Create",[1.0, 0, -0.7],0.2,player, mousePicking)
-sceneBtn = sceneButton("Play Game",[-0.5, 0, -0.5],0.12,player,physicsObj)
+gameScreenFSM = gameScreenFSM()
+gameScreenFSM.request("InitScreen")
+#gameFSM.request("PlayScreen")
 
-gameHud = GameHud(player, mousePicking)
+
 class World(DirectObject):
 	def __init__(self):
 		#Adding the main task of the game (the game loop)
@@ -35,7 +35,8 @@ class World(DirectObject):
 		self.gameTask.last = 0
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
-		base.cTrav.showCollisions(render)
+		base.enableParticles()
+		#base.cTrav.showCollisions(render)
 		
 		self.accept('escape', sys.exit ) # exit on esc
 		
@@ -52,9 +53,7 @@ class World(DirectObject):
 		deltaTime = task.time - task.last
 		task.last = task.time
 
-		#Interactions between different objects
-
-        
+		player.Player.currPlayer.camera.moveCameraXY()
 		#this function returns Task.cont
 		return Task.cont
 

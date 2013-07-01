@@ -91,7 +91,7 @@ class Tower():
 
 	towerDict = {}
 
-	def __init__(self, towerType, confFile='tower.xml'):
+	def __init__(self, towerType):
 
 		self.name = "TowerClass"
 		self.ID = str(uuid.uuid4())
@@ -99,7 +99,7 @@ class Tower():
 
 		#Getting configuration
 		self.typ = None
-		self.cfTree = ET.parse(confFile)
+		self.cfTree = ET.parse('tower.xml')
 		self.cfRoot = self.cfTree.getroot()
 		for element in self.cfRoot.findall('tower'):
 			if (element.get('type') == towerType):
@@ -111,7 +111,6 @@ class Tower():
 		self.troopType = self.typ.find('troopType').text
 		#Getting projectile type
 		self.projectileType = self.typ.find('projectileType').text
-		print "projectileType = ",self.projectileType
 
 		#Shooting power of the tower
 		self.shootPower = 0 #Nao usar esta variavel. Usar listShootPower[0]
@@ -231,10 +230,10 @@ class Tower():
 	def initCollisionNode(self):
 		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], self.ID);
 
-	def shootProjectile(self, impulseForce):
+	def shootProjectile(self, targetPosition):
 		self.projectiles.append(Projectile(self.projectileType))
-		self.projectiles[-1].position = self.position
-		self.projectiles[-1].impulseForce = impulseForce
+		self.projectiles[-1].position = [self.position[0], self.position[1], self.position[2]+12]
+		self.projectiles[-1].impulseForce = self.aimShoot(targetPosition, self.projectiles[-1])
 		self.projectiles[-1].initProjectile()
 		
 	def createTroop(self):
@@ -243,9 +242,16 @@ class Tower():
 		self.troop.initTroop()
 
 	def aimShoot(self, targetPosition, projectileObj):
-		distanceVector = vector3Sub(targetPosition, self.position)
-		thetaAngle = asin((physics.physicsGravity*distanceVector[0])/((self.listShootPower[0]/projectileObj.mass)**2)) #rads maybe
-		aimImpulseForce = None
+		distanceVector = vector3Sub(targetPosition, projectileObj.position)
+		distanceModule = vector2Module(distanceVector[:2])
+		sinPhiAngle = distanceVector[1]/(distanceModule)
+		cosPhiAngle = distanceVector[0]/(distanceModule)
+		velocity = (self.listShootPower[0]/projectileObj.mass)
+		termSqrt = velocity**4 + physics.physicsGravity*((-physics.physicsGravity*(distanceModule**2)) + 2*distanceVector[2]*(velocity**2))
+		numerador = (velocity**2) - sqrt(termSqrt)
+		denominador = -physics.physicsGravity*distanceModule
+		thetaAngle = atan(numerador/denominador)
+		aimImpulseForce = [self.listShootPower[0]*cosPhiAngle*cos(thetaAngle), self.listShootPower[0]*sinPhiAngle*cos(thetaAngle), self.listShootPower[0]*sin(thetaAngle)]
 		return aimImpulseForce
 
 

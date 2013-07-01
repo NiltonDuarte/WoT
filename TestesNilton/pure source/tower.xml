@@ -19,7 +19,7 @@
 		</selectedColor>
 	</model>
 		<artPath>../HUD images/purpleTowerArt.png</artPath>
-		<initialPoints>100</initialPoints>
+		<initialPoints>130</initialPoints>
         <shootPower>
             <Min>10</Min>
             <Max>40</Max>
@@ -29,8 +29,8 @@
             <Max>40</Max>
         </txShoot>
         <rangeView>
-            <Min>10</Min>
-            <Max>30</Max>
+            <Min>40</Min>
+            <Max>60</Max>
         </rangeView>
         <txTroops>
             <Min>10</Min>

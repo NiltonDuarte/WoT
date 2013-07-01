@@ -1,5 +1,6 @@
 """File that holds the player class"""
 from tower import *
+from troop import *
 from camera import *
 import collision
 
@@ -57,6 +58,11 @@ class Player:
 	
 	def collideTroopEventAgainTowerRange(entry):
 		#print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
+		collindingFromNode = entry.getFromNode()
+		collindingIntoNode = entry.getIntoNode()
+		troopObj = Troop.troopDict[collindingFromNode.getTag("TroopID")]
+		towerObj = Tower.towerDict[collindingIntoNode.getTag("TowerID")]
+		towerObj.shootProjectile([troopObj.position[0] - towerObj.position[0], troopObj.position[1] - towerObj.position[1], 13])
 		return
 		
 	def collideTroopEventAgainProjectile(entry):

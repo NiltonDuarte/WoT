@@ -18,6 +18,8 @@
 			<b> 1 </b>
 		</selectedColor>
 	</model>
+		<artPath>../HUD images/purpleTowerArt.png</artPath>
+		<initialPoints>100</initialPoints>
         <shootPower>
             <Min>10</Min>
             <Max>40</Max>
@@ -34,6 +36,8 @@
             <Min>10</Min>
             <Max>30</Max>
         </txTroops>
+        <troopType>Troop06</troopType>
+        <projectileType>Projectile1</projectileType>
     </tower>
 
     <tower type="Beta Tower">
@@ -53,6 +57,8 @@
 			<b> 0.2 </b>
 		</selectedColor>
 	</model>
+		<artPath>../HUD images/purpleTowerArt.png</artPath>
+		<initialPoints>100</initialPoints>
         <shootPower>
             <Min>20</Min>
             <Max>80</Max>
@@ -69,6 +75,8 @@
             <Min>20</Min>
             <Max>70</Max>
         </txTroops>
+        <troopType>Troop06</troopType>
+        <projectileType>Projectile1</projectileType>
     </tower>
     
     <tower type="Gama Tower">
@@ -88,6 +96,8 @@
 			<b> 0.2 </b>
 		</selectedColor>
 	</model>
+		<artPath>../HUD images/purpleTowerArt.png</artPath>
+		<initialPoints>100</initialPoints>
         <shootPower>
             <Min>20</Min>
             <Max>80</Max>
@@ -104,6 +114,8 @@
             <Min>20</Min>
             <Max>70</Max>
         </txTroops>
+        <troopType>Troop06</troopType>
+        <projectileType>Projectile1</projectileType>
     </tower>
     
     <tower type="Omega Tower">
@@ -123,6 +135,8 @@
 			<b> 0.5 </b>
 		</selectedColor>
 	</model>
+		<artPath>../HUD images/purpleTowerArt.png</artPath>
+		<initialPoints>100</initialPoints>
         <shootPower>
             <Min>20</Min>
             <Max>80</Max>
@@ -139,6 +153,8 @@
             <Min>20</Min>
             <Max>70</Max>
         </txTroops>
+        <troopType>Troop06</troopType>
+        <projectileType>Projectile1</projectileType>
     </tower>
     
 </data>

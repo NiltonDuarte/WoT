@@ -4,17 +4,18 @@ from pandaImports import *
 from pandac.PandaModules import CollisionSphere
 import collision
 import physics
+import xml.etree.ElementTree as ET
 
 class ProjectileModel(DirectObject):
 	'''This class imports the projectile model
 	   that is shot by the towers
 	'''
-	def __init__(self, position):
+	def __init__(self, position, modelTag):
 		#Loading the projectile model
-		self.projectile = loader.loadModel("../arquivos de modelo/Projectile")
+		self.projectile = loader.loadModel(modelTag.find('path').text)
 		self.projectile.reparentTo(render)		
 		#Setting the texture to the projectile
-		self.texture = loader.loadTexture("../texturas/projectile_Texture.png")
+		self.texture = loader.loadTexture(modelTag.find('texture').text)
 		self.projectile.setTexture(self.texture, 1)
 		self.projectile.hprInterval(1,Point3(200,160,260)).loop()
 		#Setting the position of the projectile 
@@ -32,38 +33,51 @@ class Projectile:
 	   of a projectile
     """
 	projectileDict = {}
-	def __init__(self):
+	def __init__(self, projectileType, confFile = "projectile.xml"):
 		self.name = "ProjectileClass"
 		self.ID = str(uuid.uuid4())
 		Projectile.projectileDict[self.ID] = self
+
+		#Getting configuration
+		self.typ = None
+		self.cfTree = ET.parse(confFile)
+		self.cfRoot = self.cfTree.getroot()
+		for element in self.cfRoot.findall('projectile'):
+			if (element.get('type') == projectileType):
+				self.typ = element
+		if self.typ == None: print "Projectile Type do not exist"; return
+		
+		#Getting model configuration
+		self.modelTag = self.typ.find('model')
+		
 		#Mass of projectile
-		self.mass = 100
+		self.mass = float(self.typ.find('mass').text)
 		#self.massMin = 5
 		#self.massMax = 40
 		#self.listMass = [self.mass, self.massMax]
 	
 		#Spread ray of the projectile
-		self.spreadRay = 0 
+		self.spreadRay = float(self.typ.find('spreadRay').text) 
 		#self.spreadRayMin = 5
 		#self.spreadRayMax = 10
 		#self.listSpreadRay = [self.spreadRay, self.spreadRayMax]
 	
 		#Damage percentage of the spread
-		self.spreadPercentage = 0
+		self.spreadPercentage = float(self.typ.find('spreadPercentage').text)
 		#self.spreadPercentageMin = 10
 		#self.spreadPercentageMax = 40
 		#self.listSpreadPercentage = [self.spreadPercentage, self.spreadPercentageMax]
 	
 		#Damage of duration of projectile
-		self.dot = 0
-		self.damageDuration = 100
+		self.dot = float(self.typ.find('dot').text)
+		self.damageDuration = float(self.typ.find('damageDuration').text)
 	
 		#Slow caused by projectile
-		self.slow = 0
-		self.slowDuration = 70
+		self.slow = float(self.typ.find('slow').text)
+		self.slowDuration = float(self.typ.find('slowDuration').text)
 	
 		#Chance of critical damage
-		self.chanceCritical = 0
+		self.chanceCritical = float(self.typ.find('chanceCritical').text)
 
 		#Position of projectile
 		self.position = [0,0,0]
@@ -108,7 +122,7 @@ class Projectile:
 
 	def initModel(self, position):
 		self.position = position
-		self.projectileModel = ProjectileModel(self.position)
+		self.projectileModel = ProjectileModel(self.position, self.modelTag)
         
 	def initCollisionNode(self):
 		self.projectileModel.setCollisionNode(self.name, self.ID);

@@ -10,16 +10,29 @@ class TerrainModel(DirectObject):
 		self.terrain = loader.loadModel("../arquivos de modelo/Terrain1")
 		self.terrain.reparentTo(render)
 		#Setting the texture to the terrain
-		self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
-		self.terrain.setTexture(self.texture, 1)
+		#self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
+		#self.terrain.setTexture(self.texture, 1)
 		#Setting the position of the terrain
 		self.position = Vec3(0, 0, 0)
 		self.terrain.setPos(self.position)
 		#Scaling the terrain
-		terrainCollider = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
-		terrainCollider.node().addSolid(CollisionBox(*self.terrain.getTightBounds()))
-        	
+		terrainBoundLower, terrainBoundUpper = self.terrain.getTightBounds()
+		terrainBoundMiddleUpper, terrainBoundMiddleLower = list(terrainBoundUpper), list(terrainBoundLower)
+		#terrainBoundUpper[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
+		terrainBoundMiddleUpper[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
+		terrainBoundMiddleLower[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
 
+		self.terrainColliderLeftNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
+		self.terrainColliderLeftNP.node().addSolid(CollisionBox(terrainBoundLower, Point3(*terrainBoundMiddleUpper)))
+		
+		self.terrainColliderRightNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
+		self.terrainColliderRightNP.node().addSolid(CollisionBox(Point3(*terrainBoundMiddleLower), terrainBoundUpper))
+     
+	def detachLeft():
+		return
+     
+	def detachRight():   	
+		return
 		
 
 class Ball(DirectObject):

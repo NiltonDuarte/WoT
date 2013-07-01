@@ -12,3 +12,7 @@ from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionB
 
 #WindowProperties is needed to set the size of the screen
 from pandac.PandaModules import WindowProperties
+
+#This will help create the HUDMap camera
+from panda3d.core import Camera
+from direct.showbase.ShowBase import ShowBase

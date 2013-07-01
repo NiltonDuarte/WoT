@@ -11,7 +11,9 @@ from troop import *
 import collision
 from pandaImports import *
 from pandac.PandaModules import CollisionSphere
-from panda3d.core import PandaNode
+from math import *
+import physics
+
 
 class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
@@ -69,6 +71,7 @@ class TowerModel(DirectObject):
 	def setCollisionNode (self, nodeName, rangeView, ID):
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
 		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
+		self.towerCollider.setTag("TowerID", ID)
 		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
 		self.towerCollider.setTag("TowerID", ID)
@@ -103,7 +106,12 @@ class Tower():
 				self.typ = element
 		if self.typ == None: print "Tower Type do not exist"; return
 		#Getting model configuration
-		self.modelTag = self.typ.find('model')		
+		self.modelTag = self.typ.find('model')
+		#Getting troop type
+		self.troopType = self.typ.find('troopType').text
+		#Getting projectile type
+		self.projectileType = self.typ.find('projectileType').text
+		print "projectileType = ",self.projectileType
 
 		#Shooting power of the tower
 		self.shootPower = 0 #Nao usar esta variavel. Usar listShootPower[0]
@@ -140,31 +148,20 @@ class Tower():
 
 
 		#Number of points that the tower will receive
-		self.initialPoints = 100
+		self.initialPoints = int(self.typ.find('initialPoints').text)
 
 		#Position of the tower
 		self.position = [0,0,0]
 		
-		self.projectileParameters = [100, #@mass
-									5, #@spreadRay
-									0, #@spreadPercentage
-									0, #@dot
-									50, #@damageDuration
-									0, #@slow
-									30, #@slowDuration
-									0, #@chanceCritical
-									]
 		self.projectiles = [] #projectiles.append(Projectile())
 		
-		#[@lifeMin, @lifeMax, @speedMin, @speedMax,	@resistenceMin, @resistenceMax]
-		self.troopParameters = [100,250,10,30,10,25]
 		self.troop = None
 		
 		#Graphical part------------------
 
 		self.towerModel = None
 		self.towerInicialized = False
-		self.artPath = "../HUD images/purpleTowerArt.png"
+		self.artPath = self.typ.find('artPath').text
 
 		#----------------------------------
 
@@ -234,21 +231,21 @@ class Tower():
 	def initCollisionNode(self):
 		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], self.ID);
 
-	def shootProjectile(self,position, impulseForce):
-		self.projectiles.append(Projectile())
-		self.projectiles[-1].defineParameters(self.projectileParameters)
-		self.projectiles[-1].position = position
+	def shootProjectile(self, impulseForce):
+		self.projectiles.append(Projectile(self.projectileType))
+		self.projectiles[-1].position = self.position
 		self.projectiles[-1].impulseForce = impulseForce
 		self.projectiles[-1].initProjectile()
 		
 	def createTroop(self):
-		self.troop = Troop(self)
-		self.troop.defineParameters(self.troopParameters)
+		self.troop = Troop(self,self.troopType)
 		self.troop.position = [self.position[0]+randint(-15,15), self.position[1]+randint(-15,15),self.position[2]]
 		self.troop.initTroop()
 
-	def aimShoot(self, targetPosition):
-		directionVector = vector3Sub(targetPosition, self.position)
-		#aimImpulseForce 
+	def aimShoot(self, targetPosition, projectileObj):
+		distanceVector = vector3Sub(targetPosition, self.position)
+		thetaAngle = asin((physics.physicsGravity*distanceVector[0])/((self.listShootPower[0]/projectileObj.mass)**2)) #rads maybe
+		aimImpulseForce = None
+		return aimImpulseForce
 
 

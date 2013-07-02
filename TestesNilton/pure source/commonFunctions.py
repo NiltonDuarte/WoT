@@ -75,3 +75,8 @@ def vector3Sub(vector1, vector2):
 	retVector[1] = vector1[1] - vector2[1]
 	retVector[2] = vector1[2] - vector2[2]
 	return retVector
+def vector2Module(vector1):
+	retModule = 0
+	retModule = (vector1[0]**2 + vector1[1]**2)**0.5
+	return retModule
+	

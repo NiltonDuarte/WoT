@@ -62,7 +62,7 @@ class Player:
 		collindingIntoNode = entry.getIntoNode()
 		troopObj = Troop.troopDict[collindingFromNode.getTag("TroopID")]
 		towerObj = Tower.towerDict[collindingIntoNode.getTag("TowerID")]
-		towerObj.shootProjectile([troopObj.position[0] - towerObj.position[0], troopObj.position[1] - towerObj.position[1], 13])
+		towerObj.shootProjectile(troopObj.position)
 		return
 		
 	def collideTroopEventAgainProjectile(entry):

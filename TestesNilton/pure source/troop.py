@@ -20,6 +20,8 @@ class TroopModel(DirectObject):
 		#Setting the texture to the troop
 		self.texture = loader.loadTexture(modelTag.find('texture').text)
 		self.troop.setTexture(self.texture, 1)
+		self.texture = loader.loadTexture(modelTag.find('texture2').text)
+		#self.troop.setTexture(self.texture, 1)
 		#Setting the position of the tower, sphere and canons
 		self.troop.setPos(Vec3(*position))
 		self.troop.loop('walk')

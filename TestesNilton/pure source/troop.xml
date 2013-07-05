@@ -4,6 +4,7 @@
 		<model>
 			<path>../arquivos de modelo/Troop</path>
 			<texture>../texturas/troop_Texture.png</texture>
+			<texture2>../texturas/troop_Texture2.png</texture2>
 			<walkPath>../arquivos de modelo/Troop-walk</walkPath>
 			<deathPath>../arquivos de modelo/Troop-death</deathPath>
 		</model>

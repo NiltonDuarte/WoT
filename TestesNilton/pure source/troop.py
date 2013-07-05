@@ -13,15 +13,16 @@ class TroopModel(DirectObject):
 	"""
 	def __init__(self, position, modelTag):
 		#Loading the troop model
-		self.troop = loader.loadModel(modelTag.find('path').text)
+		self.troop = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
+														'death' : modelTag.find('deathPath').text})
 		self.troop.reparentTo(render)
 
-		#Setting the texture to the tower
-		#self.texture = loader.loadTexture(modelTag.find('texture').text)
-		#self.troop.setTexture(self.texture, 1)
+		#Setting the texture to the troop
+		self.texture = loader.loadTexture(modelTag.find('texture').text)
+		self.troop.setTexture(self.texture, 1)
 		#Setting the position of the tower, sphere and canons
 		self.troop.setPos(Vec3(*position))
-		
+		self.troop.loop('walk')
 		self.troopColliderNP = None
 
 	def moveTroopModel(self,position):
@@ -30,7 +31,7 @@ class TroopModel(DirectObject):
 		
 	def setCollisionNode (self, collisionNodeName, ID):
 		self.troopColliderNP = self.troop.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
-		self.troopColliderNP.node().addSolid(CollisionBox(Point3(0,0,3.5),2,2,3.5))
+		self.troopColliderNP.node().addSolid(CollisionSphere(0,0,3.5,3.5)) #(Point3(0,0,3.5),2,2,3.5))
 		self.troopColliderNP.setTag("TroopID", ID)
 		collision.addCollider(self.troopColliderNP)
 

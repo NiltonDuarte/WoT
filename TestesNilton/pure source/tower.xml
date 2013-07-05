@@ -21,10 +21,10 @@
 		<artPath>../HUD images/purpleTowerArt.png</artPath>
 		<initialPoints>130</initialPoints>
         <shootPower>
-            <Min>10</Min>
-            <Max>40</Max>
+            <Min>30</Min>
+            <Max>70</Max>
         </shootPower>
-        <txShoot>
+        <txShoot comment = "its divided by 10">
             <Min>10</Min>
             <Max>40</Max>
         </txShoot>
@@ -63,9 +63,9 @@
             <Min>20</Min>
             <Max>80</Max>
         </shootPower>
-        <txShoot>
-            <Min>20</Min>
-            <Max>80</Max>
+        <txShoot comment = "its divided by 10">
+            <Min>10</Min>
+            <Max>30</Max>
         </txShoot>
         <rangeView>
             <Min>20</Min>
@@ -102,9 +102,9 @@
             <Min>20</Min>
             <Max>80</Max>
         </shootPower>
-        <txShoot>
-            <Min>20</Min>
-            <Max>80</Max>
+        <txShoot comment = "its divided by 10">
+            <Min>10</Min>
+            <Max>50</Max>
         </txShoot>
         <rangeView>
             <Min>20</Min>
@@ -141,9 +141,9 @@
             <Min>20</Min>
             <Max>80</Max>
         </shootPower>
-        <txShoot>
-            <Min>20</Min>
-            <Max>80</Max>
+        <txShoot comment = "its divided by 10">
+            <Min>10</Min>
+            <Max>40</Max>
         </txShoot>
         <rangeView>
             <Min>20</Min>

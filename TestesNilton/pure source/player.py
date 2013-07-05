@@ -37,9 +37,11 @@ class Player:
 			self.towerList.append(Tower(towerType))
 			self.towerList[-1].initModel([-300,-300,-300])
 			self.towerList[-1].towerModel.towerMovingColor()
-		"""elif (self.towerList[-1].towerModel == None):
+		else: 
+			self.towerList[-1].delete()
+			self.towerList.append(Tower(towerType))
 			self.towerList[-1].initModel([-300,-300,-300])
-			self.towerList[-1].towerModel.towerMovingColor()"""
+			self.towerList[-1].towerModel.towerMovingColor()
 			
 	def getTower(self,index):
 		return	self.towerList[index]
@@ -65,11 +67,14 @@ class Player:
 		towerObj.shootProjectile(troopObj.position)
 		return
 		
-	def collideTroopEventAgainProjectile(entry):
-		#print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
+	def collideTroopEventIntoProjectile(entry):
+		print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
+		collindingIntoNode = entry.getIntoNode()
+		projectileObj = Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
+		projectileObj.projectileModel.projectile.removeNode()
 		return
 
 	#DO.accept('TroopClass_cnode-again-TowerClass_Rangecnode', collideTroopEventAgainTowerRange)
 	collision.addCollisionEventAgain("TroopClass_cnode","TowerClass_Rangecnode",collideTroopEventAgainTowerRange)
-	collision.addCollisionEventAgain("TroopClass_cnode","ProjectileClass_cnode",collideTroopEventAgainProjectile)
+	collision.addCollisionEventInto("TroopClass_cnode","ProjectileClass_cnode",collideTroopEventIntoProjectile)
 

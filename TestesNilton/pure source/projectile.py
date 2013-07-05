@@ -131,6 +131,12 @@ class Projectile:
 		self.actorNode, self.actorNodePath = physics.setPhysicNodes("Projectile_pnode", self.projectileModel.projectile)
 		physics.setImpulseForce(self.actorNode,self.impulseForce)
 		physics.setMass(self.actorNode,self.mass)
+	
+	"""def projectileInterval(self, endPos):
+		# setup the projectile interval
+		self.trajectory = ProjectileInterval(self.projectileModel.projectile,
+                                     startPos = Point3(*self.position),
+                                     endPos = Point3(*endPos), duration = 1)"""
 
 
 

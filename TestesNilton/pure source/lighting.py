@@ -11,28 +11,29 @@ attenuationA = 0
 attenuationB = 0.005
 attenuationC = 0
 color = [0.3,0.3,0.2,1]
-pointLight = PointLight('pointLight')
+
+pointLight = PointLight('pointLight1')
 pointLight.setColor(VBase4(*color))
 pointLight.setAttenuation(Point3(attenuationA, attenuationB, attenuationC))
 pointLightNP = render.attachNewNode(pointLight)
 pointLightNP.setPos(pos, pos,posZ)
+render.setLight(pointLightNP)
 
-pointLight = PointLight('pointLight')
+pointLight = PointLight('pointLight2')
 pointLight.setColor(VBase4(*color))
 pointLight.setAttenuation(Point3(attenuationA, attenuationB, attenuationC))
-render.setLight(pointLightNP)
 pointLightNP = render.attachNewNode(pointLight)
 pointLightNP.setPos(pos, -pos,posZ)
 render.setLight(pointLightNP)
 
-pointLight = PointLight('pointLight')
+pointLight = PointLight('pointLight3')
 pointLight.setColor(VBase4(*color))
 pointLight.setAttenuation(Point3(attenuationA, attenuationB, attenuationC))
 pointLightNP = render.attachNewNode(pointLight)
 pointLightNP.setPos(-pos, pos,posZ)
 render.setLight(pointLightNP)
 
-pointLight = PointLight('pointLight')
+pointLight = PointLight('pointLight4')
 pointLight.setColor(VBase4(*color))
 pointLight.setAttenuation(Point3(attenuationA, attenuationB, attenuationC))
 pointLightNP = render.attachNewNode(pointLight)

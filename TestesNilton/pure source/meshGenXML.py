@@ -73,6 +73,11 @@ class MeshGen:
 		 cell (yDivs-1)*xDivs+1           ... cell yDivs*xDivs 
 		"""
 		meshET = ET.Element('Mesh')
+		dataET = ET.SubElement(meshET,'Data')
+		divsXET = ET.SubElement(dataET,'DivsX')
+		divsXET.text = str(self.xDivs)
+		divsYET = ET.SubElement(dataET,'DivsY')
+		divsYET.text = str(self.yDivs)
 		cellsET = ET.SubElement(meshET,'Cells')
 		p1 = p2 = p3 = p4 = center = 0
 		cellIndex = 1
@@ -151,7 +156,7 @@ class MeshGen:
 				#Noh cellIndex,4 ; p4 ; center ; neighbors = [cellIndex,2 ; cellIndex,1 ; (cellIndex+1),2 ; cellIndex,3]
 				pointET = ET.SubElement(cellET,'Point')
 				pointIndexET = ET.SubElement(pointET,'Index')
-				pointIndexET.text = str(cellIndex) + ",1"
+				pointIndexET.text = str(cellIndex) + ",4"
 				pointPosET = ET.SubElement(pointET,'Pos')
 				pointPosET.text = str(p4)
 				pointNeighborsET = ET.SubElement(pointET,'Neighbors')
@@ -204,6 +209,6 @@ class MeshGen:
 		tree.write(self.outname +".xml")
 
 terrainModel = LoadTerrainModel("../arquivos de modelo/Terrain1")
-gen = MeshGen("teste", terrainModel,8,8)
+gen = MeshGen("terrain", terrainModel,20,20)
 gen.genMesh();
 run()

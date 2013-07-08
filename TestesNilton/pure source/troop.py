@@ -7,32 +7,47 @@ from commonFunctions import *
 from pandaImports import *
 import xml.etree.ElementTree as ET
 
+troopModelDict = {}
+#Getting configuration
+typ = None
+cfTree = ET.parse("troop.xml")
+cfRoot = cfTree.getroot()
+for element in cfRoot.findall('troop'):
+	troopType = element.get('type')
+	modelTag = element.find('model')
+	#Loading the troop model
+	troopModel = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
+														'death' : modelTag.find('deathPath').text})
+	
+	#Setting the position of the projectile 
+	troopModel.setPos(0,0,0)
+	
+	#Animating the troop
+	troopModel.loop('walk')
+	
+	#Setting the texture to the troop
+	modelTexture = loader.loadTexture(modelTag.find('texture').text)
+	troopModel.setTexture(modelTexture, 1)
+	
+	troopModelDict[troopType] = troopModel
+
 class TroopModel(DirectObject):
 	"""This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	"""
-	def __init__(self, position, modelTag):
-		#Loading the troop model
-		self.troop = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
-														'death' : modelTag.find('deathPath').text})
-		self.troop.reparentTo(render)
-
-		#Setting the texture to the troop
-		self.texture = loader.loadTexture(modelTag.find('texture').text)
-		self.troop.setTexture(self.texture, 1)
-		self.texture = loader.loadTexture(modelTag.find('texture2').text)
-		#self.troop.setTexture(self.texture, 1)
-		#Setting the position of the tower, sphere and canons
-		self.troop.setPos(Vec3(*position))
-		self.troop.loop('walk')
+	def __init__(self, position, modelType):
+		self.troopInstance = render.attachNewNode("Troop-Instance")
+		troopModelDict[modelType].instanceTo(self.troopInstance)
+		#Setting the position of the projectile 
+		self.troopInstance.setPos(Vec3(*position))
 		self.troopColliderNP = None
 
 	def moveTroopModel(self,position):
-		self.troop.setPos(Vec3(*position))
+		self.troopInstance.setPos(Vec3(*position))
 
 		
 	def setCollisionNode (self, collisionNodeName, ID):
-		self.troopColliderNP = self.troop.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
+		self.troopColliderNP = self.troopInstance.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
 		self.troopColliderNP.node().addSolid(CollisionSphere(0,0,3.5,3.5)) #(Point3(0,0,3.5),2,2,3.5))
 		self.troopColliderNP.setTag("TroopID", ID)
 		collision.addCollider(self.troopColliderNP)
@@ -49,6 +64,7 @@ class Troop:
 		self.sourceTower = sourceTower
 
 		#Getting configuration
+		self.modelType = troopType
 		self.typ = None
 		self.cfTree = ET.parse(confFile)
 		self.cfRoot = self.cfTree.getroot()
@@ -140,7 +156,7 @@ class Troop:
 		self.initialPoints = points
 
 	def initModel(self, position):
-		self.troopModel = TroopModel(position,self.modelTag)
+		self.troopModel = TroopModel(position,self.modelType)
 
 	def moveTroop(self,position):
 		self.position = position

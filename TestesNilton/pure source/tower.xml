@@ -1,11 +1,18 @@
 <?xml version="1.0"?>
+<!-- 
+
+txShoot is divided by 10
+
+RangeMax = shootPowerMin**2 / 10* (ProjectileMass**2)
+
+-->
 <data>
-    
+	
     <tower type="Alpha Tower">
 	<model>
 		<base>../arquivos de modelo/Tower.egg</base>
 		<sphere>../arquivos de modelo/Sphere.egg</sphere>
-		<canon>../arquivos de modelo/Canons.egg</canon>
+		<cannon>../arquivos de modelo/Cannons.egg</cannon>
 		<texture>../texturas/tower_Texture.png</texture>
 		<color>
 			<r> 0 </r>
@@ -24,7 +31,7 @@
             <Min>30</Min>
             <Max>70</Max>
         </shootPower>
-        <txShoot comment = "its divided by 10">
+        <txShoot>
             <Min>10</Min>
             <Max>40</Max>
         </txShoot>
@@ -44,7 +51,7 @@
 	<model>
 		<base>../arquivos de modelo/Tower</base>
 		<sphere>../arquivos de modelo/Sphere</sphere>
-		<canon>../arquivos de modelo/Canons</canon>
+		<cannon>../arquivos de modelo/Cannons</cannon>
 		<texture>../texturas/tower_Texture.png</texture>
 		<color>
 			<r> 1 </r>
@@ -63,7 +70,7 @@
             <Min>20</Min>
             <Max>80</Max>
         </shootPower>
-        <txShoot comment = "its divided by 10">
+        <txShoot>
             <Min>10</Min>
             <Max>30</Max>
         </txShoot>
@@ -83,7 +90,7 @@
 	<model>
 		<base>../arquivos de modelo/Tower</base>
 		<sphere>../arquivos de modelo/Sphere</sphere>
-		<canon>../arquivos de modelo/Canons</canon>
+		<cannon>../arquivos de modelo/Cannons</cannon>
 		<texture>../texturas/tower_Texture.png</texture>
 		<color>
 			<r> 0 </r>
@@ -102,7 +109,7 @@
             <Min>20</Min>
             <Max>80</Max>
         </shootPower>
-        <txShoot comment = "its divided by 10">
+        <txShoot>
             <Min>10</Min>
             <Max>50</Max>
         </txShoot>
@@ -122,7 +129,7 @@
 	<model>
 		<base>../arquivos de modelo/Tower</base>
 		<sphere>../arquivos de modelo/Sphere</sphere>
-		<canon>../arquivos de modelo/Canons</canon>
+		<cannon>../arquivos de modelo/Cannons</cannon>
 		<texture>../texturas/tower_Texture.png</texture>
 		<color>
 			<r> 0.5 </r>
@@ -141,7 +148,7 @@
             <Min>20</Min>
             <Max>80</Max>
         </shootPower>
-        <txShoot comment = "its divided by 10">
+        <txShoot>
             <Min>10</Min>
             <Max>40</Max>
         </txShoot>

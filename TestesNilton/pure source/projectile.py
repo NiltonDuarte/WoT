@@ -6,24 +6,43 @@ import collision
 import physics
 import xml.etree.ElementTree as ET
 
+
+projectileModelDict = {}
+#Getting configuration
+typ = None
+cfTree = ET.parse("projectile.xml")
+cfRoot = cfTree.getroot()
+for element in cfRoot.findall('projectile'):
+	projectileType = element.get('type')
+	modelTag = element.find('model')
+	#Loading the projectile model
+	projectileModelDict[projectileType] = loader.loadModel(modelTag.find('path').text)
+	
+	#Setting the position of the projectile 
+	projectileModelDict[projectileType].setPos(0,0,0)
+	
+	#Animating the projectile
+	projectileModelDict[projectileType].hprInterval(1,Point3(200,160,260)).loop()
+	
+	#Setting the texture to the projectile
+	modelTexture = loader.loadTexture(modelTag.find('texture').text)
+	projectileModelDict[projectileType].setTexture(modelTexture, 1)
+
+
 class ProjectileModel(DirectObject):
 	'''This class imports the projectile model
 	   that is shot by the towers
 	'''
-	def __init__(self, position, modelTag):
-		#Loading the projectile model
-		self.projectile = loader.loadModel(modelTag.find('path').text)
-		self.projectile.reparentTo(render)		
-		#Setting the texture to the projectile
-		self.texture = loader.loadTexture(modelTag.find('texture').text)
-		self.projectile.setTexture(self.texture, 1)
-		self.projectile.hprInterval(1,Point3(200,160,260)).loop()
+	def __init__(self, position, modelType):
+		#Instancing the projectile model
+		self.projectileInstance = render.attachNewNode("Projectile-Instance")
+		projectileModelDict[modelType].instanceTo(self.projectileInstance)
 		#Setting the position of the projectile 
-		self.projectile.setPos(Vec3(*position))
+		self.projectileInstance.setPos(Vec3(*position))
 		self.projectileNP = None
 		
 	def setCollisionNode (self, collisionNodeName, ID):
-		self.projectileNP = self.projectile.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
+		self.projectileNP = self.projectileInstance.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
 		self.projectileNP.node().addSolid(CollisionSphere(Point3(0,0,0),2))
 		self.projectileNP.setTag("ProjectileID", ID)
 		#collision.addCollider(self.projectileNP)
@@ -33,12 +52,13 @@ class Projectile:
 	   of a projectile
     """
 	projectileDict = {}
-	def __init__(self, projectileType, confFile = "projectile.xml"):
+	def __init__(self, projectileType):
 		self.name = "ProjectileClass"
 		self.ID = str(uuid.uuid4())
 		Projectile.projectileDict[self.ID] = self
 
 		#Getting configuration
+		confFile = "projectile.xml"
 		self.typ = None
 		self.cfTree = ET.parse(confFile)
 		self.cfRoot = self.cfTree.getroot()
@@ -48,7 +68,7 @@ class Projectile:
 		if self.typ == None: print "Projectile Type do not exist"; return
 		
 		#Getting model configuration
-		self.modelTag = self.typ.find('model')
+		self.modelType = projectileType
 		
 		#Mass of projectile
 		self.mass = float(self.typ.find('mass').text)
@@ -122,13 +142,13 @@ class Projectile:
 
 	def initModel(self, position):
 		self.position = position
-		self.projectileModel = ProjectileModel(self.position, self.modelTag)
+		self.projectileModel = ProjectileModel(self.position, self.modelType)
         
 	def initCollisionNode(self):
 		self.projectileModel.setCollisionNode(self.name, self.ID);
 	
 	def initPhysics(self):
-		self.actorNode, self.actorNodePath = physics.setPhysicNodes("Projectile_pnode", self.projectileModel.projectile)
+		self.actorNode, self.actorNodePath = physics.setPhysicNodes("Projectile_pnode", self.projectileModel.projectileInstance)
 		physics.setImpulseForce(self.actorNode,self.impulseForce)
 		physics.setMass(self.actorNode,self.mass)
 	

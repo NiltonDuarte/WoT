@@ -71,10 +71,10 @@ class Player:
 		print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
 		collindingIntoNode = entry.getIntoNode()
 		projectileObj = Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
-		projectileObj.projectileModel.projectile.removeNode()
+		projectileObj.projectileModel.projectileInstance.removeNode()
 		return
 
-	#DO.accept('TroopClass_cnode-again-TowerClass_Rangecnode', collideTroopEventAgainTowerRange)
+
 	collision.addCollisionEventAgain("TroopClass_cnode","TowerClass_Rangecnode",collideTroopEventAgainTowerRange)
 	collision.addCollisionEventInto("TroopClass_cnode","ProjectileClass_cnode",collideTroopEventIntoProjectile)
 

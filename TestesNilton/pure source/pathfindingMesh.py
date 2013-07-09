@@ -38,8 +38,7 @@ class Mesh:
 				self.meshMatrix[i][j][indexAux][1] = float(point.find("Pos").text[1:-1].split(',')[1])
 				indexAux += 1
 	
-	@staticmethod
-	def getLowerScore(scoreList, useSet):
+	def getLowerScore(self, scoreList, useSet):
 		aux = [None, 10**10]
 		for i in range(len(useSet)):
 			if aux[1] > scoreList[useSet[i]] and scoreList[useSet[i]] != None:
@@ -47,11 +46,10 @@ class Mesh:
 				aux[0] = useSet[i]
 		if aux[0] in useSet:
 			return aux[0]
-	
-	@staticmethod		
-	def getNeighbors(node, N):
-		indexI = (node-1)/N
-		indexJ = (node-1)%N
+			
+	def getNeighbors(self, node):
+		indexI = (node-1)/self.rangeI
+		indexJ = (node-1)%self.rangeJ
 		
 		neighbors = []
 		
@@ -66,10 +64,9 @@ class Mesh:
 		
 		return neighbors
 	
-	@staticmethod
-	def reconstructPath(cameFrom, node, goal):
+	def reconstructPath(self, cameFrom, node, goal):
 		if (node in cameFrom or node == goal) and cameFrom[node] != None:
-			p = Mesh.reconstructPath(cameFrom, cameFrom[node], goal)
+			p = self.reconstructPath(cameFrom, cameFrom[node], goal)
 			return p+[node]
 		else:
 			return [node]
@@ -84,13 +81,13 @@ class Mesh:
 		score[initCell] = 0
 		
 		while len(toUseSet):
-			currentCell = Mesh.getLowerScore(score, toUseSet)
+			currentCell = self.getLowerScore(score, toUseSet)
 			if currentCell == goalCell:
-				return Mesh.reconstructPath(cameFrom, goalCell, goalCell)
+				return self.reconstructPath(cameFrom, goalCell, goalCell)
 			
 			toUseSet.remove(currentCell)
 			usedSet.append(currentCell)
-			neighborNodes = Mesh.getNeighbors(currentCell, self.rangeI)
+			neighborNodes = self.getNeighbors(currentCell)
 			
 			for neighbor in neighborNodes:
 				indexI = (neighbor-1)/self.rangeI

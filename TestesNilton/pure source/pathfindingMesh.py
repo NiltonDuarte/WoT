@@ -38,11 +38,78 @@ class Mesh:
 				self.meshMatrix[i][j][indexAux][1] = float(point.find("Pos").text[1:-1].split(',')[1])
 				indexAux += 1
 	
-	def A_Star_Algorithm(self, initPoint):
+	@staticmethod
+	def getLowerScore(scoreList, useSet):
+		aux = [None, 10**10]
+		for i in range(len(useSet)):
+			if aux[1] > scoreList[useSet[i]] and scoreList[useSet[i]] != None:
+				aux[1] = scoreList[useSet[i]]
+				aux[0] = useSet[i]
+		if aux[0] in useSet:
+			return aux[0]
+	
+	@staticmethod		
+	def getNeighbors(node, N):
+		indexI = (node-1)/N
+		indexJ = (node-1)%N
 		
-		path = []
-		return path
+		neighbors = []
+		
+		if indexI > 0:
+			neighbors.append(1+indexJ+(N*(indexI-1)))
+		if indexJ > 0:
+			neighbors.append(indexJ+(N*indexI))
+		if indexI < N-1:
+			neighbors.append(1+indexJ+(N*(indexI+1)))
+		if indexJ < N-1:
+			neighbors.append(2+indexJ+(N*indexI))
+		
+		return neighbors
+	
+	@staticmethod
+	def reconstructPath(cameFrom, node, goal):
+		if (node in cameFrom or node == goal) and cameFrom[node] != None:
+			p = Mesh.reconstructPath(cameFrom, cameFrom[node], goal)
+			return p+[node]
+		else:
+			return [node]
+	
+	def A_Star_Algorithm(self, initCell, goalCell):
+		"""A* algorithm for path finding"""
+		usedSet = []			#The set of nodes already evaluated
+		toUseSet = [initCell]	#The set of nodes to be used
+		cameFrom = [None for i in range((self.rangeI*self.rangeJ)+1)]	#This holds each node's father
+		
+		score = [10 for i in range((self.rangeI*self.rangeJ)+1)]		#This holds cell's weight
+		score[initCell] = 0
+		
+		while len(toUseSet):
+			currentCell = Mesh.getLowerScore(score, toUseSet)
+			if currentCell == goalCell:
+				return Mesh.reconstructPath(cameFrom, goalCell, goalCell)
+			
+			toUseSet.remove(currentCell)
+			usedSet.append(currentCell)
+			neighborNodes = Mesh.getNeighbors(currentCell, self.rangeI)
+			
+			for neighbor in neighborNodes:
+				indexI = (neighbor-1)/self.rangeI
+				indexJ = (neighbor-1)%self.rangeJ
+				auxScore = score[currentCell] + self.meshMatrix[indexI][indexJ][WEIGHT]
+				
+				if neighbor in usedSet and auxScore >= score[neighbor]:
+					continue
+				
+				if neighbor not in toUseSet or auxScore < score[neighbor]:
+					cameFrom[neighbor] = currentCell
+					score[neighbor] = auxScore
+					if neighbor not in toUseSet:
+						toUseSet.append(neighbor)
+		
+		return False
+		
 
 
 mesh = Mesh()
 print "\n",mesh.meshMatrix
+print mesh.A_Star_Algorithm(1, 83)

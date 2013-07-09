@@ -199,7 +199,7 @@ class Tower():
 		#----------------------------------
 		
 		#Game engine part------------------
-		self.timeLastShoot = 99
+		self.timeLastShoot = 0
 		#----------------------------------
 
             
@@ -274,14 +274,16 @@ class Tower():
 		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], self.ID);
 
 	def shootProjectile(self, targetPosition):
-		if (self.timeLastShoot > 10.0/self.listTxShoot[0]):
-			self.timeLastShoot = 0
+		timeSinceLastShoot = globalClock.getFrameTime() - self.timeLastShoot
+		print "timeLastShoot = ",self.timeLastShoot
+		if (timeSinceLastShoot > 10.0/self.listTxShoot[0]):
+			print "Shooted timeLastShoot = ",self.timeLastShoot
+			self.timeLastShoot = globalClock.getFrameTime()
 			self.projectiles.append(Projectile(self.projectileType))
 			self.projectiles[-1].position = [self.position[0], self.position[1], self.position[2]+12]
 			self.projectiles[-1].impulseForce = self.aimShoot(targetPosition, self.projectiles[-1])		
 			self.projectiles[-1].initProjectile()
-		else:
-			self.timeLastShoot += globalClock.getDt()
+			
 		
 	def createTroop(self):
 		self.troop = Troop(self,self.troopType)

@@ -13,11 +13,16 @@ window_Height = 640
 wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
-miniMap = HUDMap()
 terr = TerrainModel()
 player1 = Player("Player1", "lylyh")
 player2 = Player("Player2", "Niltin")
 
+upperWall = WallFortune([0, 100, 0], "../arquivos de modelo/Wall")
+bottomWall = WallFortune([0, -100, 0], "../arquivos de modelo/Wall")
+leftWall = WallFortune([-100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
+leftWall.rotateZ(90)
+rightWall = WallFortune([100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
+rightWall.rotateZ(270)
 
 
 sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
@@ -26,6 +31,7 @@ gameScreenFSM = gameScreenFSM()
 gameScreenFSM.request("InitScreen")
 #gameFSM.request("PlayScreen")
 
+miniMap = HUDMap()
 
 class World(DirectObject):
 	def __init__(self):

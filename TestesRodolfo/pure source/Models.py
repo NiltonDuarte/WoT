@@ -1,5 +1,22 @@
 from pandaImports import *
 
+class WallFortune(DirectObject):
+	'''This class imports the walls and do the needed transformations
+	   to show them on the game screen.
+	'''
+	def __init__(self, position, model):
+		#Loading the terrain model
+		self.wall = loader.loadModel(model)
+		self.wall.reparentTo(render)
+		#Setting the texture to the terrain
+		self.texture = loader.loadTexture("../texturas/wall_of_fortune_Texture.png")
+		self.wall.setTexture(self.texture, 1)
+		#Setting the position of the terrain
+		self.wall.setPos(Vec3(*position))
+		
+	def rotateZ(self, angle):
+		self.wall.setHpr(angle , 0.0, 0.0)
+
 
 class TerrainModel(DirectObject):
 	'''This class imports the terrain model and do the needed transformations

@@ -5,34 +5,54 @@ import collision
 import physics
 from commonFunctions import *
 from pandaImports import *
+import xml.etree.ElementTree as ET
+from pathfindingMesh import *
+import AI
+
+troopModelDict = {}
+#Getting configuration
+typ = None
+cfTree = ET.parse("troop.xml")
+cfRoot = cfTree.getroot()
+for element in cfRoot.findall('troop'):
+	troopType = element.get('type')
+	modelTag = element.find('model')
+	#Loading the troop model
+	troopModel = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
+														'death' : modelTag.find('deathPath').text})
+	
+	#Setting the position of the projectile 
+	troopModel.setPos(0,0,0)
+	
+	#Animating the troop
+	troopModel.loop('walk')
+	
+	#Setting the texture to the troop
+	modelTexture = loader.loadTexture(modelTag.find('texture').text)
+	troopModel.setTexture(modelTexture, 1)
+	
+	troopModelDict[troopType] = troopModel
 
 class TroopModel(DirectObject):
 	"""This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	"""
-	def __init__(self, position, color):
-		#Loading the troop model
-		self.troop = loader.loadModel("../arquivos de modelo/Troop")
-		self.troop.reparentTo(render)
-
-		#self.color is the color of the sphere and tinting the sphere
-		self.color = color
-
-		#Setting the texture to the troop
-		self.texture = loader.loadTexture("../texturas/troop_Texture.png")
-		self.troop.setTexture(self.texture, 1)
-		#Setting the position of the tower, sphere and canons
-		self.troop.setPos(Vec3(*position))
-		
+	def __init__(self, sourceTroop, position, modelType):
+		self.sourceTroop = sourceTroop
+		self.troopInstance = render.attachNewNode("Troop-Instance")
+		troopModelDict[modelType].instanceTo(self.troopInstance)
+		#Setting the position of the projectile 
+		self.troopInstance.setPos(Vec3(*position))
 		self.troopColliderNP = None
 
 	def moveTroopModel(self,position):
-		self.troop.setPos(Vec3(*position))
+		self.troopInstance.setPos(Vec3(*position))
 
 		
 	def setCollisionNode (self, collisionNodeName, ID):
-		self.troopColliderNP = self.troop.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
-		self.troopColliderNP.node().addSolid(CollisionBox(Point3(0,0,3.5),2,2,3.5))
+		self.troopColliderNP = self.troopInstance.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
+		self.troopColliderNP.node().addSolid(CollisionSphere(0,0,3.5,3.5)) #(Point3(0,0,3.5),2,2,3.5))
+		self.troopColliderNP.node().setFromCollideMask(self.sourceTroop.sourceTower.enemyBitMask)
 		self.troopColliderNP.setTag("TroopID", ID)
 		collision.addCollider(self.troopColliderNP)
 
@@ -41,43 +61,58 @@ class Troop:
 	of a troop
 	"""
 	troopDict = {}
-	def __init__(self, sourceTower, position = [0,0,0], initTroopFunc = False, initialPoints=230, listOfParameters=[]):
+	def __init__(self, sourceTower, troopType, confFile = "troop.xml"):
 		self.name = "TroopClass"
 		self.ID = str(uuid.uuid4())
 		Troop.troopDict[self.ID] = self
 		self.sourceTower = sourceTower
+
+		#Getting configuration
+		self.modelType = troopType
+		self.typ = None
+		self.cfTree = ET.parse(confFile)
+		self.cfRoot = self.cfTree.getroot()
+		for element in self.cfRoot.findall('troop'):
+			if (element.get('type') == troopType):
+				self.typ = element
+		if self.typ == None: print "Troop Type do not exist"; return
+		
+		#Getting model configuration
+		self.modelTag = self.typ.find('model')
+				
 		#Life of a troop
+		self.lifeTag = self.typ.find('life')		
 		self.life = 0
-		self.lifeMin = 100
-		self.lifeMax = 250
+		self.lifeMin = int(self.lifeTag.find('Min').text)
+		self.lifeMax = int(self.lifeTag.find('Max').text)
 		self.listLife = [self.life, self.lifeMax, self.lifeMin]
 
 		#Speed of a troop
+		self.speedTag = self.typ.find('speed')
 		self.speed = 0
-		self.speedMin = 10
-		self.speedMax = 30
+		self.speedMin = int(self.speedTag.find('Min').text)
+		self.speedMax = int(self.speedTag.find('Max').text)
 		self.listSpeed = [self.speed, self.speedMax, self.speedMin]
 
 		#Resistence of a troop
+		self.resistenceTag = self.typ.find('resistence')
 		self.resistence = 0
-		self.resistenceMin = 10
-		self.resistenceMax = 25
+		self.resistenceMin = int(self.resistenceTag.find('Min').text)
+		self.resistenceMax = int(self.resistenceTag.find('Min').text)
 		self.listResistence = [self.resistence, self.resistenceMax, self.resistenceMin]
 
 		self.listAttributes = [self.listLife, self.listSpeed, self.listResistence]
 
 
 		#Position of the troop
-		self.position = position
-		self.positionBefore = [0,0,0]
+		self.position = sourceTower.position
+		self.prevPosition = self.position
 
-		self.initialPoints = initialPoints
-
+		self.initialPoints = int(self.typ.find('initialPoints').text)
 		#Graphical part------------------
 		self.color = [0,0,0]
-		self.troopModel = None #TroopModel(position,[0,0,0])
-		#self.troopModel.setCollisionNode(self.name, self.ID)
-		self.artPath = "../HUD images/troopArt.png"
+		self.troopModel = None
+		self.artPath = self.typ.find('artPath').text
 
 		#----------------------------------
 
@@ -116,16 +151,21 @@ class Troop:
 			#Attributing random values
 			startRandomAttributes(self.listAttributes, self.initialPoints)
 			
-			self.initModel(self.position,self.color)
+			self.initModel(self.position)
 			self.initCollisionNode()
+			
+			pathFollowList = navigationMesh.getPointsSequence(navigationMesh.A_Star_Algorithm(self.position[0], self.position[1], self.sourceTower.sourcePlayer.enemyTarget[0], self.sourceTower.sourcePlayer.enemyTarget[1]))
+			AI.Ai.addCharAI(self.troopModel.troopInstance,"troop",0,pathFollowList)
+
+			
 		else:
 			print "Error with the number of initial points of the tower" 
 
 	def setInitialPoints(self, points):
 		self.initialPoints = points
 
-	def initModel(self, position, color):
-		self.troopModel = TroopModel(position,color)
+	def initModel(self, position):
+		self.troopModel = TroopModel(self,position,self.modelType)
 
 	def moveTroop(self,position):
 		self.position = position
@@ -134,6 +174,10 @@ class Troop:
 
 	def initCollisionNode(self):
 		self.troopModel.setCollisionNode(self.name, self.ID);
+
+	def updatePosition(self, newPosition):
+		self.prevPosition = self.position
+		self.position = newPosition
 		
 
 

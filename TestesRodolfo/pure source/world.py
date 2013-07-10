@@ -14,8 +14,6 @@ wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
 miniMap = HUDMap()
-
-
 terr = TerrainModel()
 player1 = Player("Player1", "lylyh")
 player2 = Player("Player2", "Niltin")
@@ -54,8 +52,6 @@ class World(DirectObject):
 		#Frame duration
 		deltaTime = task.time - task.last
 		task.last = task.time
-		
-		#print base.win.getXSize(), base.win.getYSize()
 
 		player.Player.currPlayer.camera.moveCameraXY()
 		#this function returns Task.cont

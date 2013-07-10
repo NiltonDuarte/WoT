@@ -10,6 +10,7 @@ physicsNode = NodePath("PhysicsNode")
 physicsNode.reparentTo(render)
 #Enabling the physics engine
 base.enableParticles()
+physicsGravity = -9.81
 
 	
 	
@@ -19,7 +20,7 @@ def setGravity():
 	gravityForceNode = ForceNode('gravity_Force')
 	#self.gravityForceNodePath = self.projectile.attachNewNode(self.gravityForceNode)
 	#creating the gravity acceleration
-	gravityForce = LinearVectorForce(0,0,-9.81) 
+	gravityForce = LinearVectorForce(0,0,physicsGravity) 
 	#Now self.gravityForceNode will be transformed by the gravity
 	gravityForceNode.addForce(gravityForce)
 	base.physicsMgr.addLinearForce(gravityForce)

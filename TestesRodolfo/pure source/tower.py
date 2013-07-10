@@ -11,57 +11,106 @@ from troop import *
 import collision
 from pandaImports import *
 from pandac.PandaModules import CollisionSphere
-from panda3d.core import PandaNode
+from math import *
+import physics
+
+towerModelDict = {}
+#Getting configuration
+typ = None
+cfTree = ET.parse("tower.xml")
+cfRoot = cfTree.getroot()
+for element in cfRoot.findall('tower'):
+	
+	towerType = element.get('type')
+	modelTag = element.find('model')
+	
+	
+	#Loading the tower models
+	
+	#loading the sphere
+	towerModelDict[towerType] = loader.loadModel(modelTag.find('sphere').text)
+	
+	#Setting the position of the tower 
+	towerModelDict[towerType].setPos(0,0,0)
+	
+	#loading the base of the tower
+	towerBase = loader.loadModel(modelTag.find('base').text)
+	towerBase.setColorOff()
+	#Setting the texture to the base
+	texture = loader.loadTexture(modelTag.find('texture').text)
+	towerBase.setTexture(texture, 1)
+	towerBase.setPos(0,0,0)
+	towerBase.reparentTo(towerModelDict[towerType])
+	
+	#loading the cannons that stays inside the ball
+	towerCannons = loader.loadModel(modelTag.find('cannon').text)
+	towerCannons.reparentTo(towerModelDict[towerType])
+	towerCannons.setColorOff()
+	towerCannons.setPos(0,0,0)
+	towerCannons.hprInterval(5,Point3(360,0,0)).loop()
+
+
+	
 
 class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
-	def __init__(self, position, modelTag, color):
-		#PandaNode.__init__(self, "TowerModel")
-		#Loading the tower model
-		self.tower = loader.loadModel(modelTag.find('base').text)
-		self.tower.reparentTo(render)
-		#loading the ball that stays above the tower
-		self.sphere = loader.loadModel(modelTag.find('sphere').text)
-		self.sphere.reparentTo(render)
-		#loading the canons that stays inside the ball
-		self.canons = loader.loadModel(modelTag.find('canon').text)
-		self.canons.reparentTo(render)
-		self.canons.hprInterval(5,Point3(360,0,0)).loop()
+	def __init__(self,sourceTower, position, modelTag, towerType):
+		self.sourceTower = sourceTower
+		self.colorTag = modelTag.find('color')
+		self.color = [float(self.colorTag.find('r').text), 
+					  float(self.colorTag.find('g').text),
+					  float(self.colorTag.find('b').text)]
+		self.selectedColorTag = modelTag.find('selectedColor')
+		self.selectedColor = [float(self.selectedColorTag.find('r').text), 
+							  float(self.selectedColorTag.find('g').text),
+							  float(self.selectedColorTag.find('b').text)]
+		self.movingColor = self.selectedColor
+		
+		
+		
+		#Loading the tower instance
+		self.towerInstance = render.attachNewNode("Tower-Instance")
+		towerModelDict[towerType].instanceTo(self.towerInstance)
+		
 		#self.color is the color of the sphere and tinting the sphere
-		self.color = color
-		self.sphere.setColor(*self.color)
-		self.canons.setColor(0,0,0)
-		#Setting the texture to the tower
-		self.texture = loader.loadTexture(modelTag.find('texture').text)
-		self.tower.setTexture(self.texture, 1)
+		self.towerInstance.setColor(*self.color)
 		#Setting the position of the tower, sphere and canons
-		self.tower.setPos(Vec3(*position))
-		self.sphere.setPos(Vec3(*position))
-		self.canons.setPos(Vec3(*position))
+		self.towerInstance.setPos(Vec3(*position))
+		
 		
 	def moveTowerModel(self,position):
-		self.tower.setPos(Vec3(*position))
-		self.sphere.setPos(Vec3(*position))
-		self.canons.setPos(Vec3(*position))
+		self.towerInstance.setPos(Vec3(*position))
+		#self.sphere.setPos(Vec3(*position))
+		#self.canons.setPos(Vec3(*position))
 		
-	def towerSelectedColor(self,color = [0,0,1]):
-		self.sphere.setColor(*color)
+	def towerSelectedColor(self,color = None):
+		if color is None:
+			color = self.selectedColor
+		self.towerInstance.setColor(*color)
 
-	def towerMovingColor(self, color = [0,1,0]):
-		self.sphere.setColor(*color)
+	def towerMovingColor(self, color = None):
+		if color is None:
+			color = self.movingColor
+		self.towerInstance.setColor(*color)
 		
 	def resetColor(self):
-		self.sphere.setColor(*self.color)
+		self.towerInstance.setColor(*self.color)
 		
 	def setCollisionNode (self, nodeName, rangeView, ID):
-		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
+		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
 		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
-		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_cnode'))
+		self.towerCollider.setCollideMask(self.sourceTower.sourcePlayer.playerBitMask)
+		self.towerCollider.setTag("TowerID", ID)
+		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
 		self.towerCollider.setTag("TowerID", ID)
 		print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
+		
+	def delete(self):
+		self.towerInstance.removeNode()
+		self.towerInstance = None
 	
 	"""	
 	def setCollisionNode (self, collisionNodeName, rangeView):
@@ -77,30 +126,29 @@ class Tower():
 
 	towerDict = {}
 
-	def __init__(self, initTowerFunc = False, points=0, listOfParameters=[], confFile='tower.xml', towerType='Omega Tower'):
+	def __init__(self, sourcePlayer, towerType):
 
 		self.name = "TowerClass"
 		self.ID = str(uuid.uuid4())
 		Tower.towerDict[self.ID] = self
-
+		self.towerType = towerType
+		self.sourcePlayer = sourcePlayer
+		self.enemyBitMask = sourcePlayer.inactivePlayer.playerBitMask
 		#Getting configuration
-		self.cfTree = ET.parse(confFile)
+		self.towerType = towerType
+		self.typ = None
+		self.cfTree = ET.parse('tower.xml')
 		self.cfRoot = self.cfTree.getroot()
 		for element in self.cfRoot.findall('tower'):
-			if (element.get('type') == towerType):
+			if (element.get('type') == self.towerType):
 				self.typ = element
-
+		if self.typ == None: print "Tower Type do not exist"; return
 		#Getting model configuration
 		self.modelTag = self.typ.find('model')
-		self.colorTag = self.typ.find('color')
-		self.color = [float(self.colorTag.find('r').text), 
-					  float(self.colorTag.find('g').text),
-					  float(self.colorTag.find('b').text)]
-		self.selectedColorTag = self.typ.find('color')
-		self.selectedColor = [float(self.selectedColorTag.find('r').text), 
-							  float(self.selectedColorTag.find('g').text),
-							  float(self.selectedColorTag.find('b').text)]
-		
+		#Getting troop type
+		self.troopType = self.typ.find('troopType').text
+		#Getting projectile typefrom direct.interval.ActorInterval import ActorInterval
+		self.projectileType = self.typ.find('projectileType').text
 
 		#Shooting power of the tower
 		self.shootPower = 0 #Nao usar esta variavel. Usar listShootPower[0]
@@ -137,38 +185,28 @@ class Tower():
 
 
 		#Number of points that the tower will receive
-		self.initialPoints = 100
+		self.initialPoints = int(self.typ.find('initialPoints').text)
 
 		#Position of the tower
 		self.position = [0,0,0]
 		
-		self.projectileParameters = [100, #@mass
-									5, #@spreadRay
-									0, #@spreadPercentage
-									0, #@dot
-									50, #@damageDuration
-									0, #@slow
-									30, #@slowDuration
-									0, #@chanceCritical
-									]
 		self.projectiles = [] #projectiles.append(Projectile())
 		
-		#[@lifeMin, @lifeMax, @speedMin, @speedMax,	@resistenceMin, @resistenceMax]
-		self.troopParameters = [100,250,10,30,10,25]
 		self.troop = None
 		
 		#Graphical part------------------
 
 		self.towerModel = None
 		self.towerInicialized = False
-		self.artPath = "../HUD images/purpleTowerArt.png"
+		self.artPath = self.typ.find('artPath').text
 
 		#----------------------------------
+		
+		#Game engine part------------------
+		self.timeLastShoot = 0
+		self.timeLastSpawn = 0
+		#----------------------------------
 
-		if (len(listOfParameters) > 0 and points and initTowerFunc):
-			self.initialPoints = points
-			self.defineParameters(listOfParameters)
-			self.initTower()
             
 	def initTower(self):
 		"""Initialize the tower with random values inside a interval"""
@@ -223,7 +261,12 @@ class Tower():
 
 	def initModel(self, position):
 		self.position = position
-		self.towerModel = TowerModel(position, self.modelTag, self.color)
+		self.towerModel = TowerModel(self, position, self.modelTag, self.towerType)
+	
+	def delete(self):
+		if self.towerModel != None:
+			self.towerModel.delete()
+			self.towerModel = None
 
 	def moveTower(self,position):
 		self.position = position
@@ -235,21 +278,41 @@ class Tower():
 	def initCollisionNode(self):
 		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], self.ID);
 
-	def shootProjectile(self,position, impulseForce):
-		self.projectiles.append(Projectile())
-		self.projectiles[-1].defineParameters(self.projectileParameters)
-		self.projectiles[-1].position = position
-		self.projectiles[-1].impulseForce = impulseForce
-		self.projectiles[-1].initProjectile()
+	def shootProjectile(self, targetPosition):
+		timeSinceLastShoot = globalClock.getFrameTime() - self.timeLastShoot
+		#print "timeLastShoot = ",self.timeLastShoot
+		if (timeSinceLastShoot > 10.0/self.listTxShoot[0]):
+			#print "Shooted timeLastShoot = ",self.timeLastShoot
+			self.timeLastShoot = globalClock.getFrameTime()
+			self.projectiles.append(Projectile(self.projectileType))
+			self.projectiles[-1].position = [self.position[0], self.position[1], self.position[2]+12]
+			self.projectiles[-1].impulseForce = self.aimShoot(targetPosition, self.projectiles[-1])		
+			self.projectiles[-1].initProjectile()
+
+	def spawnTroop(self):
+		timeSinceLastSpawn = globalClock.getFrameTime() - self.timeLastSpawn
+		if (timeSinceLastSpawn > 20.0/self.listTxTroops[0]):
+			self.timeLastSpawn = globalClock.getFrameTime()
+			self.createTroop()
 		
 	def createTroop(self):
-		self.troop = Troop(self)
-		self.troop.defineParameters(self.troopParameters)
+		self.troop = Troop(self,self.troopType)
 		self.troop.position = [self.position[0]+randint(-15,15), self.position[1]+randint(-15,15),self.position[2]]
 		self.troop.initTroop()
 
-	def aimShoot(self, targetPosition):
-		directionVector = vector3Sub(targetPosition, self.position)
-		#aimImpulseForce 
+	def aimShoot(self, targetPosition, projectileObj):
+		targetPosition = targetPosition[:]
+		targetPosition[2] += 4
+		distanceVector = vector3Sub(targetPosition, projectileObj.position)
+		distanceModule = vector2Module(distanceVector[:2])
+		sinPhiAngle = distanceVector[1]/(distanceModule)
+		cosPhiAngle = distanceVector[0]/(distanceModule)
+		velocity = (self.listShootPower[0]/projectileObj.mass)
+		termSqrt = velocity**4 + physics.physicsGravity*((-physics.physicsGravity*(distanceModule**2)) + 2*distanceVector[2]*(velocity**2))
+		numerador = (velocity**2) - sqrt(termSqrt)
+		denominador = -physics.physicsGravity*distanceModule
+		thetaAngle = atan(numerador/denominador)
+		aimImpulseForce = [self.listShootPower[0]*cosPhiAngle*cos(thetaAngle), self.listShootPower[0]*sinPhiAngle*cos(thetaAngle), self.listShootPower[0]*sin(thetaAngle)]
+		return aimImpulseForce
 
 

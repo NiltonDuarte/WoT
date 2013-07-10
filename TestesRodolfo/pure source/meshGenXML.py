@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 from camera import *
 from pandaImports import *
+from pathfindingMesh import *
 
 """This is a standalone program that receive an egg file and generate a navigation mesh in XML that wil be read in WoT game"""
 
@@ -56,14 +57,14 @@ class MeshGen:
 	def genMesh(self):
 		"""
 		 p = (xDivIndex*cellSizeX , yDivIndex*cellSizeY)
-		 p______________
-		 |			    |		p1 = p + (cellSizeX/2, cellSizeY/4)
+		 _______________
+		 |			    |		p1 = p + (cellSizeX/2, cellSizeY*3/4)
 		 |      p1      |		p2 = p + (cellSizeX/4, cellSizeY/2)
-		 |			    |		p3 = p + (cellSizeX/2, cellSizeY*3/4)
+		 |			    |		p3 = p + (cellSizeX/2, cellSizeY/4)
 		 |  p2      p4  |		p4 = p + (cellSizeX*3/4, cellSizeY/2)
 		 |			    |
 		 |      p3      |
-		 |______________|
+		 |p_____________|
 
 		 cell 1       cell 2       cell 3 ... cell  xDivs
 		 cell xDivs+1 cell xDivs+2        ... cell 2*xDivs
@@ -73,6 +74,11 @@ class MeshGen:
 		 cell (yDivs-1)*xDivs+1           ... cell yDivs*xDivs 
 		"""
 		meshET = ET.Element('Mesh')
+		dataET = ET.SubElement(meshET,'Data')
+		divsXET = ET.SubElement(dataET,'DivsX')
+		divsXET.text = str(self.xDivs)
+		divsYET = ET.SubElement(dataET,'DivsY')
+		divsYET.text = str(self.yDivs)
 		cellsET = ET.SubElement(meshET,'Cells')
 		p1 = p2 = p3 = p4 = center = 0
 		cellIndex = 1
@@ -80,9 +86,9 @@ class MeshGen:
 			for xDivIndex in range(self.xDivs):
 				pX = terrainModel.terrainCornerX + xDivIndex*self.cellSizeX
 				pY = terrainModel.terrainCornerY + yDivIndex*self.cellSizeY
-				p1 = (pX + self.cellSizeX/2, pY + self.cellSizeY/4)
+				p1 = (pX + self.cellSizeX/2, pY + self.cellSizeY*3/4)
 				p2 = (pX + self.cellSizeX/4, pY + self.cellSizeY/2)
-				p3 = (pX + self.cellSizeX/2, pY + self.cellSizeY*3/4)
+				p3 = (pX + self.cellSizeX/2, pY + self.cellSizeY/4)
 				p4 = (pX + self.cellSizeX*3/4, pY + self.cellSizeY/2)
 				center = (pX + self.cellSizeX/2, pY + self.cellSizeY/2)
 				#Escrever no XML  neighbors = [FRONT, RIGHT, BACK, LEFT] Verificar se BACK existe, 0 < BACK < xDivs*yDivs
@@ -151,7 +157,7 @@ class MeshGen:
 				#Noh cellIndex,4 ; p4 ; center ; neighbors = [cellIndex,2 ; cellIndex,1 ; (cellIndex+1),2 ; cellIndex,3]
 				pointET = ET.SubElement(cellET,'Point')
 				pointIndexET = ET.SubElement(pointET,'Index')
-				pointIndexET.text = str(cellIndex) + ",1"
+				pointIndexET.text = str(cellIndex) + ",4"
 				pointPosET = ET.SubElement(pointET,'Pos')
 				pointPosET.text = str(p4)
 				pointNeighborsET = ET.SubElement(pointET,'Neighbors')
@@ -196,7 +202,7 @@ class MeshGen:
 					#Setting the position of the tower and sphere
 					self.position = Vec3(*(list(center) + [0]))
 					self.ball.setPos(self.position)
-					self.ball.setColor(0,0,0)				
+					self.ball.setColor(0.5,0.5,0.5)				
 						
 				cellIndex+= 1
 
@@ -204,6 +210,6 @@ class MeshGen:
 		tree.write(self.outname +".xml")
 
 terrainModel = LoadTerrainModel("../arquivos de modelo/Terrain1")
-gen = MeshGen("teste", terrainModel,8,8)
+gen = MeshGen("terrain", terrainModel,10,10)
 gen.genMesh();
 run()

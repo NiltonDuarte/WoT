@@ -15,6 +15,8 @@ pickerNode=CollisionNode('mouseRay_cnode')
 pickerNP=base.camera.attachNewNode(pickerNode)
 pickerRay=CollisionRay()
 pickerNode.addSolid(pickerRay)
+#pickerNode.setFromCollideMask(BitMask32(0x1))
+#pickerNode.setFromCollideMask(BitMask32(0x2))
 collision.addCollider(pickerNP)
 
 #A struct like to solve reference pass problems

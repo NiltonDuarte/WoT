@@ -24,9 +24,11 @@ class TerrainModel(DirectObject):
 
 		self.terrainColliderLeftNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
 		self.terrainColliderLeftNP.node().addSolid(CollisionBox(terrainBoundLower, Point3(*terrainBoundMiddleUpper)))
+		self.terrainColliderLeftNP.setCollideMask(BitMask32(0x1))
 		
 		self.terrainColliderRightNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
 		self.terrainColliderRightNP.node().addSolid(CollisionBox(Point3(*terrainBoundMiddleLower), terrainBoundUpper))
+		self.terrainColliderRightNP.setCollideMask(BitMask32(0x2))
      
 	def detachLeft():
 		return

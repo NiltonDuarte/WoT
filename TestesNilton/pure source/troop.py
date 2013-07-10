@@ -37,7 +37,8 @@ class TroopModel(DirectObject):
 	"""This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	"""
-	def __init__(self, position, modelType):
+	def __init__(self, sourceTroop, position, modelType):
+		self.sourceTroop = sourceTroop
 		self.troopInstance = render.attachNewNode("Troop-Instance")
 		troopModelDict[modelType].instanceTo(self.troopInstance)
 		#Setting the position of the projectile 
@@ -51,6 +52,7 @@ class TroopModel(DirectObject):
 	def setCollisionNode (self, collisionNodeName, ID):
 		self.troopColliderNP = self.troopInstance.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
 		self.troopColliderNP.node().addSolid(CollisionSphere(0,0,3.5,3.5)) #(Point3(0,0,3.5),2,2,3.5))
+		self.troopColliderNP.node().setFromCollideMask(self.sourceTroop.sourceTower.enemyBitMask)
 		self.troopColliderNP.setTag("TroopID", ID)
 		collision.addCollider(self.troopColliderNP)
 
@@ -163,7 +165,7 @@ class Troop:
 		self.initialPoints = points
 
 	def initModel(self, position):
-		self.troopModel = TroopModel(position,self.modelType)
+		self.troopModel = TroopModel(self,position,self.modelType)
 
 	def moveTroop(self,position):
 		self.position = position

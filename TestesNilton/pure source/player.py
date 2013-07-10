@@ -4,6 +4,8 @@ from troop import *
 from camera import *
 import collision
 
+
+
 class Player:
 	"""Player class that holds his towers, health and camera"""
 	
@@ -21,8 +23,14 @@ class Player:
 		self.towerList = []
 		self.camera = MyCamera()
 		self.currency = 100
-		self.enemyTarget = [90,90]
-	
+		self.playerBitMask = BitMask32(int(playerNumber[-1]))
+		self.enemyTarget = [-90,0] if playerNumber == "Player2" else [90,0]
+
+		self.initAtkTime = 0
+
+	def loadPlayer(self):
+		self.camera.loadCamera()
+		
 	def setHealth(self, health):
 		self.health = health
 		
@@ -57,7 +65,18 @@ class Player:
 		self.currency += sumCurrency
 	
 	def setCurrentPlayer(self):
-		Player.currPlayer = self	
+		Player.currPlayer = self
+
+	def updateTime(self):
+		self.initAtkTime = globalClock.getFrameTime()
+		
+	def attackEnemy(self, task):	
+		currTime = globalClock.getFrameTime()
+		if (currTime - self.initAtkTime) < 10:
+			for towerObj in self.towerList:
+				towerObj.spawnTroop()
+		else: return Task.done
+		return Task.cont
 	
 	def collideTroopEventAgainTowerRange(entry):
 		collindingFromNode = entry.getFromNode()
@@ -74,7 +93,7 @@ class Player:
 		projectileObj = Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
 		#BUG - projetil nao eh apagado corretamente, gerando erro ao tentar fazer nova colisao apos ser apagado do dicionario
 		projectileObj.projectileModel.projectileInstance.removeNode()
-		del Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
+		#del Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
 		return
 
 

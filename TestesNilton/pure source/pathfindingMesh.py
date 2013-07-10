@@ -24,7 +24,7 @@ class Mesh:
 		#print "rangeI, rangeJ = ",self.rangeI, ",", self.rangeJ
 		#This is a 4D matrix, the 2D part is the cell index, the 3D the cell data, and 4D the cell points
 		#meshMatrix[i][j][UP][0] is the x position of the point UP in cell ij 
-		self.meshMatrix = [[[[None,None],[None,None],[None,None],[None,None],randint(1,4), [None,None]] for j in range(self.rangeJ)]for i in range(self.rangeI)]
+		self.meshMatrix = [[[[None,None],[None,None],[None,None],[None,None],1, [None,None]] for j in range(self.rangeJ)]for i in range(self.rangeI)]
 		self.initMesh()
 		
 
@@ -134,14 +134,12 @@ class Mesh:
 			#If the x belongs to a given cell
 			if normX >= 0 and normX >= (cellColumn-1)*self.CellSizeX and normX <= cellColumn*self.CellSizeX:
 				cellIndexJ = cellColumn-1
-				print "cellIndexJ = ",cellIndexJ
 				break
 		for i in range(self.rangeI):
 			cellRow = i+1
 			#If the y belongs to a given cell
 			if normY >= 0 and normY >= (cellRow-1)*self.CellSizeX and normY <= cellRow*self.CellSizeX:
 				cellIndexI = cellRow-1
-				print "cellIndexI = ",cellIndexI
 				break
 
 		#Once again, this only works if self.rangeI equals to self.rangeJ
@@ -154,7 +152,6 @@ class Mesh:
 		"""A* algorithm for path finding"""
 		initCell = self.getCell(xFrom, yFrom)
 		goalCell = self.getCell(xGoal, yGoal)
-		print "goalCell = ", goalCell
 		
 		usedSet = []			#The set of nodes already evaluated
 		toUseSet = [initCell]	#The set of nodes to be used

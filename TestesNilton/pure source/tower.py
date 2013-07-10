@@ -56,7 +56,8 @@ class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
-	def __init__(self, position, modelTag, towerType):
+	def __init__(self,sourceTower, position, modelTag, towerType):
+		self.sourceTower = sourceTower
 		self.colorTag = modelTag.find('color')
 		self.color = [float(self.colorTag.find('r').text), 
 					  float(self.colorTag.find('g').text),
@@ -100,6 +101,7 @@ class TowerModel(DirectObject):
 	def setCollisionNode (self, nodeName, rangeView, ID):
 		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
 		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
+		self.towerCollider.setCollideMask(self.sourceTower.sourcePlayer.playerBitMask)
 		self.towerCollider.setTag("TowerID", ID)
 		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
@@ -131,6 +133,7 @@ class Tower():
 		Tower.towerDict[self.ID] = self
 		self.towerType = towerType
 		self.sourcePlayer = sourcePlayer
+		self.enemyBitMask = sourcePlayer.inactivePlayer.playerBitMask
 		#Getting configuration
 		self.towerType = towerType
 		self.typ = None
@@ -201,6 +204,7 @@ class Tower():
 		
 		#Game engine part------------------
 		self.timeLastShoot = 0
+		self.timeLastSpawn = 0
 		#----------------------------------
 
             
@@ -257,7 +261,7 @@ class Tower():
 
 	def initModel(self, position):
 		self.position = position
-		self.towerModel = TowerModel(position, self.modelTag, self.towerType)
+		self.towerModel = TowerModel(self, position, self.modelTag, self.towerType)
 	
 	def delete(self):
 		if self.towerModel != None:
@@ -284,7 +288,12 @@ class Tower():
 			self.projectiles[-1].position = [self.position[0], self.position[1], self.position[2]+12]
 			self.projectiles[-1].impulseForce = self.aimShoot(targetPosition, self.projectiles[-1])		
 			self.projectiles[-1].initProjectile()
-			
+
+	def spawnTroop(self):
+		timeSinceLastSpawn = globalClock.getFrameTime() - self.timeLastSpawn
+		if (timeSinceLastSpawn > 20.0/self.listTxTroops[0]):
+			self.timeLastSpawn = globalClock.getFrameTime()
+			self.createTroop()
 		
 	def createTroop(self):
 		self.troop = Troop(self,self.troopType)

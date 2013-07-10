@@ -91,15 +91,15 @@ class Mesh:
 		
 		neighbors = []
 		
-		#These above only work if self.rangeI equals to self.rangeJ		
-		if indexI > 0:
-			neighbors.append(1+indexJ+(self.rangeI*(indexI-1)))
-		if indexJ > 0:
-			neighbors.append(indexJ+(self.rangeI*indexI))
-		if indexI < self.rangeI-1:
-			neighbors.append(1+indexJ+(self.rangeI*(indexI+1)))
+		#These above only work if self.rangeI equals to self.rangeJ	
 		if indexJ < self.rangeI-1:
 			neighbors.append(2+indexJ+(self.rangeI*indexI))
+		if indexJ > 0:
+			neighbors.append(indexJ+(self.rangeI*indexI))
+		if indexI > 0:
+			neighbors.append(1+indexJ+(self.rangeI*(indexI-1)))
+		if indexI < self.rangeI-1:
+			neighbors.append(1+indexJ+(self.rangeI*(indexI+1)))
 		
 		return neighbors
 	

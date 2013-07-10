@@ -1,4 +1,6 @@
 import xml.etree.ElementTree as ET
+from pandaImports import *
+from random import randint
 """This file receives an XML mesh and generete the mesh for navigation"""
 
 UP = 0
@@ -6,6 +8,7 @@ LEFT = 1
 DOWN = 2
 RIGHT = 3
 WEIGHT = 4
+CENTER = 5
 
 
 
@@ -21,7 +24,7 @@ class Mesh:
 		#print "rangeI, rangeJ = ",self.rangeI, ",", self.rangeJ
 		#This is a 4D matrix, the 2D part is the cell index, the 3D the cell data, and 4D the cell points
 		#meshMatrix[i][j][UP][0] is the x position of the point UP in cell ij 
-		self.meshMatrix = [[[[None,None],[None,None],[None,None],[None,None],1] for j in range(self.rangeJ)]for i in range(self.rangeI)]
+		self.meshMatrix = [[[[None,None],[None,None],[None,None],[None,None],randint(1,4), [None,None]] for j in range(self.rangeJ)]for i in range(self.rangeI)]
 		self.initMesh()
 		
 
@@ -31,13 +34,46 @@ class Mesh:
 		for cell in cellsET.findall("Cell"):
 			i = (int(cell.find("Index").text)-1)/self.rangeI
 			j = (int(cell.find("Index").text)-1)%self.rangeI
-			print "[i][j] = [",i,"][",j,"]"
+			#print "[i][j] = [",i,"][",j,"]"
+			self.meshMatrix[i][j][CENTER][0] = float(cell.find("Center").text[1:-1].split(',')[0])
+			self.meshMatrix[i][j][CENTER][1] = float(cell.find("Center").text[1:-1].split(',')[1])
 			indexAux = 0
+			if True:
+				ball = loader.loadModel("../arquivos de modelo/ball")
+				ball.reparentTo(render)
+				#Setting the position of the tower and sphere
+				position = Vec3(self.meshMatrix[i][j][CENTER][0], self.meshMatrix[i][j][CENTER][1], 1)
+				ball.setPos(position)
+				ball.setColor(1,1,1)
+				
 			for point in cell.findall("Point"):
 				self.meshMatrix[i][j][indexAux][0] = float(point.find("Pos").text[1:-1].split(',')[0])
 				self.meshMatrix[i][j][indexAux][1] = float(point.find("Pos").text[1:-1].split(',')[1])
 				indexAux += 1
-	
+				
+		#Distance from two points of two different cells for getting cell dimension 
+		self.CellSizeY = (self.meshMatrix[0][0][UP][1]-self.meshMatrix[0][0][DOWN][1])*2	#Cell dimension
+		self.CellSizeX = (self.meshMatrix[0][0][RIGHT][0]-self.meshMatrix[0][0][LEFT][0])*2
+
+	def isFree(self, posX, posY):
+		matrixIndex = self.getPosToMatrixIndex(posX, posY)
+		if self.meshMatrix[matrixIndex[0]][matrixIndex[1]][WEIGHT] == 999:
+			return False
+		else:
+			return True
+			
+	def setObstacle(self, posX, posY):
+		self.setWeight(posX, posY, 999)
+		
+	def setWeight(self, posX, posY, weight):
+		matrixIndex = self.getPosToMatrixIndex(posX, posY)
+		self.meshMatrix[matrixIndex[0]][matrixIndex[1]][WEIGHT] = weight
+
+	def getCenter(self, posX, posY):
+		matrixIndex = self.getPosToMatrixIndex(posX, posY)
+		center = self.meshMatrix[matrixIndex[0]][matrixIndex[1]][CENTER]
+		return center
+		
 	def getLowerScore(self, scoreList, useSet):
 		"""Gets the element whose score is lower than ever"""
 		aux = [None, 10**10]
@@ -51,7 +87,7 @@ class Mesh:
 	def getNeighbors(self, node):
 		"""Gets neighbors from given node"""
 		indexI = (node-1)/self.rangeI
-		indexJ = (node-1)%self.rangeJ
+		indexJ = (node-1)%self.rangeI
 		
 		neighbors = []
 		
@@ -74,30 +110,38 @@ class Mesh:
 			return p+[node]
 		else:
 			return [node]
-			
+
+	def getCellToMatrixIndex(self, cellIndex):
+		matrixI = (cellIndex-1)/self.rangeI
+		matrixJ = (cellIndex-1)%self.rangeI
+		return [matrixI, matrixJ]
+
+	def getPosToMatrixIndex(self, posX, posY):
+		matrixIndex = self.getCellToMatrixIndex(self.getCell(posX, posY))
+		return matrixIndex
+		
 	def getCell(self, x, y):
 		"""Gives the cell where is an element in position x,y"""
-		#Distance from two points of two different cells for getting cell dimension 
-		distFromBorder = (self.meshMatrix[1][0][UP][1]-self.meshMatrix[0][0][DOWN][1])/2
-		cellHeight = 4*distFromBorder	#Cell dimension
 		cellIndexJ = 0
 		cellIndexI = 0
 		
 		#Normalize x,y between 0 and 200, 'cause x,y are between -100 and 100
-		normX = x + (self.rangeI*cellHeight)/2
-		normY = y + (self.rangeJ*cellHeight)/2
+		normX = x + (self.rangeI*self.CellSizeX)/2
+		normY = y + (self.rangeJ*self.CellSizeX)/2
 		
 		for j in range(self.rangeJ):
 			cellColumn = j+1
 			#If the x belongs to a given cell
-			if normX > 0 and normX > (cellColumn-1)*cellHeight and normX < cellColumn*cellHeight:
+			if normX >= 0 and normX >= (cellColumn-1)*self.CellSizeX and normX <= cellColumn*self.CellSizeX:
 				cellIndexJ = cellColumn-1
+				print "cellIndexJ = ",cellIndexJ
 				break
 		for i in range(self.rangeI):
 			cellRow = i+1
 			#If the y belongs to a given cell
-			if normY > 0 and normY > (cellRow-1)*cellHeight and normY < cellRow*cellHeight:
+			if normY >= 0 and normY >= (cellRow-1)*self.CellSizeX and normY <= cellRow*self.CellSizeX:
 				cellIndexI = cellRow-1
+				print "cellIndexI = ",cellIndexI
 				break
 
 		#Once again, this only works if self.rangeI equals to self.rangeJ
@@ -106,9 +150,11 @@ class Mesh:
 		return cell
 			
 	
-	def A_Star_Algorithm(self, xTroop, yTroop, goalCell):
+	def A_Star_Algorithm(self, xFrom, yFrom, xGoal, yGoal):
 		"""A* algorithm for path finding"""
-		initCell = self.getCell(xTroop, yTroop)
+		initCell = self.getCell(xFrom, yFrom)
+		goalCell = self.getCell(xGoal, yGoal)
+		print "goalCell = ", goalCell
 		
 		usedSet = []			#The set of nodes already evaluated
 		toUseSet = [initCell]	#The set of nodes to be used
@@ -147,32 +193,52 @@ class Mesh:
 	def getPointsSequence(self, cellSequence):
 		pointsSequence = []
 		
-		auxIndexI = 0
-		auxIndexJ = 0
+		auxIndexI = (cellSequence[0]-1)/self.rangeI
+		auxIndexJ = (cellSequence[0]-1)%self.rangeI
 		
-		for i in range(len(cellSequence)):
+		for i in range(1,len(cellSequence)):
 			indexI = (cellSequence[i]-1)/self.rangeI
-			indexJ = (cellSequence[i]-1)%self.rangeJ
-			point = []
+			indexJ = (cellSequence[i]-1)%self.rangeI
 			
 			if auxIndexI < indexI:
-				point = self.meshMatrix[indexI][indexJ][UP]
-			elif auxIndexI > indexI:
 				point = self.meshMatrix[indexI][indexJ][DOWN]
+				prevPoint = self.meshMatrix[auxIndexI][auxIndexJ][UP]
+			elif auxIndexI > indexI:
+				point = self.meshMatrix[indexI][indexJ][UP]
+				prevPoint = self.meshMatrix[auxIndexI][auxIndexJ][DOWN]
 			elif auxIndexJ < indexJ:
 				point = self.meshMatrix[indexI][indexJ][LEFT]
+				prevPoint = self.meshMatrix[auxIndexI][auxIndexJ][RIGHT]
 			elif auxIndexJ > indexJ:
 				point = self.meshMatrix[indexI][indexJ][RIGHT]
-			
+				prevPoint = self.meshMatrix[auxIndexI][auxIndexJ][LEFT]
+
+			pointsSequence.append(prevPoint)
 			pointsSequence.append(point)
 			auxIndexI = indexI
 			auxIndexJ = indexJ
-			
+
+			#DEBUG
+			if True:
+				self.ball = loader.loadModel("../arquivos de modelo/ball")
+				self.ball.reparentTo(render)
+				#Setting the position of the tower and sphere
+				self.position = Vec3(*point + [1])
+				self.ball.setPos(self.position)
+				self.ball.setColor(0,0,0)
+
+				self.ball = loader.loadModel("../arquivos de modelo/ball")
+				self.ball.reparentTo(render)
+				#Setting the position of the tower and sphere
+				self.position = Vec3(*prevPoint + [1])
+				self.ball.setPos(self.position)
+				self.ball.setColor(0,0,0)
+					
 		return pointsSequence
 
-
-mesh = Mesh()
-print "\n",mesh.meshMatrix
-cellSequence = mesh.A_Star_Algorithm(-72, -72, 83)
+navigationMesh = Mesh()
+"""
+cellSequence = mesh.A_Star_Algorithm(-92, -92, 90,90)
 print cellSequence
 print mesh.getPointsSequence(cellSequence)
+"""

@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 from camera import *
 from pandaImports import *
+from pathfindingMesh import *
 
 """This is a standalone program that receive an egg file and generate a navigation mesh in XML that wil be read in WoT game"""
 
@@ -201,7 +202,7 @@ class MeshGen:
 					#Setting the position of the tower and sphere
 					self.position = Vec3(*(list(center) + [0]))
 					self.ball.setPos(self.position)
-					self.ball.setColor(0,0,0)				
+					self.ball.setColor(0.5,0.5,0.5)				
 						
 				cellIndex+= 1
 
@@ -209,6 +210,6 @@ class MeshGen:
 		tree.write(self.outname +".xml")
 
 terrainModel = LoadTerrainModel("../arquivos de modelo/Terrain1")
-gen = MeshGen("terrain", terrainModel,20,20)
+gen = MeshGen("terrain", terrainModel,10,10)
 gen.genMesh();
 run()

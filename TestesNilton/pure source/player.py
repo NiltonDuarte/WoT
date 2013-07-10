@@ -21,6 +21,7 @@ class Player:
 		self.towerList = []
 		self.camera = MyCamera()
 		self.currency = 100
+		self.enemyTarget = [90,90]
 	
 	def setHealth(self, health):
 		self.health = health
@@ -30,16 +31,16 @@ class Player:
 		
 	def addTower(self, towerType):
 		if len(self.towerList) == 0:
-			self.towerList.append(Tower(towerType))
+			self.towerList.append(Tower(self,towerType))
 			self.towerList[-1].initModel([-300,-300,-300])
 			self.towerList[-1].towerModel.towerMovingColor()			
 		elif self.towerList[-1].towerInicialized:
-			self.towerList.append(Tower(towerType))
+			self.towerList.append(Tower(self,towerType))
 			self.towerList[-1].initModel([-300,-300,-300])
 			self.towerList[-1].towerModel.towerMovingColor()
 		else: 
 			self.towerList[-1].delete()
-			self.towerList.append(Tower(towerType))
+			self.towerList.append(Tower(self,towerType))
 			self.towerList[-1].initModel([-300,-300,-300])
 			self.towerList[-1].towerModel.towerMovingColor()
 			
@@ -59,18 +60,19 @@ class Player:
 		Player.currPlayer = self	
 	
 	def collideTroopEventAgainTowerRange(entry):
-		#print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
 		collindingFromNode = entry.getFromNode()
 		collindingIntoNode = entry.getIntoNode()
 		troopObj = Troop.troopDict[collindingFromNode.getTag("TroopID")]
 		towerObj = Tower.towerDict[collindingIntoNode.getTag("TowerID")]
+		troopObj.updatePosition([entry.getContactPos(render).getX(), entry.getContactPos(render).getY(), entry.getContactPos(render).getZ()])
 		towerObj.shootProjectile(troopObj.position)
 		return
 		
 	def collideTroopEventIntoProjectile(entry):
-		print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
+		#print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
 		collindingIntoNode = entry.getIntoNode()
 		projectileObj = Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
+		#BUG - projetil nao eh apagado corretamente, gerando erro ao tentar fazer nova colisao apos ser apagado do dicionario
 		projectileObj.projectileModel.projectileInstance.removeNode()
 		del Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
 		return

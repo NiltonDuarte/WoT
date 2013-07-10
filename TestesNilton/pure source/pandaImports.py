@@ -19,3 +19,6 @@ from direct.showbase.ShowBase import ShowBase
 
 #This is for loading actor models
 from direct.actor.Actor import Actor
+
+#This is for loading AI
+from panda3d.ai import *

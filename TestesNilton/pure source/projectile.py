@@ -101,7 +101,7 @@ class Projectile:
 
 		#Position of projectile
 		self.position = [0,0,0]
-		self.positionBefore = [0,0,0]
+		self.prevPosition = [0,0,0]
         
 		#Graphical part---------------------
         
@@ -152,11 +152,9 @@ class Projectile:
 		physics.setImpulseForce(self.actorNode,self.impulseForce)
 		physics.setMass(self.actorNode,self.mass)
 	
-	"""def projectileInterval(self, endPos):
-		# setup the projectile interval
-		self.trajectory = ProjectileInterval(self.projectileModel.projectile,
-                                     startPos = Point3(*self.position),
-                                     endPos = Point3(*endPos), duration = 1)"""
+	def updatePosition(self, newPosition):
+		self.prevPosition = self.position
+		self.position = newPosition
 
 
 

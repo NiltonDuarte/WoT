@@ -6,6 +6,8 @@ import physics
 from commonFunctions import *
 from pandaImports import *
 import xml.etree.ElementTree as ET
+from pathfindingMesh import *
+import AI
 
 troopModelDict = {}
 #Getting configuration
@@ -102,7 +104,7 @@ class Troop:
 
 		#Position of the troop
 		self.position = sourceTower.position
-		self.positionBefore = self.position
+		self.prevPosition = self.position
 
 		self.initialPoints = int(self.typ.find('initialPoints').text)
 		#Graphical part------------------
@@ -149,6 +151,11 @@ class Troop:
 			
 			self.initModel(self.position)
 			self.initCollisionNode()
+			
+			pathFollowList = navigationMesh.getPointsSequence(navigationMesh.A_Star_Algorithm(self.position[0], self.position[1], self.sourceTower.sourcePlayer.enemyTarget[0], self.sourceTower.sourcePlayer.enemyTarget[1]))
+			AI.Ai.addCharAI(self.troopModel.troopInstance,"troop",0,pathFollowList)
+
+			
 		else:
 			print "Error with the number of initial points of the tower" 
 
@@ -165,6 +172,10 @@ class Troop:
 
 	def initCollisionNode(self):
 		self.troopModel.setCollisionNode(self.name, self.ID);
+
+	def updatePosition(self, newPosition):
+		self.prevPosition = self.position
+		self.position = newPosition
 		
 
 

@@ -124,12 +124,13 @@ class Tower():
 
 	towerDict = {}
 
-	def __init__(self, towerType):
+	def __init__(self, sourcePlayer, towerType):
 
 		self.name = "TowerClass"
 		self.ID = str(uuid.uuid4())
 		Tower.towerDict[self.ID] = self
 		self.towerType = towerType
+		self.sourcePlayer = sourcePlayer
 		#Getting configuration
 		self.towerType = towerType
 		self.typ = None
@@ -275,9 +276,9 @@ class Tower():
 
 	def shootProjectile(self, targetPosition):
 		timeSinceLastShoot = globalClock.getFrameTime() - self.timeLastShoot
-		print "timeLastShoot = ",self.timeLastShoot
+		#print "timeLastShoot = ",self.timeLastShoot
 		if (timeSinceLastShoot > 10.0/self.listTxShoot[0]):
-			print "Shooted timeLastShoot = ",self.timeLastShoot
+			#print "Shooted timeLastShoot = ",self.timeLastShoot
 			self.timeLastShoot = globalClock.getFrameTime()
 			self.projectiles.append(Projectile(self.projectileType))
 			self.projectiles[-1].position = [self.position[0], self.position[1], self.position[2]+12]

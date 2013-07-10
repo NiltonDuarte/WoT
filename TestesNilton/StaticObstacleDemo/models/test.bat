@@ -1,1 +1,0 @@
-pview concave_plane_full.egg

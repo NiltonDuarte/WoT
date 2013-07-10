@@ -72,6 +72,7 @@ class Player:
 		collindingIntoNode = entry.getIntoNode()
 		projectileObj = Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
 		projectileObj.projectileModel.projectileInstance.removeNode()
+		del Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
 		return
 
 

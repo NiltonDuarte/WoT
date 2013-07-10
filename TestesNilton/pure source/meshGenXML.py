@@ -56,14 +56,14 @@ class MeshGen:
 	def genMesh(self):
 		"""
 		 p = (xDivIndex*cellSizeX , yDivIndex*cellSizeY)
-		 p______________
-		 |			    |		p1 = p + (cellSizeX/2, cellSizeY/4)
+		 _______________
+		 |			    |		p1 = p + (cellSizeX/2, cellSizeY*3/4)
 		 |      p1      |		p2 = p + (cellSizeX/4, cellSizeY/2)
-		 |			    |		p3 = p + (cellSizeX/2, cellSizeY*3/4)
+		 |			    |		p3 = p + (cellSizeX/2, cellSizeY/4)
 		 |  p2      p4  |		p4 = p + (cellSizeX*3/4, cellSizeY/2)
 		 |			    |
 		 |      p3      |
-		 |______________|
+		 |p_____________|
 
 		 cell 1       cell 2       cell 3 ... cell  xDivs
 		 cell xDivs+1 cell xDivs+2        ... cell 2*xDivs
@@ -85,9 +85,9 @@ class MeshGen:
 			for xDivIndex in range(self.xDivs):
 				pX = terrainModel.terrainCornerX + xDivIndex*self.cellSizeX
 				pY = terrainModel.terrainCornerY + yDivIndex*self.cellSizeY
-				p1 = (pX + self.cellSizeX/2, pY + self.cellSizeY/4)
+				p1 = (pX + self.cellSizeX/2, pY + self.cellSizeY*3/4)
 				p2 = (pX + self.cellSizeX/4, pY + self.cellSizeY/2)
-				p3 = (pX + self.cellSizeX/2, pY + self.cellSizeY*3/4)
+				p3 = (pX + self.cellSizeX/2, pY + self.cellSizeY/4)
 				p4 = (pX + self.cellSizeX*3/4, pY + self.cellSizeY/2)
 				center = (pX + self.cellSizeX/2, pY + self.cellSizeY/2)
 				#Escrever no XML  neighbors = [FRONT, RIGHT, BACK, LEFT] Verificar se BACK existe, 0 < BACK < xDivs*yDivs

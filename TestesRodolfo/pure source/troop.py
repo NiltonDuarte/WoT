@@ -8,6 +8,7 @@ from pandaImports import *
 import xml.etree.ElementTree as ET
 from pathfindingMesh import *
 import AI
+from particleSystem import *
 
 troopModelDict = {}
 #Getting configuration
@@ -44,6 +45,8 @@ class TroopModel(DirectObject):
 		#Setting the position of the projectile 
 		self.troopInstance.setPos(Vec3(*position))
 		self.troopColliderNP = None
+		#Creating particle system for death animation
+		self.particleSystem = ParticleSystem(position, self.troopInstance)
 
 	def moveTroopModel(self,position):
 		self.troopInstance.setPos(Vec3(*position))
@@ -166,6 +169,7 @@ class Troop:
 
 	def initModel(self, position):
 		self.troopModel = TroopModel(self,position,self.modelType)
+
 
 	def moveTroop(self,position):
 		self.position = position

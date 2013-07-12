@@ -7,11 +7,12 @@ class TerrainModel(DirectObject):
 	'''
 	def __init__(self):
 		#Loading the terrain model
-		self.terrain = loader.loadModel("../arquivos de modelo/Terrain1")
+		self.terrain = loader.loadModel("../arquivos de modelo/Terrain")
 		self.terrain.reparentTo(render)
+		
 		#Setting the texture to the terrain
-		#self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
-		#self.terrain.setTexture(self.texture, 1)
+		self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
+		self.terrain.setTexture(self.texture, 1)
 		#Setting the position of the terrain
 		self.position = Vec3(0, 0, 0)
 		self.terrain.setPos(self.position)

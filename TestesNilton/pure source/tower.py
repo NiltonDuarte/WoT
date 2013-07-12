@@ -29,6 +29,7 @@ for element in cfRoot.findall('tower'):
 	
 	#loading the sphere
 	towerModelDict[towerType] = loader.loadModel(modelTag.find('sphere').text)
+	print "tower ",towerType," instanced"
 	
 	#Setting the position of the tower 
 	towerModelDict[towerType].setPos(0,0,0)
@@ -106,7 +107,7 @@ class TowerModel(DirectObject):
 		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
 		self.towerCollider.setTag("TowerID", ID)
-		print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
+		#print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
 		
 	def delete(self):
 		self.towerInstance.removeNode()

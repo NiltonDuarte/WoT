@@ -17,6 +17,7 @@ for element in cfRoot.findall('projectile'):
 	modelTag = element.find('model')
 	#Loading the projectile model
 	projectileModelDict[projectileType] = loader.loadModel(modelTag.find('path').text)
+	print "projectile ",projectileType  ," instanced"
 	
 	#Setting the position of the projectile 
 	projectileModelDict[projectileType].setPos(0,0,0)
@@ -45,7 +46,6 @@ class ProjectileModel(DirectObject):
 		self.projectileNP = self.projectileInstance.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
 		self.projectileNP.node().addSolid(CollisionSphere(Point3(0,0,0),2))
 		self.projectileNP.setTag("ProjectileID", ID)
-		#collision.addCollider(self.projectileNP)
 
 class Projectile:
 	"""This class defines all attributes and functions

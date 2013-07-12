@@ -38,7 +38,8 @@ class Mesh:
 			self.meshMatrix[i][j][CENTER][0] = float(cell.find("Center").text[1:-1].split(',')[0])
 			self.meshMatrix[i][j][CENTER][1] = float(cell.find("Center").text[1:-1].split(',')[1])
 			indexAux = 0
-			if True:
+			#DEBUG
+			if False:
 				ball = loader.loadModel("../arquivos de modelo/ball")
 				ball.reparentTo(render)
 				#Setting the position of the tower and sphere
@@ -216,7 +217,7 @@ class Mesh:
 			auxIndexJ = indexJ
 
 			#DEBUG
-			if True:
+			if False:
 				self.ball = loader.loadModel("../arquivos de modelo/ball")
 				self.ball.reparentTo(render)
 				#Setting the position of the tower and sphere

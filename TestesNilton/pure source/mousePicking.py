@@ -82,7 +82,6 @@ def mouseClicked():
 		if navigationMesh.isFree(towerObj.position[0], towerObj.position[1]):
 			MousePicking.towerFollowMouse = False
 			pos2D = navigationMesh.getCenter(towerObj.position[0], towerObj.position[1])
-			print "pos2d = ", pos2D
 			towerObj.moveTower(pos2D + [towerObj.position[2]])
 			towerObj.towerModel.resetColor()
 			towerObj.initTower()

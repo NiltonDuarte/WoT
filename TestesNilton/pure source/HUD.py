@@ -228,7 +228,7 @@ class PlayScreenHUD (DirectObject):
 
 	def addPlayerDataTexts(self):
 		currPlayer = player.Player.currPlayer
-		self.labelName = DirectLabel(self.playScreenFrame, text= currPlayer.name, text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [-1.8/self.isoScale, 0, 0.94/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelName = DirectLabel(self.playScreenFrame, text= currPlayer.name, text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [-1.79/self.isoScale, 0, 0.94/self.isoScale], scale = 0.05/self.isoScale)
 
 	def updatePlayerDataTexts(self):
 		currPlayer = player.Player.currPlayer

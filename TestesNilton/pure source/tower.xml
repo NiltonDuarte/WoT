@@ -25,7 +25,7 @@ RangeMax = shootPowerMin**2 / 10* (ProjectileMass**2)
 				<b> 1 </b>
 			</selectedColor>
 		</model>
-		<artPath>../HUD images/purpleTowerArt.png</artPath>
+		<artPath>../HUD images/blueTowerArt.png</artPath>
 		<initialPoints>130</initialPoints>
         <shootPower>
             <Min>30</Min>
@@ -64,7 +64,7 @@ RangeMax = shootPowerMin**2 / 10* (ProjectileMass**2)
 				<b> 0.2 </b>
 			</selectedColor>
 		</model>
-		<artPath>../HUD images/purpleTowerArt.png</artPath>
+		<artPath>../HUD images/redTowerArt.png</artPath>
 		<initialPoints>100</initialPoints>
         <shootPower>
             <Min>20</Min>
@@ -103,7 +103,7 @@ RangeMax = shootPowerMin**2 / 10* (ProjectileMass**2)
 				<b> 0.2 </b>
 			</selectedColor>
 		</model>
-		<artPath>../HUD images/purpleTowerArt.png</artPath>
+		<artPath>../HUD images/greenTowerArt.png</artPath>
 		<initialPoints>100</initialPoints>
         <shootPower>
             <Min>20</Min>

@@ -15,6 +15,14 @@ base.win.requestProperties(wp)
 
 miniMap = HUDMap()
 terr = TerrainModel()
+
+upperWall = WallFortune([0, 100, 0], "../arquivos de modelo/Wall")
+bottomWall = WallFortune([0, -100, 0], "../arquivos de modelo/Wall")
+leftWall = WallFortune([-100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
+leftWall.rotateZ(90)
+rightWall = WallFortune([100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
+rightWall.rotateZ(270)
+
 player1 = Player("Player1", "lylyh")
 player2 = Player("Player2", "Niltin")
 
@@ -33,6 +41,7 @@ class World(DirectObject):
 		self.gameTask = taskMgr.add(self.gameLoop, "gameLoop")
 		taskMgr.add(mousePicking.mouseRayUpdate, "updatePicker")
 		self.gameTask.last = 0
+		#PStatClient.connect()
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
 		base.enableParticles()

@@ -4,6 +4,8 @@ class MyCamera(DirectObject):
 	'''This class uses the base.camera of panda3D to reuse
 	   existing methods and create new ones
 	'''
+	cameraEnabled = False
+	
 	def __init__(self):
 		#Disabling mouse default function to enable moving the panda camera with our code
 		base.disableMouse()
@@ -11,9 +13,9 @@ class MyCamera(DirectObject):
 		self.angle = 45
 		base.camera.setHpr(0.0 , -self.angle, 0.0)
 		#Setting our camera position to be top-down
-		self.X = 1
-		self.Y = -240
-		self.Z = 200
+		self.X = 0
+		self.Y = -140
+		self.Z = 150
 		base.camera.setX(self.X)     
 		base.camera.setY(self.Y)  #depth
 		base.camera.setZ(self.Z)	#height
@@ -21,11 +23,16 @@ class MyCamera(DirectObject):
 		self.mouseX = 0
 		self.mouseY = 0
 		self.mouseOnScreen = False
-		self.cameraEnabled = False
+
+	def loadCamera(self):
+		base.camera.setX(self.X)     
+		base.camera.setY(self.Y)  #depth
+		base.camera.setZ(self.Z)	#height
+		base.camera.setHpr(0.0 , -self.angle, 0.0)
 		
 	def moveCameraXY(self):
 		#Getting the position of the mouse
-		if base.mouseWatcherNode.hasMouse() and self.cameraEnabled:
+		if base.mouseWatcherNode.hasMouse() and MyCamera.cameraEnabled:
 			self.mouseX = base.mouseWatcherNode.getMouseX()
 			self.mouseY = base.mouseWatcherNode.getMouseY()
 			self.mouseOnScreen = True

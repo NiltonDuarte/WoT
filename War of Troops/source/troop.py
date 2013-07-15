@@ -6,31 +6,54 @@ import physics
 from commonFunctions import *
 from pandaImports import *
 import xml.etree.ElementTree as ET
+from pathfindingMesh import *
+import AI
+
+troopModelDict = {}
+#Getting configuration
+typ = None
+cfTree = ET.parse("troop.xml")
+cfRoot = cfTree.getroot()
+for element in cfRoot.findall('troop'):
+	troopType = element.get('type')
+	modelTag = element.find('model')
+	#Loading the troop model
+	troopModel = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
+														'death' : modelTag.find('deathPath').text})
+	print "troop ", troopType," instanced"
+	
+	#Setting the position of the projectile 
+	troopModel.setPos(0,0,0)
+	
+	#Animating the troop
+	troopModel.loop('walk')
+	
+	#Setting the texture to the troop
+	modelTexture = loader.loadTexture(modelTag.find('texture').text)
+	troopModel.setTexture(modelTexture, 1)
+	
+	troopModelDict[troopType] = troopModel
 
 class TroopModel(DirectObject):
 	"""This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	"""
-	def __init__(self, position, modelTag):
-		#Loading the troop model
-		self.troop = loader.loadModel(modelTag.find('path').text)
-		self.troop.reparentTo(render)
-
-		#Setting the texture to the tower
-		#self.texture = loader.loadTexture(modelTag.find('texture').text)
-		#self.troop.setTexture(self.texture, 1)
-		#Setting the position of the tower, sphere and canons
-		self.troop.setPos(Vec3(*position))
-		
+	def __init__(self, sourceTroop, position, modelType):
+		self.sourceTroop = sourceTroop
+		self.troopInstance = render.attachNewNode("Troop-Instance")
+		troopModelDict[modelType].instanceTo(self.troopInstance)
+		#Setting the position of the projectile 
+		self.troopInstance.setPos(Vec3(*position))
 		self.troopColliderNP = None
 
 	def moveTroopModel(self,position):
-		self.troop.setPos(Vec3(*position))
+		self.troopInstance.setPos(Vec3(*position))
 
 		
 	def setCollisionNode (self, collisionNodeName, ID):
-		self.troopColliderNP = self.troop.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
-		self.troopColliderNP.node().addSolid(CollisionBox(Point3(0,0,3.5),2,2,3.5))
+		self.troopColliderNP = self.troopInstance.attachNewNode(CollisionNode(collisionNodeName + '_cnode'))
+		self.troopColliderNP.node().addSolid(CollisionSphere(0,0,3.5,3.5)) #(Point3(0,0,3.5),2,2,3.5))
+		self.troopColliderNP.node().setFromCollideMask(self.sourceTroop.sourceTower.enemyBitMask)
 		self.troopColliderNP.setTag("TroopID", ID)
 		collision.addCollider(self.troopColliderNP)
 
@@ -46,6 +69,7 @@ class Troop:
 		self.sourceTower = sourceTower
 
 		#Getting configuration
+		self.modelType = troopType
 		self.typ = None
 		self.cfTree = ET.parse(confFile)
 		self.cfRoot = self.cfTree.getroot()
@@ -83,7 +107,7 @@ class Troop:
 
 		#Position of the troop
 		self.position = sourceTower.position
-		self.positionBefore = self.position
+		self.prevPosition = self.position
 
 		self.initialPoints = int(self.typ.find('initialPoints').text)
 		#Graphical part------------------
@@ -130,6 +154,11 @@ class Troop:
 			
 			self.initModel(self.position)
 			self.initCollisionNode()
+			
+			pathFollowList = navigationMesh.getPointsSequence(navigationMesh.A_Star_Algorithm(self.position[0], self.position[1], self.sourceTower.sourcePlayer.enemyTarget[0], self.sourceTower.sourcePlayer.enemyTarget[1]))
+			AI.Ai.addCharAI(self.troopModel.troopInstance,"troop",0,pathFollowList)
+
+			
 		else:
 			print "Error with the number of initial points of the tower" 
 
@@ -137,7 +166,7 @@ class Troop:
 		self.initialPoints = points
 
 	def initModel(self, position):
-		self.troopModel = TroopModel(position,self.modelTag)
+		self.troopModel = TroopModel(self,position,self.modelType)
 
 	def moveTroop(self,position):
 		self.position = position
@@ -146,6 +175,10 @@ class Troop:
 
 	def initCollisionNode(self):
 		self.troopModel.setCollisionNode(self.name, self.ID);
+
+	def updatePosition(self, newPosition):
+		self.prevPosition = self.position
+		self.position = newPosition
 		
 
 

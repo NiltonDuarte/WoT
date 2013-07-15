@@ -2,6 +2,7 @@ from HUD import *
 import player
 import mousePicking
 import gamePlayFSM
+import camera
 from direct.fsm.FSM import FSM
 """This Module control the Play Finite State Machines. Player 1 and Player 2 state"""
 
@@ -26,12 +27,13 @@ class gameScreenFSM(FSM):
 		self.currHUD = PlayScreenHUD(self,mousePicking.MousePicking)
 		self.gamePlayFSM = gamePlayFSM.gamePlayFSM(self.currHUD)
 		self.currHUD.initHUD()
+		self.gamePlayFSM.request("Player1")
 		mousePicking.MousePicking.gameHUD = self.currHUD
-		player.Player.currPlayer.camera.cameraEnabled = True
+		camera.MyCamera.cameraEnabled = True
 		
 	def exitPlayScreen(self):
 		self.currHUD.__del__()
-		player.Player.currPlayer.camera.cameraEnabled = False
+		camera.MyCamera.cameraEnabled = True
 		
 	def enterEndScreen(self):
 		return

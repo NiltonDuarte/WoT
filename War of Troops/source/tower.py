@@ -14,12 +14,51 @@ from pandac.PandaModules import CollisionSphere
 from math import *
 import physics
 
+towerModelDict = {}
+#Getting configuration
+typ = None
+cfTree = ET.parse("tower.xml")
+cfRoot = cfTree.getroot()
+for element in cfRoot.findall('tower'):
+	
+	towerType = element.get('type')
+	modelTag = element.find('model')
+	
+	
+	#Loading the tower models
+	
+	#loading the sphere
+	towerModelDict[towerType] = loader.loadModel(modelTag.find('sphere').text)
+	print "tower ",towerType," instanced"
+	
+	#Setting the position of the tower 
+	towerModelDict[towerType].setPos(0,0,0)
+	
+	#loading the base of the tower
+	towerBase = loader.loadModel(modelTag.find('base').text)
+	towerBase.setColorOff()
+	#Setting the texture to the base
+	texture = loader.loadTexture(modelTag.find('texture').text)
+	towerBase.setTexture(texture, 1)
+	towerBase.setPos(0,0,0)
+	towerBase.reparentTo(towerModelDict[towerType])
+	
+	#loading the cannons that stays inside the ball
+	towerCannons = loader.loadModel(modelTag.find('cannon').text)
+	towerCannons.reparentTo(towerModelDict[towerType])
+	towerCannons.setColorOff()
+	towerCannons.setPos(0,0,0)
+	towerCannons.hprInterval(5,Point3(360,0,0)).loop()
+
+
+	
 
 class TowerModel(DirectObject):
 	'''This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	'''
-	def __init__(self, position, modelTag):
+	def __init__(self,sourceTower, position, modelTag, towerType):
+		self.sourceTower = sourceTower
 		self.colorTag = modelTag.find('color')
 		self.color = [float(self.colorTag.find('r').text), 
 					  float(self.colorTag.find('g').text),
@@ -29,53 +68,50 @@ class TowerModel(DirectObject):
 							  float(self.selectedColorTag.find('g').text),
 							  float(self.selectedColorTag.find('b').text)]
 		self.movingColor = self.selectedColor
-		#Loading the tower model
-		self.tower = loader.loadModel(modelTag.find('base').text)
-		self.tower.reparentTo(render)
-		#loading the ball that stays above the tower
-		self.sphere = loader.loadModel(modelTag.find('sphere').text)
-		self.sphere.reparentTo(render)
-		#loading the canons that stays inside the ball
-		self.canons = loader.loadModel(modelTag.find('canon').text)
-		self.canons.reparentTo(render)
-		self.canons.hprInterval(5,Point3(360,0,0)).loop()
+		
+		
+		
+		#Loading the tower instance
+		self.towerInstance = render.attachNewNode("Tower-Instance")
+		towerModelDict[towerType].instanceTo(self.towerInstance)
+		
 		#self.color is the color of the sphere and tinting the sphere
-		self.sphere.setColor(*self.color)
-		self.canons.setColor(0,0,0)
-		#Setting the texture to the tower
-		self.texture = loader.loadTexture(modelTag.find('texture').text)
-		self.tower.setTexture(self.texture, 1)
+		self.towerInstance.setColor(*self.color)
 		#Setting the position of the tower, sphere and canons
-		self.tower.setPos(Vec3(*position))
-		self.sphere.setPos(Vec3(*position))
-		self.canons.setPos(Vec3(*position))
+		self.towerInstance.setPos(Vec3(*position))
+		
 		
 	def moveTowerModel(self,position):
-		self.tower.setPos(Vec3(*position))
-		self.sphere.setPos(Vec3(*position))
-		self.canons.setPos(Vec3(*position))
+		self.towerInstance.setPos(Vec3(*position))
+		#self.sphere.setPos(Vec3(*position))
+		#self.canons.setPos(Vec3(*position))
 		
 	def towerSelectedColor(self,color = None):
 		if color is None:
 			color = self.selectedColor
-		self.sphere.setColor(*color)
+		self.towerInstance.setColor(*color)
 
 	def towerMovingColor(self, color = None):
 		if color is None:
 			color = self.movingColor
-		self.sphere.setColor(*color)
+		self.towerInstance.setColor(*color)
 		
 	def resetColor(self):
-		self.sphere.setColor(*self.color)
+		self.towerInstance.setColor(*self.color)
 		
 	def setCollisionNode (self, nodeName, rangeView, ID):
-		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
+		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
 		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
+		self.towerCollider.setCollideMask(self.sourceTower.sourcePlayer.playerBitMask)
 		self.towerCollider.setTag("TowerID", ID)
-		self.towerCollider = self.tower.attachNewNode(CollisionNode(nodeName + '_cnode'))
+		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
 		self.towerCollider.setTag("TowerID", ID)
-		print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
+		#print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
+		
+	def delete(self):
+		self.towerInstance.removeNode()
+		self.towerInstance = None
 	
 	"""	
 	def setCollisionNode (self, collisionNodeName, rangeView):
@@ -91,27 +127,29 @@ class Tower():
 
 	towerDict = {}
 
-	def __init__(self, towerType, confFile='tower.xml'):
+	def __init__(self, sourcePlayer, towerType):
 
 		self.name = "TowerClass"
 		self.ID = str(uuid.uuid4())
 		Tower.towerDict[self.ID] = self
-
+		self.towerType = towerType
+		self.sourcePlayer = sourcePlayer
+		self.enemyBitMask = sourcePlayer.inactivePlayer.playerBitMask
 		#Getting configuration
+		self.towerType = towerType
 		self.typ = None
-		self.cfTree = ET.parse(confFile)
+		self.cfTree = ET.parse('tower.xml')
 		self.cfRoot = self.cfTree.getroot()
 		for element in self.cfRoot.findall('tower'):
-			if (element.get('type') == towerType):
+			if (element.get('type') == self.towerType):
 				self.typ = element
 		if self.typ == None: print "Tower Type do not exist"; return
 		#Getting model configuration
 		self.modelTag = self.typ.find('model')
 		#Getting troop type
 		self.troopType = self.typ.find('troopType').text
-		#Getting projectile type
+		#Getting projectile typefrom direct.interval.ActorInterval import ActorInterval
 		self.projectileType = self.typ.find('projectileType').text
-		print "projectileType = ",self.projectileType
 
 		#Shooting power of the tower
 		self.shootPower = 0 #Nao usar esta variavel. Usar listShootPower[0]
@@ -163,6 +201,11 @@ class Tower():
 		self.towerInicialized = False
 		self.artPath = self.typ.find('artPath').text
 
+		#----------------------------------
+		
+		#Game engine part------------------
+		self.timeLastShoot = 0
+		self.timeLastSpawn = 0
 		#----------------------------------
 
             
@@ -219,7 +262,12 @@ class Tower():
 
 	def initModel(self, position):
 		self.position = position
-		self.towerModel = TowerModel(position, self.modelTag)
+		self.towerModel = TowerModel(self, position, self.modelTag, self.towerType)
+	
+	def delete(self):
+		if self.towerModel != None:
+			self.towerModel.delete()
+			self.towerModel = None
 
 	def moveTower(self,position):
 		self.position = position
@@ -231,11 +279,22 @@ class Tower():
 	def initCollisionNode(self):
 		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], self.ID);
 
-	def shootProjectile(self, impulseForce):
-		self.projectiles.append(Projectile(self.projectileType))
-		self.projectiles[-1].position = self.position
-		self.projectiles[-1].impulseForce = impulseForce
-		self.projectiles[-1].initProjectile()
+	def shootProjectile(self, targetPosition):
+		timeSinceLastShoot = globalClock.getFrameTime() - self.timeLastShoot
+		#print "timeLastShoot = ",self.timeLastShoot
+		if (timeSinceLastShoot > 10.0/self.listTxShoot[0]):
+			#print "Shooted timeLastShoot = ",self.timeLastShoot
+			self.timeLastShoot = globalClock.getFrameTime()
+			self.projectiles.append(Projectile(self.projectileType))
+			self.projectiles[-1].position = [self.position[0], self.position[1], self.position[2]+12]
+			self.projectiles[-1].impulseForce = self.aimShoot(targetPosition, self.projectiles[-1])		
+			self.projectiles[-1].initProjectile()
+
+	def spawnTroop(self):
+		timeSinceLastSpawn = globalClock.getFrameTime() - self.timeLastSpawn
+		if (timeSinceLastSpawn > 20.0/self.listTxTroops[0]):
+			self.timeLastSpawn = globalClock.getFrameTime()
+			self.createTroop()
 		
 	def createTroop(self):
 		self.troop = Troop(self,self.troopType)
@@ -243,9 +302,18 @@ class Tower():
 		self.troop.initTroop()
 
 	def aimShoot(self, targetPosition, projectileObj):
-		distanceVector = vector3Sub(targetPosition, self.position)
-		thetaAngle = asin((physics.physicsGravity*distanceVector[0])/((self.listShootPower[0]/projectileObj.mass)**2)) #rads maybe
-		aimImpulseForce = None
+		targetPosition = targetPosition[:]
+		targetPosition[2] += 4
+		distanceVector = vector3Sub(targetPosition, projectileObj.position)
+		distanceModule = vector2Module(distanceVector[:2])
+		sinPhiAngle = distanceVector[1]/(distanceModule)
+		cosPhiAngle = distanceVector[0]/(distanceModule)
+		velocity = (self.listShootPower[0]/projectileObj.mass)
+		termSqrt = velocity**4 + physics.physicsGravity*((-physics.physicsGravity*(distanceModule**2)) + 2*distanceVector[2]*(velocity**2))
+		numerador = (velocity**2) - sqrt(termSqrt)
+		denominador = -physics.physicsGravity*distanceModule
+		thetaAngle = atan(numerador/denominador)
+		aimImpulseForce = [self.listShootPower[0]*cosPhiAngle*cos(thetaAngle), self.listShootPower[0]*sinPhiAngle*cos(thetaAngle), self.listShootPower[0]*sin(thetaAngle)]
 		return aimImpulseForce
 
 

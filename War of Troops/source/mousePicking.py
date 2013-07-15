@@ -4,6 +4,7 @@ import collision
 import player
 import tower
 import troop
+from pathfindingMesh import *
 
 
 """File to handle mouse picking, receiving a collision object 
@@ -14,6 +15,8 @@ pickerNode=CollisionNode('mouseRay_cnode')
 pickerNP=base.camera.attachNewNode(pickerNode)
 pickerRay=CollisionRay()
 pickerNode.addSolid(pickerRay)
+#pickerNode.setFromCollideMask(BitMask32(0x1))
+#pickerNode.setFromCollideMask(BitMask32(0x2))
 collision.addCollider(pickerNP)
 
 #A struct like to solve reference pass problems
@@ -75,9 +78,14 @@ def mouseClicked():
 	
 	#posicioning tower
 	if MousePicking.mpos != None and MousePicking.towerFollowMouse == True:
-		MousePicking.towerFollowMouse = False
-		player.Player.currPlayer.getTower(-1).towerModel.resetColor()
-		player.Player.currPlayer.getTower(-1).initTower()
+		towerObj = player.Player.currPlayer.getTower(-1)
+		if navigationMesh.isFree(towerObj.position[0], towerObj.position[1]):
+			MousePicking.towerFollowMouse = False
+			pos2D = navigationMesh.getCenter(towerObj.position[0], towerObj.position[1])
+			towerObj.moveTower(pos2D + [towerObj.position[2]])
+			towerObj.towerModel.resetColor()
+			towerObj.initTower()
+			navigationMesh.setObstacle(towerObj.position[0], towerObj.position[1])
 		#print "mouseClicked - tower inicialized in ", collision.collision3DPoint
 	
 	#picking tower	

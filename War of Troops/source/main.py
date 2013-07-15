@@ -2,6 +2,6 @@
 from world import *
 
 
-w = World()
+WoT = World()
 run()
 

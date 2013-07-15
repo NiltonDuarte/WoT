@@ -66,6 +66,7 @@ class PlayScreenHUD (DirectObject):
 		self.minusAttribButton();
 		self.addArtImage();
 		self.addAttributeTexts();
+		self.addPlayerDataTexts();
 		self.turnPassButton();
 			
 	def addAlphaTowerButton(self):
@@ -164,18 +165,30 @@ class PlayScreenHUD (DirectObject):
 		self.labelRangeView["text"] = str(towerObj.listRangeView[VALUE])
 		self.labelTxTroops["text"] = str(towerObj.listTxTroops[VALUE])
 		#Projectile
-		self.labelMass["text"] = str(towerObj.projectileParameters[0])
-		self.labelSpreadRay["text"] = str(towerObj.projectileParameters[1])
-		self.labelSpreadPercentage["text"] = str(towerObj.projectileParameters[2])
-		self.labelDot["text"] = str(towerObj.projectileParameters[3])
-		self.labelDamageDuration["text"] = str(towerObj.projectileParameters[4])
-		self.labelSlow["text"] = str(towerObj.projectileParameters[5])
-		self.labelSlowDuration["text"] = str(towerObj.projectileParameters[6])
-		self.labelChanceCritical["text"] = str(towerObj.projectileParameters[7])
+		styp = None
+		cfTree = ET.parse('projectile.xml')
+		cfRoot = cfTree.getroot()
+		for element in cfRoot.findall('projectile'):
+			if (element.get('type') == towerObj.projectileType):
+				typ = element
+		self.labelMass["text"] = typ.find('mass').text
+		self.labelSpreadRay["text"] = typ.find('spreadRay').text
+		self.labelSpreadPercentage["text"] = typ.find('spreadPercentage').text
+		self.labelDot["text"] = typ.find('dot').text
+		self.labelDamageDuration["text"] = typ.find('damageDuration').text
+		self.labelSlow["text"] = typ.find('slow').text
+		self.labelSlowDuration["text"] = typ.find('slowDuration').text
+		self.labelChanceCritical["text"] = typ.find('chanceCritical').text
 		#Troop
-		self.labelLifeParam["text"] = str(towerObj.troopParameters[0]) + "-" + str(towerObj.troopParameters[1])
-		self.labelSpeedParam["text"] = str(towerObj.troopParameters[2]) + "-" + str(towerObj.troopParameters[3])
-		self.labelResistenceParam["text"] = str(towerObj.troopParameters[4]) + "-" + str(towerObj.troopParameters[5])
+		typ = None
+		cfTree = ET.parse('troop.xml')
+		cfRoot = cfTree.getroot()
+		for element in cfRoot.findall('troop'):
+			if (element.get('type') == towerObj.troopType):
+				typ = element
+		self.labelLifeParam["text"] = typ.find('life').find('Min').text + "-" + typ.find('life').find('Max').text
+		self.labelSpeedParam["text"] = typ.find('speed').find('Min').text + "-" + typ.find('speed').find('Max').text
+		self.labelResistenceParam["text"] = typ.find('resistence').find('Min').text + "-" + typ.find('resistence').find('Max').text
 		self.labelLife["text"] = "-"
 		self.labelSpeed["text"] = "-"
 		self.labelResistence["text"] = "-"				
@@ -208,9 +221,18 @@ class PlayScreenHUD (DirectObject):
 		self.labelLife["text"] = "-"
 		self.labelSpeed["text"] = "-"
 		self.labelResistence["text"] = "-"		
-		
+
+
 	def resetHUD(self):
 		self.resetAttributeTexts()
+
+	def addPlayerDataTexts(self):
+		currPlayer = player.Player.currPlayer
+		self.labelName = DirectLabel(self.playScreenFrame, text= currPlayer.name, text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [-1.79/self.isoScale, 0, 0.94/self.isoScale], scale = 0.05/self.isoScale)
+
+	def updatePlayerDataTexts(self):
+		currPlayer = player.Player.currPlayer
+		self.labelName["text"] = currPlayer.name
 		
 class InitialScreenHUD(DirectObject):
 	def __init__(self, gameScreenFSM):
@@ -267,7 +289,7 @@ class sceneButton(gameButton):
 	def changeScene(self):
 		for tower in player.Player.currPlayer.getTowerList():
 			if tower.towerInicialized:
-				tower.shootProjectile([10,0,13])
+				#tower.shootProjectile([10,0,13])
 				tower.createTroop()
 		print "Scene Changed"
 		

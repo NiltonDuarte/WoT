@@ -5,7 +5,21 @@
 			<path>../arquivos de modelo/Projectile</path>
 			<texture>../texturas/projectile_Texture.png</texture>
 		</model>
-		<mass>100</mass>
+		<mass>0.5</mass>
+		<spreadRay>0</spreadRay>
+		<spreadPercentage>0</spreadPercentage>
+		<dot>0</dot>
+		<damageDuration>0</damageDuration>
+		<slow>0</slow>
+		<slowDuration>0</slowDuration>
+		<chanceCritical>0</chanceCritical>
+	</projectile>
+	<projectile type="Projectile2">
+		<model>
+			<path>../arquivos de modelo/Projectile</path>
+			<texture>../texturas/projectile_Texture.png</texture>
+		</model>
+		<mass>20</mass>
 		<spreadRay>0</spreadRay>
 		<spreadPercentage>0</spreadPercentage>
 		<dot>0</dot>

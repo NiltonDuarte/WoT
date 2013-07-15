@@ -13,9 +13,9 @@ class MyCamera(DirectObject):
 		self.angle = 45
 		base.camera.setHpr(0.0 , -self.angle, 0.0)
 		#Setting our camera position to be top-down
-		self.X = 1
-		self.Y = -240
-		self.Z = 200
+		self.X = 0
+		self.Y = -140
+		self.Z = 150
 		base.camera.setX(self.X)     
 		base.camera.setY(self.Y)  #depth
 		base.camera.setZ(self.Z)	#height

@@ -13,4 +13,6 @@ from gameScreenFSM import *
 from gamePlayFSM import *
 from lighting import *
 from HUDMap import *
+from AI import *
+from pathfindingMesh import *
 

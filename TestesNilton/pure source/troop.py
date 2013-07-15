@@ -26,7 +26,7 @@ for element in cfRoot.findall('troop'):
 	troopModel.setPos(0,0,0)
 	
 	#Animating the troop
-	#troopModel.loop('walk')
+	troopModel.loop('walk')
 	
 	#Setting the texture to the troop
 	modelTexture = loader.loadTexture(modelTag.find('texture').text)

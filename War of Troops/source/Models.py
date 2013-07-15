@@ -1,17 +1,34 @@
 from pandaImports import *
 
-
+class WallFortune(DirectObject):
+	'''This class imports the walls and do the needed transformations
+	   to show them on the game screen.
+	'''
+	def __init__(self, position, model):
+		#Loading the terrain model
+		self.wall = loader.loadModel(model)
+		self.wall.reparentTo(render)
+		#Setting the texture to the terrain
+		self.texture = loader.loadTexture("../texturas/wall_of_fortune_Texture.png")
+		self.wall.setTexture(self.texture, 1)
+		#Setting the position of the terrain
+		self.wall.setPos(Vec3(*position))
+		
+	def rotateZ(self, angle):
+		self.wall.setHpr(angle , 0.0, 0.0)
+		
 class TerrainModel(DirectObject):
 	'''This class imports the terrain model and do the needed transformations
 	   to show it on the game screen.
 	'''
 	def __init__(self):
 		#Loading the terrain model
-		self.terrain = loader.loadModel("../arquivos de modelo/Terrain1")
+		self.terrain = loader.loadModel("../arquivos de modelo/Terrain")
 		self.terrain.reparentTo(render)
+		
 		#Setting the texture to the terrain
-		#self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
-		#self.terrain.setTexture(self.texture, 1)
+		self.texture = loader.loadTexture("../texturas/terrain_Texture.png")
+		self.terrain.setTexture(self.texture, 1)
 		#Setting the position of the terrain
 		self.position = Vec3(0, 0, 0)
 		self.terrain.setPos(self.position)
@@ -24,9 +41,11 @@ class TerrainModel(DirectObject):
 
 		self.terrainColliderLeftNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
 		self.terrainColliderLeftNP.node().addSolid(CollisionBox(terrainBoundLower, Point3(*terrainBoundMiddleUpper)))
+		self.terrainColliderLeftNP.setCollideMask(BitMask32(0x1))
 		
 		self.terrainColliderRightNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
 		self.terrainColliderRightNP.node().addSolid(CollisionBox(Point3(*terrainBoundMiddleLower), terrainBoundUpper))
+		self.terrainColliderRightNP.setCollideMask(BitMask32(0x2))
      
 	def detachLeft():
 		return

@@ -28,11 +28,13 @@ for element in cfRoot.findall('tower'):
 	#Loading the tower models
 	
 	#loading the sphere
-	towerModelDict[towerType] = loader.loadModel(modelTag.find('sphere').text)
+	towerSphereModel = loader.loadModel(modelTag.find('sphere').text)
 	print "tower ",towerType," instanced"
+	#towerSphereModel.clearModelNodes()
+	#towerSphereModel.flattenStrong()
 	
 	#Setting the position of the tower 
-	towerModelDict[towerType].setPos(0,0,0)
+	towerSphereModel.setPos(0,0,0)
 	
 	#loading the base of the tower
 	towerBase = loader.loadModel(modelTag.find('base').text)
@@ -41,15 +43,16 @@ for element in cfRoot.findall('tower'):
 	texture = loader.loadTexture(modelTag.find('texture').text)
 	towerBase.setTexture(texture, 1)
 	towerBase.setPos(0,0,0)
-	towerBase.reparentTo(towerModelDict[towerType])
+	towerBase.reparentTo(towerSphereModel)
 	
 	#loading the cannons that stays inside the ball
 	towerCannons = loader.loadModel(modelTag.find('cannon').text)
-	towerCannons.reparentTo(towerModelDict[towerType])
+	towerCannons.reparentTo(towerSphereModel)
 	towerCannons.setColorOff()
 	towerCannons.setPos(0,0,0)
 	towerCannons.hprInterval(5,Point3(360,0,0)).loop()
 
+	towerModelDict[towerType] = towerSphereModel
 
 	
 

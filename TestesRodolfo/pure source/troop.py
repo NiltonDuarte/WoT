@@ -21,6 +21,7 @@ for element in cfRoot.findall('troop'):
 	#Loading the troop model
 	troopModel = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
 														'death' : modelTag.find('deathPath').text})
+														
 	
 	#Setting the position of the projectile 
 	troopModel.setPos(0,0,0)
@@ -47,8 +48,7 @@ class TroopModel(DirectObject):
 		#Setting the position of the projectile 
 		self.troopInstance.setPos(Vec3(*position))
 		self.troopColliderNP = None
-		#Creating particle system for death animation
-		self.particleSystem = ParticleSystem(position, self.troopInstance)
+
 
 	def moveTroopModel(self,position):
 		self.troopInstance.setPos(Vec3(*position))
@@ -171,6 +171,8 @@ class Troop:
 
 	def initModel(self, position):
 		self.troopModel = TroopModel(self,position,self.modelType)
+		#Creating particle system for death animation
+		particleSystem = ParticleSystem(self.position, self.troopModel.troopInstance)
 
 
 	def moveTroop(self,position):

@@ -1,6 +1,6 @@
 #importing our modules
 from imports import *
-
+import projectile
 #Other modules
 import sys #to close the game screen with escape key
 
@@ -64,6 +64,16 @@ class World(DirectObject):
 
 		player.Player.currPlayer.camera.moveCameraXY()
 		#this function returns Task.cont
+		print "antes : " ,  len( projectile.Projectile.projectileDict )
+		for  pkey in projectile.Projectile.projectileDict.keys():
+			p = projectile.Projectile.projectileDict[pkey]
+			if (p.colliding == True):
+				p.projectileModel.projectileInstance.removeNode()
+				del Projectile.projectileDict[pkey]
+		print "depois : " ,  len( projectile.Projectile.projectileDict )		
+		
+		
+
 		return Task.cont
 
 

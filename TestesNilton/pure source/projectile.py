@@ -119,6 +119,8 @@ class Projectile:
 		self.actorNodePath = None 
 		
 		#----------------------------------
+
+		self.colliding = False
                
 	def initProjectile(self):
 		self.initModel(self.position)

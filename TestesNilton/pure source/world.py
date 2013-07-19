@@ -1,6 +1,5 @@
 #importing our modules
 from imports import *
-import projectile
 #Other modules
 import sys #to close the game screen with escape key
 
@@ -16,13 +15,14 @@ base.win.requestProperties(wp)
 #miniMap = HUDMap()
 terr = TerrainModel()
 
+"""
 upperWall = WallFortune([0, 100, 0], "../arquivos de modelo/Wall")
 bottomWall = WallFortune([0, -100, 0], "../arquivos de modelo/Wall")
 leftWall = WallFortune([-100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
 leftWall.rotateZ(90)
 rightWall = WallFortune([100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
 rightWall.rotateZ(270)
-
+"""
 player1 = Player("Player1", "lylyh")
 player2 = Player("Player2", "Niltin")
 
@@ -41,7 +41,7 @@ class World(DirectObject):
 		self.gameTask = taskMgr.add(self.gameLoop, "gameLoop")
 		taskMgr.add(mousePicking.mouseRayUpdate, "updatePicker")
 		self.gameTask.last = 0
-		#PStatClient.connect()
+		PStatClient.connect()
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
 		base.enableParticles()
@@ -62,18 +62,18 @@ class World(DirectObject):
 		deltaTime = task.time - task.last
 		task.last = task.time
 
-		player.Player.currPlayer.camera.moveCameraXY()
-		#this function returns Task.cont
-		print "antes : " ,  len( projectile.Projectile.projectileDict )
-		for  pkey in projectile.Projectile.projectileDict.keys():
-			p = projectile.Projectile.projectileDict[pkey]
+		Player.currPlayer.camera.moveCameraXY()
+		for  pkey in Projectile.projectileDict.keys():
+			p = Projectile.projectileDict[pkey]
 			if (p.colliding == True):
 				p.projectileModel.projectileInstance.removeNode()
 				del Projectile.projectileDict[pkey]
-		print "depois : " ,  len( projectile.Projectile.projectileDict )		
+		for  pkey in Troop.troopDict.keys():
+			troop = Troop.troopDict[pkey]
+			if (troop.isDead):
+				del Troop.troopDict[pkey]
 		
-		
-
+		#this function returns Task.cont
 		return Task.cont
 
 

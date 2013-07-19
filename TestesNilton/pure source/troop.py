@@ -10,6 +10,7 @@ from pathfindingMesh import *
 import AI
 
 troopModelDict = {}
+troopDeathModelDict = {}
 #Getting configuration
 typ = None
 cfTree = ET.parse("troop.xml")
@@ -28,13 +29,35 @@ for element in cfRoot.findall('troop'):
 	troopModel.setPos(0,0,0)
 	
 	#Animating the troop
-	#troopModel.loop('walk')
+	troopModel.loop('walk')
 	
 	#Setting the texture to the troop
 	modelTexture = loader.loadTexture(modelTag.find('texture').text)
 	troopModel.setTexture(modelTexture, 1)
 	
 	troopModelDict[troopType] = troopModel
+
+for element in cfRoot.findall('troop'):
+	troopType = element.get('type')
+	modelTag = element.find('model')
+	#Loading the troop model
+	troopModel = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
+														'death' : modelTag.find('deathPath').text})
+	print "troop ", troopType," instanced"
+	troopModel.clearModelNodes()
+	troopModel.flattenStrong()
+	
+	#Setting the position of the projectile 
+	troopModel.setPos(0,0,0)
+	
+	#Animating the troop
+	troopModel.loop('death')
+	
+	#Setting the texture to the troop
+	modelTexture = loader.loadTexture(modelTag.find('texture').text)
+	troopModel.setTexture(modelTexture, 1)
+	
+	troopDeathModelDict[troopType] = troopModel
 
 class TroopModel(DirectObject):
 	"""This class imports the tower model and do the needed transformations
@@ -118,6 +141,9 @@ class Troop:
 		self.artPath = self.typ.find('artPath').text
 
 		#----------------------------------
+		#Game engine part------------------
+		self.isDead = False
+		#----------------------------------
 
 	def defineParameters(self, listParam):
 		"""Gets the values of listParam and puts them in this order
@@ -182,6 +208,18 @@ class Troop:
 	def updatePosition(self, newPosition):
 		self.prevPosition = self.position
 		self.position = newPosition
+		
+	def updateLife(self, value):
+		self.life += value
+		if self.life <= 0:
+			self.isDead = True
+			self.troopModel.troopColliderNP.node().removeSolid(0)
+			self.troopModel.troopInstance.removeNode()
+			self.troopModel.troopInstance = render.attachNewNode("TroopDeath-Instance")
+			troopDeathModelDict[troopType].instanceTo(self.troopModel.troopInstance)
+			self.troopModel.troopInstance.setPos(*self.position)
+			
+			
 
 		
 

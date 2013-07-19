@@ -21,12 +21,14 @@ for element in cfRoot.findall('troop'):
 	troopModel = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
 														'death' : modelTag.find('deathPath').text})
 	print "troop ", troopType," instanced"
+	troopModel.clearModelNodes()
+	troopModel.flattenStrong()
 	
 	#Setting the position of the projectile 
 	troopModel.setPos(0,0,0)
 	
 	#Animating the troop
-	troopModel.loop('walk')
+	#troopModel.loop('walk')
 	
 	#Setting the texture to the troop
 	modelTexture = loader.loadTexture(modelTag.find('texture').text)

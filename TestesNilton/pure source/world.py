@@ -13,7 +13,7 @@ window_Height = 640
 wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
-miniMap = HUDMap()
+#miniMap = HUDMap()
 terr = TerrainModel()
 
 upperWall = WallFortune([0, 100, 0], "../arquivos de modelo/Wall")
@@ -41,7 +41,7 @@ class World(DirectObject):
 		self.gameTask = taskMgr.add(self.gameLoop, "gameLoop")
 		taskMgr.add(mousePicking.mouseRayUpdate, "updatePicker")
 		self.gameTask.last = 0
-		#PStatClient.connect()
+		PStatClient.connect()
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
 		base.enableParticles()

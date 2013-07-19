@@ -16,18 +16,21 @@ for element in cfRoot.findall('projectile'):
 	projectileType = element.get('type')
 	modelTag = element.find('model')
 	#Loading the projectile model
-	projectileModelDict[projectileType] = loader.loadModel(modelTag.find('path').text)
+	projectileModel = loader.loadModel(modelTag.find('path').text)
 	print "projectile ",projectileType  ," instanced"
+	projectileModel.clearModelNodes()
+	projectileModel.flattenStrong()
 	
 	#Setting the position of the projectile 
-	projectileModelDict[projectileType].setPos(0,0,0)
+	projectileModel.setPos(0,0,0)
 	
 	#Animating the projectile
-	projectileModelDict[projectileType].hprInterval(1,Point3(200,160,260)).loop()
+	projectileModel.hprInterval(1,Point3(200,160,260)).loop()
 	
 	#Setting the texture to the projectile
 	modelTexture = loader.loadTexture(modelTag.find('texture').text)
-	projectileModelDict[projectileType].setTexture(modelTexture, 1)
+	projectileModel.setTexture(modelTexture, 1)
+	projectileModelDict[projectileType] = projectileModel
 
 
 class ProjectileModel(DirectObject):

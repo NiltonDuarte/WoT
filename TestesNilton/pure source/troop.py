@@ -173,12 +173,14 @@ class Troop:
 		self.troopModel.moveTroopModel(position)
 
 
+
 	def initCollisionNode(self):
 		self.troopModel.setCollisionNode(self.name, self.ID);
 
 	def updatePosition(self, newPosition):
 		self.prevPosition = self.position
 		self.position = newPosition
+
 		
 
 

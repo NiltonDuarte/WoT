@@ -89,11 +89,15 @@ class Player:
 		
 	def collideTroopEventIntoProjectile(entry):
 		#print entry.getFromNodePath(), "colliding with", entry.getIntoNodePath()
-		collindingIntoNode = entry.getIntoNode()
-		projectileObj = Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
+		collidingIntoNode = entry.getIntoNode()
+
+		projectileObj = Projectile.projectileDict[collidingIntoNode.getTag("ProjectileID")]
+
+		if (projectileObj.colliding == False):
 		#BUG - projetil nao eh apagado corretamente, gerando erro ao tentar fazer nova colisao apos ser apagado do dicionario
-		projectileObj.projectileModel.projectileInstance.removeNode()
-		#del Projectile.projectileDict[collindingIntoNode.getTag("ProjectileID")]
+				
+			projectileObj.projectileModel.ignoreAll()
+			projectileObj.colliding = True
 		return
 
 

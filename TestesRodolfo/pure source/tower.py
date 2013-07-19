@@ -38,7 +38,6 @@ for element in cfRoot.findall('tower'):
 	towerBase.setColorOff()
 	#Setting the texture to the base
 	texture = loader.loadTexture(modelTag.find('texture').text)
-	towerBase.setTexture(texture, 1)
 	towerBase.setPos(0,0,0)
 	towerBase.reparentTo(towerModelDict[towerType])
 	

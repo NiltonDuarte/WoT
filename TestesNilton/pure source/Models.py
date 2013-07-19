@@ -13,6 +13,8 @@ class WallFortune(DirectObject):
 		self.wall.setTexture(self.texture, 1)
 		#Setting the position of the terrain
 		self.wall.setPos(Vec3(*position))
+		self.wall.setShaderAuto()
+
 		
 	def rotateZ(self, angle):
 		self.wall.setHpr(angle , 0.0, 0.0)

@@ -41,7 +41,7 @@ class World(DirectObject):
 		self.gameTask = taskMgr.add(self.gameLoop, "gameLoop")
 		taskMgr.add(mousePicking.mouseRayUpdate, "updatePicker")
 		self.gameTask.last = 0
-		PStatClient.connect()
+		#PStatClient.connect()
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
 		base.enableParticles()

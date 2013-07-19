@@ -7,7 +7,7 @@ from direct.task.Task import Task
 
 #Position and collision need these modules
 from panda3d.core import Vec2,Vec3
-from panda3d.core import Point2, Point3
+from panda3d.core import Point2, Point3, Shader
 from pandac.PandaModules import CollisionHandlerEvent, CollisionNode, CollisionBox, CollisionSphere, CollisionTraverser, BitMask32, CollisionRay
 
 #WindowProperties is needed to set the size of the screen

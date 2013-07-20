@@ -70,7 +70,7 @@ class World(DirectObject):
 
 		Player.currPlayer.camera.moveCameraXY()
 		Player.currPlayer.camera.scrollCamera(self.mouseActions)
-		print self.mouseActions
+		#print self.mouseActions
 		
 		for  pkey in Projectile.projectileDict.keys():
 			p = Projectile.projectileDict[pkey]

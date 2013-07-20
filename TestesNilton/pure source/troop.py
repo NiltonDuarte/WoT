@@ -8,6 +8,7 @@ from pandaImports import *
 import xml.etree.ElementTree as ET
 from pathfindingMesh import *
 import AI
+from particleSystem import *
 
 troopModelDict = {}
 troopDeathModelDict = {}
@@ -218,6 +219,8 @@ class Troop:
 			self.troopModel.troopInstance = render.attachNewNode("TroopDeath-Instance")
 			troopDeathModelDict[troopType].instanceTo(self.troopModel.troopInstance)
 			self.troopModel.troopInstance.setPos(*self.position)
+			#Creating particle system for death animation
+			particleSystem = ParticleSystem(self.position, self.troopModel.troopInstance)
 			
 			
 

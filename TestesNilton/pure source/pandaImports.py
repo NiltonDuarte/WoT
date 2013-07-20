@@ -22,3 +22,12 @@ from direct.actor.Actor import Actor
 
 #This is for loading AI
 from panda3d.ai import *
+
+#These are used to create a particle system
+from panda3d.physics import BaseParticleEmitter,BaseParticleRenderer
+from panda3d.physics import PointParticleFactory,SpriteParticleRenderer
+from panda3d.physics import LinearNoiseForce,DiscEmitter
+from panda3d.core import Filename
+from direct.particles.Particles import Particles
+from direct.particles.ParticleEffect import ParticleEffect
+from direct.particles.ForceGroup import ForceGroup

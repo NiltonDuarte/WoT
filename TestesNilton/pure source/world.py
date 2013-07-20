@@ -41,19 +41,25 @@ class World(DirectObject):
 		self.gameTask = taskMgr.add(self.gameLoop, "gameLoop")
 		taskMgr.add(mousePicking.mouseRayUpdate, "updatePicker")
 		self.gameTask.last = 0
-		PStatClient.connect()
+		#PStatClient.connect()
 		#self.loadOnce makes the game load the objects only once -> type: boolean
 		self.loadOnce = True
 		base.enableParticles()
 		#base.cTrav.showCollisions(render)
+		#Closes game when esc key is pressed
+		self.accept('escape', sys.exit ) 
 		
-		self.accept('escape', sys.exit ) # exit on esc
+		#Array with the mouse actions
+		self.mouseActions = {"scroll_UP" : 0, "scroll_DOWN" : 0}
+		self.accept("wheel_down", self.setAction, ["scroll_DOWN", 1, "scroll_UP", 0])
+		self.accept("wheel_up", self.setAction, ["scroll_DOWN", 0, "scroll_UP", 1])
+		self.accept("mouse2", self.setAction, ["scroll_DOWN", 0, "scroll_UP", 0])
+
 		
-	def loadObjects(self):
-		'''Function that loads objects.
-		   We can create different functions like this for each scene
-		'''
-		print "Once"
+	#Setting the state of the actions
+	def setAction(self, action, val, action2, val2):
+		self.mouseActions[action] = val
+		self.mouseActions[action2] = val2
 			
 	def gameLoop(self, task):
 		'''This function run every frame of the game
@@ -63,6 +69,9 @@ class World(DirectObject):
 		task.last = task.time
 
 		Player.currPlayer.camera.moveCameraXY()
+		Player.currPlayer.camera.scrollCamera(self.mouseActions)
+		print self.mouseActions
+		
 		for  pkey in Projectile.projectileDict.keys():
 			p = Projectile.projectileDict[pkey]
 			if (p.colliding == True):

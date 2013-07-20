@@ -63,6 +63,13 @@ class MyCamera(DirectObject):
 				#print "Moving leftwards"
 			#else:
 				#print "Not moving in the Y direction"
+				
+	def scrollCamera(self, actions):
+		if ( actions["scroll_UP"] == 1):
+			self.Z -= 1
+		if ( actions["scroll_DOWN"] == 1):
+			self.Z += 1 
+		base.camera.setZ(self.Z)
 			
 			
 

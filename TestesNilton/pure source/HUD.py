@@ -7,6 +7,7 @@
 from tower import *
 import player
 from commonFunctions import *
+from Sound import *
 
 
 #importing panda3D
@@ -31,6 +32,10 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 
 #HUD_models holds all the models that HUD will use
 HUD_models = aspect2d.attachNewNode("HUD Models")
+
+#Getting the sound effects 
+clickButtonSound = Sound("../sounds/buttonClick.wav")
+clickButtonSound.setVolume(0.5)
 
 class PlayScreenHUD (DirectObject):
 	def __init__(self, gameScreenFSM, mousePicking):
@@ -94,7 +99,8 @@ class PlayScreenHUD (DirectObject):
 	def createTower(self, towerType):
 		player.Player.currPlayer.addTower(towerType)
 		self.mousePicking.towerFollowMouse = True
-		print "Tower Created"		
+		print "Tower Created"	
+		clickButtonSound.play()	
 		
 	def plusAttribButton(self):
 		scale = 0.07/self.isoScale

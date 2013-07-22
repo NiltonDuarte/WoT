@@ -9,6 +9,11 @@ import xml.etree.ElementTree as ET
 from pathfindingMesh import *
 import AI
 from particleSystem import *
+from Sound import *
+
+#Getting the sound effects for troop
+deathSound = Sound("../sounds/troopFire.wav")
+deathSound.setVolume(0.5)
 
 troopModelDict = {}
 troopDeathModelDict = {}
@@ -221,6 +226,7 @@ class Troop:
 			self.troopModel.troopInstance.setPos(*self.position)
 			#Creating particle system for death animation
 			particleSystem = ParticleSystem(self.position, self.troopModel.troopInstance)
+			deathSound.play()
 			
 			
 

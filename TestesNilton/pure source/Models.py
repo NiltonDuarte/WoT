@@ -40,6 +40,10 @@ class TerrainModel(DirectObject):
 		#terrainBoundUpper[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
 		terrainBoundMiddleUpper[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
 		terrainBoundMiddleLower[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
+		
+		#print terrainBoundUpper - terrainBoundLower
+		#print ''
+		#print terrainBoundUpper
 
 		self.terrainColliderLeftNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
 		self.terrainColliderLeftNP.node().addSolid(CollisionBox(terrainBoundLower, Point3(*terrainBoundMiddleUpper)))

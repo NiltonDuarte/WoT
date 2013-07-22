@@ -1,7 +1,7 @@
 """Here we store functions that are going to be used by some objects"""
 
 from random import randint
-from math import fabs
+from math import *
 
 VALUE = 0
 MAX = 1
@@ -80,4 +80,11 @@ def vector2Module(vector1):
 	retModule = 0
 	retModule = (vector1[0]**2 + vector1[1]**2)**0.5
 	return retModule
+	
+def thetaCalc(velocity, gravity, distanceModule, z):
+	termSqrt = velocity**4 + gravity*((-gravity*(distanceModule**2)) + 2*z*(velocity**2))
+	numerador = (velocity**2) - sqrt(termSqrt)
+	denominador = -gravity*distanceModule
+	thetaAngle = atan(numerador/denominador)
+	return thetaAngle
 	

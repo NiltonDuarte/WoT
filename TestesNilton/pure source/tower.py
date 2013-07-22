@@ -312,10 +312,7 @@ class Tower():
 		sinPhiAngle = distanceVector[1]/(distanceModule)
 		cosPhiAngle = distanceVector[0]/(distanceModule)
 		velocity = (self.listShootPower[0]/projectileObj.mass)
-		termSqrt = velocity**4 + physics.physicsGravity*((-physics.physicsGravity*(distanceModule**2)) + 2*distanceVector[2]*(velocity**2))
-		numerador = (velocity**2) - sqrt(termSqrt)
-		denominador = -physics.physicsGravity*distanceModule
-		thetaAngle = atan(numerador/denominador)
+		thetaAngle = thetaCalc(velocity, physics.physicsGravity, distanceModule, distanceVector[2])
 		aimImpulseForce = [self.listShootPower[0]*cosPhiAngle*cos(thetaAngle), self.listShootPower[0]*sinPhiAngle*cos(thetaAngle), self.listShootPower[0]*sin(thetaAngle)]
 		return aimImpulseForce
 

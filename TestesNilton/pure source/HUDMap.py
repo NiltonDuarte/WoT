@@ -22,9 +22,9 @@ class HUDMap(DirectObject):
 		self.aspectRatio = self.getAspectRatio()
 		
 		#Making the HUDmap not be hidden by other objects
-		self.displayRegion.setClearColor((0.5, 0.5, 0.5, 1))
 		self.displayRegion.setClearColorActive(True)
-		self.displayRegion.setClearDepthActive(True)
+		self.displayRegion.setClearColor((0.5, 0.5, 0.5, 1))
+		self.displayRegion.setClearDepthActive(True)  #Z buffer
 			
 	def createRegion(self):
 		self.leftBorder, self.rightBorder = 0.8, 1 

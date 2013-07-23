@@ -12,7 +12,7 @@ window_Height = 640
 wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
-#miniMap = HUDMap()
+miniMap = HUDMap()
 terr = TerrainModel()
 
 """

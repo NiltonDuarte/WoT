@@ -36,6 +36,8 @@ HUD_models = aspect2d.attachNewNode("HUD Models")
 #Getting the sound effects 
 clickButtonSound = Sound("../sounds/buttonClick.wav")
 clickButtonSound.setVolume(0.5)
+turnPass_Sound = Sound("../sounds/changeTurn.wav")
+turnPass_Sound.setVolume(0.5)
 
 class PlayScreenHUD (DirectObject):
 	def __init__(self, gameScreenFSM, mousePicking):
@@ -122,6 +124,7 @@ class PlayScreenHUD (DirectObject):
 		
 	def turnPass(self):
 		self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
+		turnPass_Sound.play()
 		return
 	
 	def addArtImage(self):

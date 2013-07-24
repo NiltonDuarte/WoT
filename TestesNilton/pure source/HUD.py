@@ -51,11 +51,30 @@ class PlayScreenHUD (DirectObject):
 		self.labelMass = self.labelSpreadRay = self.labelSpreadPercentage = self.labelDot = self.labelDamageDuration = self.labelSlow = self.labelSlowDuration = self.labelChanceCritical = None
 		self.labelLifeParam = self.labelSpeedParam = self.labelResistenceParam = None
 		self.labelLife = self.labelSpeed = self.labelResistence = None
+		#Creating a timer for this class
+		taskMgr.add(self.timeCounter, "PlayScreenHUD timer")
+		self.time = 0
+		self.changeTurnText = None
+		self.changeTurnTimer = 0
 		
 	def __del__(self):
 		if (self.playScreenFrame != None):
 			self.playScreenFrame.destroy()	
 		return
+		
+	def timeCounter(self, task):
+		self.time = task.time
+	
+		#print self.changeTurnText
+		if(self.changeTurnText == None):
+			self.changeTurnTimer = 0
+		else:
+			self.changeTurnTimer += 1
+			if(self.changeTurnTimer > 90):
+				self.changeTurnText.destroy()
+				self.changeTurnText = None
+			
+		return Task.cont
 		
 	def initHUD(self):
 		self.playScreenFrame = DirectFrame(HUD_models,
@@ -125,7 +144,20 @@ class PlayScreenHUD (DirectObject):
 	def turnPass(self):
 		self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
 		turnPass_Sound.play()
+		self.drawChangeTurn()
 		return
+		
+	def drawChangeTurn(self):
+		#Creating the change turn text 
+		self.changeTurnText = DirectFrame(self.playScreenFrame,
+								image = '../HUD images/changeTurn_Text.png',
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								pos = [0, 0, 0.05],
+								scale = 0.4/self.isoScale
+								)
+		self.changeTurnText.setSx(3.8/self.isoScale)
+		self.changeTurnText.setTransparency(TransparencyAttrib.MAlpha)
 	
 	def addArtImage(self):
 		self.artImage = DirectFrame(self.playScreenFrame, 

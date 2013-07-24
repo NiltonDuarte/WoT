@@ -47,7 +47,7 @@ class MyCamera(DirectObject):
 		
 		#The camera only moves when the mouse is on the screen
 		if(self.mouseOnScreen):
-			print self.Y
+			#print self.Y
 			#Creating 2 invisible borders on the right and left side (x axis)	
 			if(self.mouseX > 0.93 and self.X < self.rightBorder):
 				self.X += 4

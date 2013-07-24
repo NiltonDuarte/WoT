@@ -71,6 +71,9 @@ class World(DirectObject):
 		#Frame duration
 		deltaTime = task.time - task.last
 		task.last = task.time
+		
+		#Getting the FPS of the game
+		#print globalClock.getAverageFrameRate()
 
 		Player.currPlayer.camera.moveCameraXY()
 		Player.currPlayer.camera.scrollCamera(self.mouseActions)

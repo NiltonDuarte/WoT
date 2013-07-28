@@ -39,6 +39,11 @@ clickButtonSound.setVolume(0.5)
 turnPass_Sound = Sound("../sounds/changeTurn.wav")
 turnPass_Sound.setVolume(0.5)
 
+#Getting the main theme
+mainThemeSong = Sound("../sounds/mainTheme.wav")
+mainThemeSong.setVolume(0.1)
+mainThemeSong.setLoop(True)
+
 class PlayScreenHUD (DirectObject):
 	def __init__(self, gameScreenFSM, mousePicking):
 		self.gameScreenFSM = gameScreenFSM
@@ -69,8 +74,7 @@ class PlayScreenHUD (DirectObject):
 		if(self.changeTurnText == None):
 			self.changeTurnTimer = 0
 		else:
-			self.changeTurnTimer += 1
-			if(self.changeTurnTimer > 90):
+			if(turnPass_Sound.getSoundStatus() == 1):
 				self.changeTurnText.destroy()
 				self.changeTurnText = None
 			
@@ -94,6 +98,7 @@ class PlayScreenHUD (DirectObject):
 		self.addAttributeTexts();
 		self.addPlayerDataTexts();
 		self.turnPassButton();
+		mainThemeSong.play()
 			
 	def addAlphaTowerButton(self):
 		position = [-1.25/self.isoScale, 0, -0.74/self.isoScale]

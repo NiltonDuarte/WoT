@@ -19,4 +19,7 @@ class Sound(DirectObject):
 	def getSoundStatus(self):
 		return self.sound.status()
 		
+	def setLoop(self, isLoop):
+		self.sound.setLoop(isLoop)
+		
 

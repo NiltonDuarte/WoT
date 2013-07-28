@@ -19,6 +19,9 @@ class WallFortune(DirectObject):
 	def rotateZ(self, angle):
 		self.wall.setHpr(angle , 0.0, 0.0)
 		
+	def scaleZ(self, sz):
+		self.wall.setSz(sz)
+		
 class TerrainModel(DirectObject):
 	'''This class imports the terrain model and do the needed transformations
 	   to show it on the game screen.
@@ -44,6 +47,7 @@ class TerrainModel(DirectObject):
 		#print terrainBoundUpper - terrainBoundLower
 		#print ''
 		#print terrainBoundUpper
+		
 
 		self.terrainColliderLeftNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
 		self.terrainColliderLeftNP.node().addSolid(CollisionBox(terrainBoundLower, Point3(*terrainBoundMiddleUpper)))

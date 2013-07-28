@@ -14,7 +14,7 @@ class MyCamera(DirectObject):
 		base.camera.setHpr(0.0 , -self.angle, 0.0)
 		#Setting our camera position to be top-down
 		self.X = 0
-		self.Y = -100  #terrainBoundLower[1] + (terrainBoundLower[1])/2
+		self.Y = -170  #terrainBoundLower[1] + (terrainBoundLower[1])/2
 		self.Z = 150
 		base.camera.setX(self.X)     
 		base.camera.setY(self.Y)  #depth
@@ -23,7 +23,7 @@ class MyCamera(DirectObject):
 		self.leftBorder = -50       #terrainBoundLower[0]/2
 		self.rightBorder = 50       #terrainBoundUpper[0]/2
 		self.upperBorder = -0     #terrainBoundLower[1]
-		self.bottomBorder = -110    #2.5*terrainBoundLower[1]
+		self.bottomBorder = -170    #2.5*terrainBoundLower[1]
 		#Variables to help moving the camera
 		self.mouseX = 0
 		self.mouseY = 0
@@ -47,7 +47,7 @@ class MyCamera(DirectObject):
 		
 		#The camera only moves when the mouse is on the screen
 		if(self.mouseOnScreen):
-			print self.Y
+			#print self.Y
 			#Creating 2 invisible borders on the right and left side (x axis)	
 			if(self.mouseX > 0.93 and self.X < self.rightBorder):
 				self.X += 4

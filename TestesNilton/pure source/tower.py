@@ -301,7 +301,8 @@ class Tower():
 			self.projectiles[-1].position = [self.position[0], self.position[1], self.position[2]+12]
 			self.projectiles[-1].impulseForce = self.aimShoot(targetPosition, self.projectiles[-1])		
 			self.projectiles[-1].initProjectile()
-			towerAttackSound.play()
+			if(towerAttackSound.getSoundStatus() == 1):
+				towerAttackSound.play()
 
 	def spawnTroop(self):
 		timeSinceLastSpawn = globalClock.getFrameTime() - self.timeLastSpawn

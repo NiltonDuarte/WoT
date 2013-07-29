@@ -75,7 +75,7 @@ def mouseRayUpdate(task):
 	return task.cont
 
 def mouseClicked():
-	
+	print collision.collision3DPoint
 	#posicioning tower
 	if MousePicking.mpos != None and MousePicking.towerFollowMouse == True:
 		towerObj = player.Player.currPlayer.getTower(-1)

@@ -295,9 +295,10 @@ class Tower():
 
 	def spawnTroop(self):
 		timeSinceLastSpawn = globalClock.getFrameTime() - self.timeLastSpawn
-		if (timeSinceLastSpawn > 20.0/self.listTxTroops[0]):
-			self.timeLastSpawn = globalClock.getFrameTime()
-			self.createTroop()
+		if self.towerInicialized:
+			if (timeSinceLastSpawn > 20.0/self.listTxTroops[0]):
+				self.timeLastSpawn = globalClock.getFrameTime()
+				self.createTroop()
 		
 	def createTroop(self):
 		self.troop = Troop(self,self.troopType)

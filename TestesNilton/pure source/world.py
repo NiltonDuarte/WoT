@@ -15,24 +15,24 @@ base.win.requestProperties(wp)
 miniMap = HUDMap()
 terr = TerrainModel()
 
-"""
+
 upperWall = WallFortune([0, 100, 0], "../arquivos de modelo/Wall")
-bottomWall = WallFortune([0, -100, 0], "../arquivos de modelo/Wall")
+#bottomWall = WallFortune([0, -100, 0], "../arquivos de modelo/Wall")
 leftWall = WallFortune([-100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
 leftWall.rotateZ(90)
 rightWall = WallFortune([100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
 rightWall.rotateZ(270)
-"""
+
 player1 = Player("Player1", "lylyh")
 player2 = Player("Player2", "Niltin")
 
 
 
-sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
+#sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
 
 gameScreenFSM = gameScreenFSM()
 gameScreenFSM.request("InitScreen")
-#gameFSM.request("PlayScreen")
+#gameScreenFSM.request("PlayScreen")
 
 
 class World(DirectObject):
@@ -49,21 +49,17 @@ class World(DirectObject):
 		base.enableSoundEffects(True)
 
 		#base.cTrav.showCollisions(render)
+		#base.oobeCull()
 		
 		#Closes game when esc key is pressed
 		self.accept('escape', sys.exit ) 
 		
-		#Array with the mouse actions
-		self.mouseActions = {"scroll_UP" : 0, "scroll_DOWN" : 0}
-		self.accept("wheel_down", self.setAction, ["scroll_DOWN", 1, "scroll_UP", 0])
-		self.accept("wheel_up", self.setAction, ["scroll_DOWN", 0, "scroll_UP", 1])
-		self.accept("mouse2", self.setAction, ["scroll_DOWN", 0, "scroll_UP", 0])
+		#mouse wheel moving the camera
+		self.accept("wheel_down", Player.currPlayer.camera.scrollCamera, ["scroll_DOWN"])
+		self.accept("wheel_up", Player.currPlayer.camera.scrollCamera, ["scroll_UP"])
 
 		
-	#Setting the state of the actions
-	def setAction(self, action, val, action2, val2):
-		self.mouseActions[action] = val
-		self.mouseActions[action2] = val2
+
 			
 	def gameLoop(self, task):
 		'''This function run every frame of the game
@@ -76,9 +72,7 @@ class World(DirectObject):
 		#print globalClock.getAverageFrameRate()
 
 		Player.currPlayer.camera.moveCameraXY()
-		Player.currPlayer.camera.scrollCamera(self.mouseActions)
-		#print self.mouseActions
-		
+
 		for  pkey in Projectile.projectileDict.keys():
 			p = Projectile.projectileDict[pkey]
 			if (p.colliding == True):

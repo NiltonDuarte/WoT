@@ -14,6 +14,8 @@ numeratorVelocityZ = (velocity**2)*sin(thetaAngle)*cos(thetaAngle) + physicsGrav
 denominatorVelocityZ = velocity*cos(thetaAngle)
 velocityZ = numeratorVelocityZ / denominatorVelocityZ
 finalVelocity = sqrt((velocity * cos(thetaAngle))**2 + (velocityZ)**2)
+
+
 damage = 0.8*finalVelocity*ProjectileMass
 
 -->

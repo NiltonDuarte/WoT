@@ -23,6 +23,10 @@ class TerrainModel(DirectObject):
 	'''This class imports the terrain model and do the needed transformations
 	   to show it on the game screen.
 	'''
+	leftBorder = None
+	rightBorder = None
+	upperBorder = None
+	bottomBorder = None 
 	def __init__(self):
 		#Loading the terrain model
 		self.terrain = loader.loadModel("../arquivos de modelo/Terrain")
@@ -40,10 +44,11 @@ class TerrainModel(DirectObject):
 		#terrainBoundUpper[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
 		terrainBoundMiddleUpper[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
 		terrainBoundMiddleLower[0] = (terrainBoundUpper[0] + terrainBoundLower[0])/2
-		
-		#print terrainBoundUpper - terrainBoundLower
-		#print ''
-		#print terrainBoundUpper
+
+		TerrainModel.leftBorder = terrainBoundLower[0]
+		TerrainModel.rightBorder = terrainBoundUpper[0]
+		TerrainModel.upperBorder = terrainBoundUpper[1]
+		TerrainModel.bottomBorder = terrainBoundLower[1] 
 
 		self.terrainColliderLeftNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
 		self.terrainColliderLeftNP.node().addSolid(CollisionBox(terrainBoundLower, Point3(*terrainBoundMiddleUpper)))

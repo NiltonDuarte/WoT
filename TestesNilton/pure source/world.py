@@ -12,20 +12,6 @@ window_Height = 640
 wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
-miniMap = HUDMap()
-terr = TerrainModel()
-
-
-upperWall = WallFortune([0, 100, 0], "../arquivos de modelo/Wall")
-#bottomWall = WallFortune([0, -100, 0], "../arquivos de modelo/Wall")
-leftWall = WallFortune([-100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
-leftWall.rotateZ(90)
-rightWall = WallFortune([100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
-rightWall.rotateZ(270)
-
-player1 = Player("Player1", "lylyh")
-player2 = Player("Player2", "Niltin")
-
 
 
 #sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
@@ -55,8 +41,8 @@ class World(DirectObject):
 		self.accept('escape', sys.exit ) 
 		
 		#mouse wheel moving the camera
-		self.accept("wheel_down", Player.currPlayer.camera.scrollCamera, ["scroll_DOWN"])
-		self.accept("wheel_up", Player.currPlayer.camera.scrollCamera, ["scroll_UP"])
+		self.accept("wheel_down", Player.mouseScroll, ["scroll_DOWN"])
+		self.accept("wheel_up", Player.mouseScroll, ["scroll_UP"])
 
 		
 
@@ -71,7 +57,7 @@ class World(DirectObject):
 		#Getting the FPS of the game
 		#print globalClock.getAverageFrameRate()
 
-		Player.currPlayer.camera.moveCameraXY()
+		Player.moveCameraXY()
 
 		for  pkey in Projectile.projectileDict.keys():
 			p = Projectile.projectileDict[pkey]

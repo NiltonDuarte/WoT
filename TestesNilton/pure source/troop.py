@@ -13,7 +13,7 @@ from Sound import *
 
 
 troopModelDict = {}
-troopDeathModelDict = {}
+
 #Getting configuration
 typ = None
 cfTree = ET.parse("troop.xml")
@@ -218,6 +218,7 @@ class Troop:
 			self.troopModel.troopInstance.removeNode()
 			self.troopModel.loadDeadTroop(self.position)
 			#Creating particle system for death animation
+			print "self.troopModel.deadTroopModel = ",self.troopModel.deadTroopModel.__class__
 			particleSystem = ParticleSystem(self.position, self.troopModel.deadTroopModel)
 			#Getting the sound effects for troop
 			Troop.deathSound.play()

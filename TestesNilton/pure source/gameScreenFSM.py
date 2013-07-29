@@ -22,6 +22,12 @@ class gameScreenFSM(FSM):
 	def exitInitScreen(self):
 		self.currHUD.__del__()
 
+	def enterCreditScreen(self):
+		self.currHUD = CreditScreenHUD(self)
+		self.currHUD.initHUD()
+		
+	def exitCreditScreen(self):
+		self.currHUD.__del__()
 		
 	def enterPlayScreen(self):
 		self.currHUD = PlayScreenHUD(self,mousePicking.MousePicking)

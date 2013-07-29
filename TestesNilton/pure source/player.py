@@ -102,6 +102,15 @@ class Player:
 		troopObj.updateLife(-100)
 		return
 
+	@staticmethod
+	def mouseScroll(action):
+		if (Player.currPlayer != None):
+				Player.currPlayer.camera.scrollCamera(action)
+
+	@staticmethod
+	def moveCameraXY():
+		if (Player.currPlayer != None):
+			Player.currPlayer.camera.moveCameraXY()
 
 	collision.addCollisionEventAgain("TroopClass_cnode","TowerClass_Rangecnode",collideTroopEventAgainTowerRange)
 	collision.addCollisionEventInto("TroopClass_cnode","ProjectileClass_cnode",collideTroopEventIntoProjectile)

@@ -298,13 +298,45 @@ class InitialScreenHUD(DirectObject):
 								frameSize=(-1, 1, -1, 1),
 								scale = (1.9,1,1.2)
 								)		
-		button = DirectButton(self.initialScreenFrame, text=("PLAY GAME"), pos = [0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
+		button = DirectButton(self.initialScreenFrame, text=("CREDITS"), pos = [-0.8/self.isoScale,0,-0.35/self.isoScale], scale = 0.06/self.isoScale, command= self.creditsScreen)
 
-	def changeScene(self):
+		button = DirectButton(self.initialScreenFrame, text=("PLAY GAME"), pos = [-0.8/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.playGameScreen)
+
+	def playGameScreen(self):
 		clickButtonSound.play()
 		self.gameScreenFSM.request("PlayScreen")
 		print "Scene Changed"
+
+	def creditsScreen(self):
+		clickButtonSound.play()
+		self.gameScreenFSM.request("CreditScreen")
+		print "Scene Changed"
+
+class CreditScreenHUD(DirectObject):
+	def __init__(self, gameScreenFSM):
+		self.gameScreenFSM = gameScreenFSM
+		self.creditScreenFrame = None
+		self.isoScale = 3.2
+		self.scale = (self.isoScale,1,self.isoScale)
 		
+	def __del__(self):
+		if (self.creditScreenFrame != None):
+			self.creditScreenFrame.destroy()
+
+	def initHUD(self):
+		self.creditScreenFrame = DirectFrame(HUD_models,
+								image = '../HUD images/creditsQuadrada.png',
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								scale = self.scale
+								)		
+		button = DirectButton(self.creditScreenFrame, text=("BACK"), pos = [-1.5/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
+		
+	def changeScene(self):
+		clickButtonSound.play()
+		self.gameScreenFSM.request("InitScreen")
+		print "Scene Changed"	
+
 #---------------------------------- BUTTONS ------------------------------------------------------------------
 
 class gameButton(DirectObject):

@@ -77,7 +77,6 @@ class PlayScreenHUD (DirectObject):
 	def timeCounter(self, task):
 		self.time = task.time
 	
-		#print self.changeTurnText
 		if(self.changeTurnText == None):
 			self.changeTurnTimer = 0
 		else:
@@ -156,7 +155,8 @@ class PlayScreenHUD (DirectObject):
 	def turnPass(self):
 		self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
 		turnPass_Sound.play()
-		self.drawChangeTurn()
+		if(self.changeTurnText == None):
+			self.drawChangeTurn()
 		return
 		
 	def drawChangeTurn(self):

@@ -72,7 +72,6 @@ class PlayScreenHUD (DirectObject):
 	def timeCounter(self, task):
 		self.time = task.time
 	
-		#print self.changeTurnText
 		if(self.changeTurnText == None):
 			self.changeTurnTimer = 0
 		else:
@@ -156,6 +155,7 @@ class PlayScreenHUD (DirectObject):
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/readyButton.png', image_scale = (3.75,1,1), pos = position, scale = 0.06/self.isoScale, command=self.turnPass)
 		
 	def turnPass(self):
+<<<<<<< HEAD
 		if len(troop.Troop.troopDict) == 0 and (self.time - self.timeLastTurn) > 10:
 			self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
 			turnPass_Sound.play()
@@ -165,6 +165,13 @@ class PlayScreenHUD (DirectObject):
 			pass
 			#error sound
 
+=======
+		self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
+		turnPass_Sound.play()
+		if(self.changeTurnText == None):
+			self.drawChangeTurn()
+		return
+>>>>>>> 5932471ce296cd838ba5e149407b1843e2d5ac7e
 		
 	def drawChangeTurn(self):
 		#Creating the change turn text 

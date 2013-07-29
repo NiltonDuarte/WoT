@@ -344,19 +344,32 @@ class CreditScreenHUD(DirectObject):
 		self.creditScreenFrame = None
 		self.isoScale = 3.2
 		self.scale = (self.isoScale,1,self.isoScale)
+		#Credits movement
+		taskMgr.add(self.creditsCounter, "CreditsScreenHUD timer")
+		self.Z = -2
 		
 	def __del__(self):
 		if (self.creditScreenFrame != None):
 			self.creditScreenFrame.destroy()
+
+	def creditsCounter(self, task):
+		self.time = task.time
+		
+		if(self.Z < 1.2):
+			self.Z += 0.005
+			self.creditScreenFrame.setPos(0, 0, self.Z)
+		
+		return Task.cont
 
 	def initHUD(self):
 		self.creditScreenFrame = DirectFrame(HUD_models,
 								image = '../HUD images/creditsQuadrada.png',
 								frameColor=(0,0,0,0.0),
 								frameSize=(-1, 1, -1, 1),
-								scale = self.scale
+								scale = self.scale,
+								pos = (0, 0, self.Z)
 								)		
-		button = DirectButton(self.creditScreenFrame, text=("BACK"), pos = [-1.5/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
+		button = DirectButton(self.creditScreenFrame, text=("BACK"), pos = [-0.18/self.isoScale,0,-1.8/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
 		creditsSong.play()
 		
 	def changeScene(self):

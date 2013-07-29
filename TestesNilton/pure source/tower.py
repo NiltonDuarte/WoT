@@ -195,6 +195,8 @@ class Tower():
 
 		self.listAttributes = [self.listShootPower, self.listTxShoot, self.listRangeView, self.listTxTroops]
 
+		#Tower price for purchase
+		self.price = 30
 
 		#Number of points that the tower will receive
 		self.initialPoints = int(self.typ.find('initialPoints').text)

@@ -46,6 +46,9 @@ class gameScreenFSM(FSM):
 	
 	def exitEndScreen(self):
 		return
+
+	def update(self):
+		self.currHUD.update()
 	
 	
 	

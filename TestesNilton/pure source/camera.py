@@ -35,16 +35,12 @@ class MyCamera(DirectObject):
 		self.fovYMin = self.Z*sin(radians(self.angle - (self.camFov[1]/2) ))/cos(radians(self.angle - (self.camFov[1]/2) )) 
 		self.fovYMax = self.Z*sin(radians(self.angle + (self.camFov[1]/2) ))/cos(radians(self.angle + (self.camFov[1]/2) ))
 		self.fovX = self.Z*sin(radians(self.camFov[0]/2 ))/cos(radians(self.camFov[0]/2 )) 
-  
-		print "fovYMax = ",self.fovYMax
-		print "fovYMin = ",self.fovYMin
-		print "fovX = ",self.fovX
 		
 		self.leftBorder = TerrainModel.leftBorder + self.fovX    #terrainBoundLower[0]/2
 		self.rightBorder = TerrainModel.rightBorder - self.fovX   #terrainBoundUpper[0]/2
 		self.upperBorder = TerrainModel.upperBorder - self.fovYMax - 20     #terrainBoundLower[1]
 		self.bottomBorder = TerrainModel.bottomBorder - self.fovYMin - 20    #2.5*terrainBoundLower[1]
-		print "inside self.upperBorder = ", self.upperBorder
+
 		
 	def loadCamera(self):
 		base.camera.setX(self.X)     
@@ -75,7 +71,6 @@ class MyCamera(DirectObject):
 				base.camera.setX(self.X)
 				
 			#Creating 2 invisible borders to the vertical axis (y axis)
-			#print "self.upperBorder = ",self.upperBorder
 			if(self.mouseY > 0.93 and self.Y < self.upperBorder):
 				self.Y += 3
 				base.camera.setY(self.Y)

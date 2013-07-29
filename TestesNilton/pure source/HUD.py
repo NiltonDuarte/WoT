@@ -66,6 +66,8 @@ class PlayScreenHUD (DirectObject):
 		self.time = 0
 		self.changeTurnText = None
 		self.changeTurnTimer = 0
+		self.troopObj = None
+		self.towerObj = None
 		
 	def __del__(self):
 		if (self.playScreenFrame != None):
@@ -245,10 +247,17 @@ class PlayScreenHUD (DirectObject):
 		self.labelResistence["text"] = "-"				
 		
 	def updateTroopAttributeTexts(self,troopObj):
+		self.troopObj = troopObj
 		self.updateTowerAttributeTexts(troopObj.sourceTower)
-		self.labelLife["text"] = str(troopObj.listLife[VALUE])
+		self.labelLife["text"] = str(int(troopObj.listLife[VALUE]))
 		self.labelSpeed["text"] = str(troopObj.listSpeed[VALUE])
 		self.labelResistence["text"] = str(troopObj.listResistence[VALUE])
+
+	def refreshTroopAttrb(self):
+		print " self.troopObj.listLife[VALUE] = ",self.troopObj.listLife[VALUE]
+		self.labelLife["text"] = str(int(self.troopObj.listLife[VALUE]))
+		self.labelSpeed["text"] = str(self.troopObj.listSpeed[VALUE])
+		self.labelResistence["text"] = str(self.troopObj.listResistence[VALUE])
 		
 	def resetAttributeTexts(self):
 		#Tower
@@ -275,21 +284,29 @@ class PlayScreenHUD (DirectObject):
 
 
 	def resetHUD(self):
+		self.troopObj = None
 		self.resetAttributeTexts()
 
 	def addPlayerDataTexts(self):
 		currPlayer = player.Player.currPlayer
 		self.labelName = DirectLabel(self.playScreenFrame, text= currPlayer.name, text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [-1.79/self.isoScale, 0, 0.94/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelCurrency = DirectLabel(self.playScreenFrame, text= str(currPlayer.currency), text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [-1.79/self.isoScale, 0, 0.90/self.isoScale], scale = 0.05/self.isoScale)
 
 	def updatePlayerDataTexts(self):
 		currPlayer = player.Player.currPlayer
 		self.labelName["text"] = currPlayer.name
+		self.labelCurrency["text"] = str(currPlayer.currency)
+
+	def update(self):
+		self.updatePlayerDataTexts()
+		if self.troopObj != None:
+			self.refreshTroopAttrb()
 		
 class InitialScreenHUD(DirectObject):
 	def __init__(self, gameScreenFSM):
 		self.gameScreenFSM = gameScreenFSM
 		self.initialScreenFrame = None
-		self.isoScale = 1
+		self.isoScale = 3.2
 		self.scale = (self.isoScale,1,self.isoScale)
 		
 	def __del__(self):
@@ -301,11 +318,11 @@ class InitialScreenHUD(DirectObject):
 								image = '../HUD images/initialScreen.png',
 								frameColor=(0,0,0,0.0),
 								frameSize=(-1, 1, -1, 1),
-								scale = (1.9,1,1.2)
+								scale = self.scale
 								)		
-		button = DirectButton(self.initialScreenFrame, text=("CREDITS"), pos = [-0.8/self.isoScale,0,-0.35/self.isoScale], scale = 0.06/self.isoScale, command= self.creditsScreen)
+		button = DirectButton(self.initialScreenFrame, text=("CREDITS"), pos = [-0.0/self.isoScale,0,-0.35/self.isoScale], scale = 0.06/self.isoScale, command= self.creditsScreen)
 
-		button = DirectButton(self.initialScreenFrame, text=("PLAY GAME"), pos = [-0.8/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.playGameScreen)
+		button = DirectButton(self.initialScreenFrame, text=("PLAY GAME"), pos = [-0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.playGameScreen)
 
 	def playGameScreen(self):
 		clickButtonSound.play()
@@ -317,6 +334,9 @@ class InitialScreenHUD(DirectObject):
 		self.gameScreenFSM.request("CreditScreen")
 		print "Scene Changed"
 
+	def update(self):
+		return
+	
 class CreditScreenHUD(DirectObject):
 	def __init__(self, gameScreenFSM):
 		self.gameScreenFSM = gameScreenFSM
@@ -342,7 +362,10 @@ class CreditScreenHUD(DirectObject):
 		clickButtonSound.play()
 		self.gameScreenFSM.request("InitScreen")
 		creditsSong.stop()
-		print "Scene Changed"	
+		print "Scene Changed"
+
+	def update(self):
+		return
 
 #---------------------------------- BUTTONS ------------------------------------------------------------------
 

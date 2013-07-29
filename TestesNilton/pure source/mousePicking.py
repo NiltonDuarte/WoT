@@ -74,19 +74,23 @@ def mouseRayUpdate(task):
 		pickerRay.setFromLens(base.camNode, MousePicking.mpos.getX(),MousePicking.mpos.getY())
 	return task.cont
 
-def mouseClicked():
-	print collision.collision3DPoint
+
+def mouse1Clicked():
+
 	#posicioning tower
 	if MousePicking.mpos != None and MousePicking.towerFollowMouse == True:
 		towerObj = player.Player.currPlayer.getTower(-1)
-		if navigationMesh.isFree(towerObj.position[0], towerObj.position[1]):
+		if navigationMesh.isFree(towerObj.position[0], towerObj.position[1]) and player.Player.currPlayer.currency >= towerObj.price:
+			player.Player.currPlayer.currency -= towerObj.price
 			MousePicking.towerFollowMouse = False
 			pos2D = navigationMesh.getCenter(towerObj.position[0], towerObj.position[1])
 			towerObj.moveTower(pos2D + [towerObj.position[2]])
 			towerObj.towerModel.resetColor()
 			towerObj.initTower()
 			navigationMesh.setObstacle(towerObj.position[0], towerObj.position[1])
-		#print "mouseClicked - tower inicialized in ", collision.collision3DPoint
+		else:
+			pass
+			#play sound error
 	
 	#picking tower	
 	elif MousePicking.mousePickingOnTower and MousePicking.gameHUD != None:
@@ -116,9 +120,20 @@ def mouseClicked():
 		if MousePicking.lastClickedTower != None:
 			MousePicking.lastClickedTower.towerModel.resetColor()		
 		MousePicking.gameHUD.updateArtImage()
-		MousePicking.gameHUD.resetAttributeTexts()
+		MousePicking.gameHUD.resetHUD()
+
+def mouse2Clicked():
+	if MousePicking.lastClickedTower != None:
+		MousePicking.lastClickedTower.towerModel.resetColor()		
+	MousePicking.gameHUD.updateArtImage()
+	MousePicking.gameHUD.resetAttributeTexts()
+	if MousePicking.towerFollowMouse == True:
+		MousePicking.towerFollowMouse = False
+		player.Player.currPlayer.getTower(-1).delete()
 	
-collision.addMouseClickEvent(mouseClicked)
+		
+collision.addMouse1ClickEvent(mouse1Clicked)
+collision.addMouse3ClickEvent(mouse2Clicked)
 collision.addCollisionEventAgain("mouseRay_cnode","terrain_cnode", collideMouseEventAgainTerrain)
 collision.addCollisionEventAgain("mouseRay_cnode","TowerClass_cnode",collideMouseEventAgainTower)
 collision.addCollisionEventOut("mouseRay_cnode","TowerClass_cnode",collideMouseEventOutTower)

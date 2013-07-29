@@ -75,7 +75,7 @@ class TroopModel(DirectObject):
 		
 		#Setting the texture to the troop
 		modelTexture = loader.loadTexture(self.modelTag.find('texture').text)
-		self.deadTroopModel.setTexture(modelTexture, 1)
+		self.deadTroopModel.setTexture(modelTexture, -1)
 
 		#Animating the troop
 		self.deadTroopModel.play('death')
@@ -130,7 +130,9 @@ class Troop:
 
 		self.listAttributes = [self.listLife, self.listSpeed, self.listResistence]
 
-
+		#troop currency reward
+		self.reward = 10
+		
 		#Position of the troop
 		self.position = sourceTower.position
 		self.prevPosition = self.position
@@ -185,7 +187,9 @@ class Troop:
 			self.initCollisionNode()
 			
 			pathFollowList = navigationMesh.getPointsSequence(navigationMesh.A_Star_Algorithm(self.position[0], self.position[1], self.sourceTower.sourcePlayer.enemyTarget[0], self.sourceTower.sourcePlayer.enemyTarget[1]))
-			AI.Ai.addCharAI(self.troopModel.troopInstance,"troop",0,pathFollowList)
+			velocityCap = self.listSpeed[VALUE]
+			
+			AI.Ai.addCharAI(self.troopModel.troopInstance,"troop",[100,2,velocityCap],pathFollowList)
 
 			
 		else:
@@ -211,14 +215,14 @@ class Troop:
 		self.position = newPosition
 		
 	def updateLife(self, value):
-		self.life += value
-		if self.life <= 0:
+		self.listLife[0] += value
+		if self.listLife[0] <= 0:
 			self.isDead = True
 			self.troopModel.troopColliderNP.node().removeSolid(0)
 			self.troopModel.troopInstance.removeNode()
 			self.troopModel.loadDeadTroop(self.position)
 			#Creating particle system for death animation
-			print "self.troopModel.deadTroopModel = ",self.troopModel.deadTroopModel.__class__
+			#print "self.troopModel.deadTroopModel = ",self.troopModel.deadTroopModel.__class__
 			particleSystem = ParticleSystem(self.position, self.troopModel.deadTroopModel)
 			#Getting the sound effects for troop
 			Troop.deathSound.play()

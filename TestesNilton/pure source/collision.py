@@ -41,13 +41,15 @@ def addCollisionEventOut(fromName, intoName, function, extraArgs = []):
 	#Let's manage now the collision events:
 	DO.accept(fromName+"-out-"+intoName, function, extraArgs)
 
-def addMouseClickEvent(function, extraArgs = []):
+def addMouse1ClickEvent(function, extraArgs = []):
 	#** This is how we interact with mouse clicks
 	DO.accept('mouse1', function, extraArgs)
 
-	#self.accept('mouse1', self.printmouse2)
-	#DO.accept('mouse1-up', mousePicking.mousePickCreateTower, ['up',collisionObj, towers])
-	#############################
+def addMouse3ClickEvent(function, extraArgs = []):
+	#** This is how we interact with mouse clicks
+	DO.accept('mouse3', function, extraArgs)
+
+
 
 	
 	

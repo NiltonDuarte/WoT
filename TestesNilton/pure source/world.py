@@ -58,7 +58,7 @@ class World(DirectObject):
 		#print globalClock.getAverageFrameRate()
 
 		Player.moveCameraXY()
-
+		gameScreenFSM.update()
 		for  pkey in Projectile.projectileDict.keys():
 			p = Projectile.projectileDict[pkey]
 			if (p.colliding == True):
@@ -68,6 +68,7 @@ class World(DirectObject):
 			troop = Troop.troopDict[pkey]
 			if (troop.isDead):
 				if (troop.isAnimationFinished()):
+					print "deleted"
 					del Troop.troopDict[pkey]
 		
 		#this function returns Task.cont

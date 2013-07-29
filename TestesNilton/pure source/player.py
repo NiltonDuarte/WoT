@@ -2,6 +2,7 @@
 from tower import *
 from troop import *
 from camera import *
+from commonFunctions import *
 import collision
 
 
@@ -99,7 +100,10 @@ class Player:
 				
 			projectileObj.projectileModel.ignoreAll()
 			projectileObj.colliding = True
-		troopObj.updateLife(-100)
+		damage = 0.8 * vector3Module(projectileObj.actorNode.getPhysicsObject().getVelocity()) * projectileObj.mass
+		troopObj.updateLife(-damage)
+		if troopObj.isDead:
+			Player.currPlayer.currency += troopObj.reward
 		return
 
 	@staticmethod
@@ -111,6 +115,7 @@ class Player:
 	def moveCameraXY():
 		if (Player.currPlayer != None):
 			Player.currPlayer.camera.moveCameraXY()
+
 
 	collision.addCollisionEventAgain("TroopClass_cnode","TowerClass_Rangecnode",collideTroopEventAgainTowerRange)
 	collision.addCollisionEventInto("TroopClass_cnode","ProjectileClass_cnode",collideTroopEventIntoProjectile)

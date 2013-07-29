@@ -14,9 +14,8 @@ class ParticleSystem(DirectObject):
 		#Loading the file with the particle configurations
 		self.ps.loadConfig(Filename(file))
 		#Sets particles to birth where the troop is
-		self.ps.reparentTo(self.model)
-		self.ps.start(render)    
-		#self.ps.start(self.model)
+		#self.ps.reparentTo(self.model)    
+		self.ps.start(self.model)
 
 	
 	

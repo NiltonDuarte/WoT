@@ -19,7 +19,7 @@ class AI:
 		
 	def addCharAI(self, charNP, name, param, pathFollowList):
 
-		self.AIcharList.append(AICharacter(name,charNP, 10, 0.05, 5))
+		self.AIcharList.append(AICharacter(name,charNP, *param))
 		AIworld.addAiChar(self.AIcharList[-1])
 		self.AIBehaviorsList.append(self.AIcharList[-1].getAiBehaviors())
 

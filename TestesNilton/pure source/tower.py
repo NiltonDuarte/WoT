@@ -19,6 +19,9 @@ from Sound import *
 towerAttackSound = Sound("../sounds/towerAttack.wav")
 towerAttackSound.setVolume(0.5)
 
+towerPositioningSound = Sound("../sounds/towerPositioning.wav")
+towerPositioningSound.setVolume(0.5)
+
 towerModelDict = {}
 #Getting configuration
 typ = None
@@ -286,6 +289,7 @@ class Tower():
 
 	def initCollisionNode(self):
 		self.towerModel.setCollisionNode(self.name, self.listRangeView[0], self.ID);
+		towerPositioningSound.play()
 
 	def shootProjectile(self, targetPosition):
 		timeSinceLastShoot = globalClock.getFrameTime() - self.timeLastShoot

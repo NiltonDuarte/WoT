@@ -301,6 +301,7 @@ class InitialScreenHUD(DirectObject):
 		button = DirectButton(self.initialScreenFrame, text=("PLAY GAME"), pos = [0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
 
 	def changeScene(self):
+		clickButtonSound.play()
 		self.gameScreenFSM.request("PlayScreen")
 		print "Scene Changed"
 		

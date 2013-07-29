@@ -136,16 +136,16 @@ class PlayScreenHUD (DirectObject):
 		clickButtonSound.play()	
 		
 	def plusAttribButton(self):
-		scale = 0.07/self.isoScale
+		scale = 0.017/self.isoScale
 		text = "+"
-		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.55/self.isoScale, 0, -0.615/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
-		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.55/self.isoScale, 0, -0.660/self.isoScale ], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.605/self.isoScale], scale = scale)
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.650/self.isoScale ], scale = scale)
 		
 	def minusAttribButton(self):
-		scale = 0.07/self.isoScale
+		scale = 0.017/self.isoScale
 		text = "-"
-		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.615/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
-		button = DirectButton(self.playScreenFrame, text=("%s")%text, pos = [0.6/self.isoScale, 0, -0.660/self.isoScale], scale = scale, frameSize = (-0.25,0.35,-0.15,0.43))
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.605/self.isoScale], scale = scale)
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.650/self.isoScale], scale = scale)
 	
 	def turnPassButton(self):
 		position = [1.5, 0, -0.5]
@@ -319,20 +319,21 @@ class InitialScreenHUD(DirectObject):
 								frameColor=(0,0,0,0.0),
 								frameSize=(-1, 1, -1, 1),
 								scale = self.scale
-								)		
-		button = DirectButton(self.initialScreenFrame, text=("CREDITS"), pos = [-0.0/self.isoScale,0,-0.35/self.isoScale], scale = 0.06/self.isoScale, command= self.creditsScreen)
+								)
 
-		button = DirectButton(self.initialScreenFrame, text=("PLAY GAME"), pos = [-0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.playGameScreen)
+		button = DirectButton(self.initialScreenFrame, image = '../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.55/self.isoScale], scale = 0.06/self.isoScale , command= self.creditsScreen)
+
+		button = DirectButton(self.initialScreenFrame, image = '../HUD images/playButton.png', image_scale = (3.75,1,1), pos = [-0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.playGameScreen)
 
 	def playGameScreen(self):
 		clickButtonSound.play()
 		self.gameScreenFSM.request("PlayScreen")
-		print "Scene Changed"
+		#print "Scene Changed"
 
 	def creditsScreen(self):
 		clickButtonSound.play()
 		self.gameScreenFSM.request("CreditScreen")
-		print "Scene Changed"
+		# print "Scene Changed"
 
 	def update(self):
 		return

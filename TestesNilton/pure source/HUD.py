@@ -39,10 +39,15 @@ clickButtonSound.setVolume(0.5)
 turnPass_Sound = Sound("../sounds/changeTurn.wav")
 turnPass_Sound.setVolume(0.5)
 
-#Getting the main theme
+#Getting the main theme 
 mainThemeSong = Sound("../sounds/mainTheme.wav")
 mainThemeSong.setVolume(0.1)
 mainThemeSong.setLoop(True)
+
+#Getting the credits song
+creditsSong = Sound("../sounds/creditsTheme.wav")
+creditsSong.setVolume(0.1)
+creditsSong.setLoop(True)
 
 class PlayScreenHUD (DirectObject):
 	def __init__(self, gameScreenFSM, mousePicking):
@@ -331,10 +336,12 @@ class CreditScreenHUD(DirectObject):
 								scale = self.scale
 								)		
 		button = DirectButton(self.creditScreenFrame, text=("BACK"), pos = [-1.5/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
+		creditsSong.play()
 		
 	def changeScene(self):
 		clickButtonSound.play()
 		self.gameScreenFSM.request("InitScreen")
+		creditsSong.stop()
 		print "Scene Changed"	
 
 #---------------------------------- BUTTONS ------------------------------------------------------------------

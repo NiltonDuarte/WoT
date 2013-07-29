@@ -43,4 +43,8 @@ class HUDMap(DirectObject):
 	def getAspectRatio(self):
 		'''Return the aspect ratio of our display region'''
 		return float(self.width/self.height)
+
+	def destroy(self):
+		self.myHUDMap.removeNode()
+		base.win.removeDisplayRegion(self.displayRegion)
 		

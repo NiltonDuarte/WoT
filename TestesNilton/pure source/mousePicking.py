@@ -123,13 +123,14 @@ def mouse1Clicked():
 		MousePicking.gameHUD.resetHUD()
 
 def mouse2Clicked():
-	if MousePicking.lastClickedTower != None:
-		MousePicking.lastClickedTower.towerModel.resetColor()		
-	MousePicking.gameHUD.updateArtImage()
-	MousePicking.gameHUD.resetAttributeTexts()
-	if MousePicking.towerFollowMouse == True:
-		MousePicking.towerFollowMouse = False
-		player.Player.currPlayer.getTower(-1).delete()
+	if MousePicking.gameHUD != None:
+		MousePicking.gameHUD.updateArtImage()
+		MousePicking.gameHUD.resetAttributeTexts()
+		if MousePicking.lastClickedTower != None:
+			MousePicking.lastClickedTower.towerModel.resetColor()	
+		if MousePicking.towerFollowMouse == True:
+			MousePicking.towerFollowMouse = False
+			player.Player.currPlayer.getTower(-1).delete()
 	
 		
 collision.addMouse1ClickEvent(mouse1Clicked)

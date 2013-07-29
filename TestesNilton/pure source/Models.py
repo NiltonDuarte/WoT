@@ -21,6 +21,9 @@ class WallFortune(DirectObject):
 		
 	def scaleZ(self, sz):
 		self.wall.setSz(sz)
+
+	def destroy(self):
+		self.wall.removeNode()
 		
 class TerrainModel(DirectObject):
 	'''This class imports the terrain model and do the needed transformations
@@ -60,12 +63,20 @@ class TerrainModel(DirectObject):
 		self.terrainColliderRightNP = self.terrain.attachNewNode(CollisionNode('terrain_cnode'))
 		self.terrainColliderRightNP.node().addSolid(CollisionBox(Point3(*terrainBoundMiddleLower), terrainBoundUpper))
 		self.terrainColliderRightNP.setCollideMask(BitMask32(0x2))
-     
+
+		objectiveColliderNP = self.terrain.attachNewNode(CollisionNode('objective_cnode'))
+		objectiveColliderNP.node().addSolid(CollisionSphere((95,0,0),12))
+		objectiveColliderNP = self.terrain.attachNewNode(CollisionNode('objective_cnode'))
+		objectiveColliderNP.node().addSolid(CollisionSphere((-95,0,0),12))
+		
 	def detachLeft():
 		return
      
 	def detachRight():   	
 		return
+
+	def destroy(self):
+		self.terrain.removeNode()
 		
 
 class Ball(DirectObject):

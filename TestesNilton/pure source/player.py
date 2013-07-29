@@ -25,9 +25,12 @@ class Player:
 		self.camera = MyCamera()
 		self.currency = 100
 		self.playerBitMask = BitMask32(int(playerNumber[-1]))
-		self.enemyTarget = [-90,0] if playerNumber == "Player2" else [90,0]
+		self.enemyTarget = [-95,0] if playerNumber == "Player2" else [95,0]
 
+		#Game engine part------------------
 		self.initAtkTime = 0
+		self.isDead = False
+		#----------------------------------
 
 	def loadPlayer(self):
 		self.camera.loadCamera()
@@ -35,8 +38,10 @@ class Player:
 	def setHealth(self, health):
 		self.health = health
 		
-	def sumToHealth(self, sumHealth):
-		self.health += sumHealth
+	def updateHealth(self, value):
+		self.health += value
+		if self.health <= 0:
+			self.isDead = True
 		
 	def addTower(self, towerType):
 		if len(self.towerList) == 0:
@@ -105,7 +110,15 @@ class Player:
 		if troopObj.isDead:
 			Player.currPlayer.currency += troopObj.reward
 		return
-
+		
+	def collideTroopEventIntoObjective(entry):		
+		Player.currPlayer.updateHealth(-10)
+		collidingFromNode = entry.getFromNode()
+		troopObj = Troop.troopDict[collidingFromNode.getTag("TroopID")]
+		troopObj.updatePosition([entry.getContactPos(render).getX(), entry.getContactPos(render).getY(), entry.getContactPos(render).getZ()])
+		troopObj.killTroop()
+		
+		
 	@staticmethod
 	def mouseScroll(action):
 		if (Player.currPlayer != None):
@@ -119,4 +132,5 @@ class Player:
 
 	collision.addCollisionEventAgain("TroopClass_cnode","TowerClass_Rangecnode",collideTroopEventAgainTowerRange)
 	collision.addCollisionEventInto("TroopClass_cnode","ProjectileClass_cnode",collideTroopEventIntoProjectile)
+	collision.addCollisionEventInto("TroopClass_cnode","objective_cnode",collideTroopEventIntoObjective)
 

@@ -197,6 +197,11 @@ class Tower():
 
 		#Tower price for purchase
 		self.price = 30
+		#Update prices
+		self.shootPowerPrice = 0
+		self.txShootPrice = 0
+		self.rangeViewPrice = 0
+		self.txTroopsPrice = 0
 
 		#Number of points that the tower will receive
 		self.initialPoints = int(self.typ.find('initialPoints').text)
@@ -219,6 +224,7 @@ class Tower():
 		#Game engine part------------------
 		self.timeLastShoot = 0
 		self.timeLastSpawn = 0
+		self.lastValueUpdated = None
 		#----------------------------------
 
             
@@ -329,5 +335,58 @@ class Tower():
 		thetaAngle = thetaCalc(velocity, physics.physicsGravity, distanceModule, distanceVector[2])
 		aimImpulseForce = [self.listShootPower[0]*cosPhiAngle*cos(thetaAngle), self.listShootPower[0]*sinPhiAngle*cos(thetaAngle), self.listShootPower[0]*sin(thetaAngle)]
 		return aimImpulseForce
+
+	def updateAttribute(self, attrType, value):
+		if value > 0:
+			if attrType == 'shootPower':
+				if self.sourcePlayer.currency >= self.shootPowerPrice*value:
+					self.sourcePlayer.currency -= self.shootPowerPrice*value
+					self.listShootPower[VALUE] += value
+					self.lastValueUpdated = attrType
+							
+			elif attrType == 'txShoot':
+				if self.sourcePlayer.currency >= self.txShootPrice*value:
+					self.sourcePlayer.currency -= self.txShootPrice*value
+					self.listTxShoot[VALUE] += value
+					self.lastValueUpdated = attrType
+				
+			elif attrType == 'rangeView':
+				if self.sourcePlayer.currency >= self.rangeViewPrice*value:
+					self.sourcePlayer.currency -= self.rangeViewPrice*value
+					self.listRangeView[VALUE] += value
+					self.lastValueUpdated = attrType
+				
+			elif attrType == 'txTroops':
+				if self.sourcePlayer.currency >= self.txTroopsPrice*value:
+					self.sourcePlayer.currency -= self.txTroopsPrice*value
+					self.listTxTroops[VALUE] += value
+					self.lastValueUpdated = attrType
+
+		elif self.lastValueUpdated != None:
+			if attrType == 'shootPower' and attrType == self.lastValueUpdated:
+				if self.sourcePlayer.currency >= self.shootPowerPrice*value:
+					self.sourcePlayer.currency -= self.shootPowerPrice*value
+					self.listShootPower[VALUE] += value
+					self.lastValueUpdated = None
+							
+			elif attrType == 'txShoot' and attrType == self.lastValueUpdated:
+				if self.sourcePlayer.currency >= self.txShootPrice*value:
+					self.sourcePlayer.currency -= self.txShootPrice*value
+					self.listTxShoot[VALUE] += value
+					self.lastValueUpdated = None
+				
+			elif attrType == 'rangeView' and attrType == self.lastValueUpdated:
+				if self.sourcePlayer.currency >= self.rangeViewPrice*value:
+					self.sourcePlayer.currency -= self.rangeViewPrice*value
+					self.listRangeView[VALUE] += value
+					self.lastValueUpdated = None
+				
+			elif attrType == 'txTroops' and attrType == self.lastValueUpdated:
+				if self.sourcePlayer.currency >= self.txTroopsPrice*value:
+					self.sourcePlayer.currency -= self.txTroopsPrice*value
+					self.listTxTroops[VALUE] += value
+					self.lastValueUpdated = None
+			
+
 
 

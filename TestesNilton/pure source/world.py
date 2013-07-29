@@ -14,12 +14,11 @@ base.win.requestProperties(wp)
 
 
 
-#sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
+sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
 
+#gameScreenFSM = gameScreenFSM()
+#gameScreenFSM.request("InitScreen")
 gameScreenFSM = gameScreenFSM()
-gameScreenFSM.request("InitScreen")
-#gameScreenFSM.request("PlayScreen")
-
 
 class World(DirectObject):
 	def __init__(self):
@@ -43,7 +42,7 @@ class World(DirectObject):
 		#mouse wheel moving the camera
 		self.accept("wheel_down", Player.mouseScroll, ["scroll_DOWN"])
 		self.accept("wheel_up", Player.mouseScroll, ["scroll_UP"])
-
+		gameScreenFSM.request("InitScreen")
 		
 
 			
@@ -59,17 +58,7 @@ class World(DirectObject):
 
 		Player.moveCameraXY()
 		gameScreenFSM.update()
-		for  pkey in Projectile.projectileDict.keys():
-			p = Projectile.projectileDict[pkey]
-			if (p.colliding == True):
-				p.projectileModel.projectileInstance.removeNode()
-				del Projectile.projectileDict[pkey]
-		for  pkey in Troop.troopDict.keys():
-			troop = Troop.troopDict[pkey]
-			if (troop.isDead):
-				if (troop.isAnimationFinished()):
-					print "deleted"
-					del Troop.troopDict[pkey]
+		
 		
 		#this function returns Task.cont
 		return Task.cont

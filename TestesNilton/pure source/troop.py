@@ -217,15 +217,19 @@ class Troop:
 	def updateLife(self, value):
 		self.listLife[0] += value
 		if self.listLife[0] <= 0:
-			self.isDead = True
-			self.troopModel.troopColliderNP.node().removeSolid(0)
-			self.troopModel.troopInstance.removeNode()
-			self.troopModel.loadDeadTroop(self.position)
-			#Creating particle system for death animation
-			#print "self.troopModel.deadTroopModel = ",self.troopModel.deadTroopModel.__class__
-			particleSystem = ParticleSystem(self.position, self.troopModel.deadTroopModel)
-			#Getting the sound effects for troop
-			Troop.deathSound.play()
+			self.killTroop()
+			
+	def killTroop(self):
+		self.listLife[0] = 0
+		self.isDead = True
+		self.troopModel.troopColliderNP.node().removeSolid(0)
+		self.troopModel.troopInstance.removeNode()
+		self.troopModel.loadDeadTroop(self.position)
+		#Creating particle system for death animation
+		#print "self.troopModel.deadTroopModel = ",self.troopModel.deadTroopModel.__class__
+		particleSystem = ParticleSystem(self.position, self.troopModel.deadTroopModel)
+		#Getting the sound effects for troop
+		Troop.deathSound.play()
 
 	def isAnimationFinished(self):
 		numFrames = self.troopModel.deadTroopModel.getNumFrames('death')

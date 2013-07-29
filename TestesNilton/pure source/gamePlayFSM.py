@@ -2,6 +2,8 @@ from HUD import *
 from HUDMap import *
 from Models import *
 import player
+import troop
+import projectile
 import mousePicking
 from pandaImports import *
 from direct.fsm.FSM import FSM
@@ -17,21 +19,27 @@ class gamePlayFSM(FSM):
 		self.currPlayer = None
 
 		
-		miniMap = HUDMap()
-		terr = TerrainModel()
+		self.miniMap = HUDMap()
+		self.terr = TerrainModel()
 
 
-		upperWall = WallFortune([0, 100, 0], "../arquivos de modelo/Wall")
+		self.upperWall = WallFortune([0, 100, 0], "../arquivos de modelo/Wall")
 		#bottomWall = WallFortune([0, -100, 0], "../arquivos de modelo/Wall")
-		leftWall = WallFortune([-100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
-		leftWall.rotateZ(90)
-		rightWall = WallFortune([100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
-		rightWall.rotateZ(270)
+		self.leftWall = WallFortune([-100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
+		self.leftWall.rotateZ(90)
+		self.rightWall = WallFortune([100, 0, 0], "../arquivos de modelo/Wall_of_Fortune")
+		self.rightWall.rotateZ(270)
 
-		player1 = player.Player("Player1", "lylyh")
-		player2 = player.Player("Player2", "Niltin")
+		self.player1 = player.Player("Player1", "lylyh")
+		self.player2 = player.Player("Player2", "Niltin")
 
-
+	def __del__(self):
+		self.terr.destroy()
+		self.upperWall.destroy()
+		self.leftWall.destroy()
+		self.rightWall.destroy()
+		self.miniMap.destroy()
+		
 	def enterPlayer1(self):
 		player.Player.inactivePlayer = player.Player.currPlayer
 		player.Player.currPlayer = player.Player.playerDict["Player1"]
@@ -66,5 +74,19 @@ class gamePlayFSM(FSM):
 		if mousePicking.MousePicking.lastClickedTower != None:
 			mousePicking.MousePicking.lastClickedTower.towerModel.resetColor()
 		self.hudObj.resetHUD()
+
+	def update(self):
+		for  pkey in projectile.Projectile.projectileDict.keys():
+			p = projectile.Projectile.projectileDict[pkey]
+			if (p.colliding == True):
+				p.projectileModel.projectileInstance.removeNode()
+				del projectile.Projectile.projectileDict[pkey]
+		for  pkey in troop.Troop.troopDict.keys():
+			troopObj = troop.Troop.troopDict[pkey]
+			if (troopObj.isDead):
+				if (troopObj.isAnimationFinished()):
+					print "deleted"
+					del troop.Troop.troopDict[pkey]
+		
 		
 		

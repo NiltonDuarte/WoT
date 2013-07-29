@@ -6,6 +6,7 @@
 #from imports import *
 from tower import *
 import player
+import troop
 from commonFunctions import *
 from Sound import *
 
@@ -39,15 +40,8 @@ clickButtonSound.setVolume(0.5)
 turnPass_Sound = Sound("../sounds/changeTurn.wav")
 turnPass_Sound.setVolume(0.5)
 
-#Getting the main theme 
-mainThemeSong = Sound("../sounds/mainTheme.wav")
-mainThemeSong.setVolume(0.1)
-mainThemeSong.setLoop(True)
 
-#Getting the credits song
-creditsSong = Sound("../sounds/creditsTheme.wav")
-creditsSong.setVolume(0.1)
-creditsSong.setLoop(True)
+
 
 class PlayScreenHUD (DirectObject):
 	def __init__(self, gameScreenFSM, mousePicking):
@@ -64,6 +58,7 @@ class PlayScreenHUD (DirectObject):
 		#Creating a timer for this class
 		taskMgr.add(self.timeCounter, "PlayScreenHUD timer")
 		self.time = 0
+		self.timeLastTurn = 0
 		self.changeTurnText = None
 		self.changeTurnTimer = 0
 		self.troopObj = None
@@ -105,7 +100,7 @@ class PlayScreenHUD (DirectObject):
 		self.addAttributeTexts();
 		self.addPlayerDataTexts();
 		self.turnPassButton();
-		mainThemeSong.play()
+		self.addLifeBar();
 			
 	def addAlphaTowerButton(self):
 		position = [-1.25/self.isoScale, 0, -0.74/self.isoScale]
@@ -138,26 +133,38 @@ class PlayScreenHUD (DirectObject):
 	def plusAttribButton(self):
 		scale = 0.017/self.isoScale
 		text = "+"
-		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.605/self.isoScale], scale = scale)
-		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.650/self.isoScale ], scale = scale)
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.605/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["shootPower", 1])
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.650/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["txShoot", 1])
+		#button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.695/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["rangeView", 1])
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.740/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["txTroops", 1])
 		
 	def minusAttribButton(self):
 		scale = 0.017/self.isoScale
 		text = "-"
-		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.605/self.isoScale], scale = scale)
-		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.650/self.isoScale], scale = scale)
-	
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.605/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["shootPower", -1])
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.650/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["txShoot", -1])
+		#button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.695/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["rangeView", -1])
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.740/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["txTroops", -1])
+
+	def updateTowerAttr(self, attrType, value):
+		if self.towerObj != None:
+			self.towerObj.updateAttribute(attrType, value)
+			self.updateTowerAttributeTexts(self.towerObj)
+		
 	def turnPassButton(self):
-		position = [1.5, 0, -0.5]
-		text = "End Turn"
-		scale = 0.12
-		button = DirectButton(text=("%s")%text, pos = position, scale = scale, command=self.turnPass)
+		position = [1.63/self.isoScale, 0, -0.485/self.isoScale]
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/readyButton.png', image_scale = (3.75,1,1), pos = position, scale = 0.06/self.isoScale, command=self.turnPass)
 		
 	def turnPass(self):
-		self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
-		turnPass_Sound.play()
-		self.drawChangeTurn()
-		return
+		if len(troop.Troop.troopDict) == 0 and (self.time - self.timeLastTurn) > 10:
+			self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
+			turnPass_Sound.play()
+			self.drawChangeTurn()
+			self.timeLastTurn = self.time
+		else:
+			pass
+			#error sound
+
 		
 	def drawChangeTurn(self):
 		#Creating the change turn text 
@@ -193,7 +200,7 @@ class PlayScreenHUD (DirectObject):
 		self.labelShootPower = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.35/self.isoScale, 0, -0.615/self.isoScale], scale = 0.05/self.isoScale)
 		self.labelTxShoot = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.35/self.isoScale, 0, -0.660/self.isoScale], scale = 0.05/self.isoScale)
 		self.labelRangeView = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.35/self.isoScale, 0, -0.705/self.isoScale], scale = 0.05/self.isoScale)
-		self.labelTxTroops = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.5/self.isoScale, 0, -0.750/self.isoScale], scale = 0.05/self.isoScale)
+		self.labelTxTroops = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [0.45/self.isoScale, 0, -0.750/self.isoScale], scale = 0.05/self.isoScale)
 		#Projectile
 		self.labelMass = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1/self.isoScale, 0, -0.615/self.isoScale], scale = 0.05/self.isoScale)
 		self.labelSpreadRay = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1/self.isoScale, 0, -0.660/self.isoScale], scale = 0.05/self.isoScale)
@@ -212,6 +219,7 @@ class PlayScreenHUD (DirectObject):
 		self.labelResistence = DirectLabel(self.playScreenFrame, text="-", text_bg = (0,0,0,0), frameColor = (0,0,0,0), pos = [1.8/self.isoScale, 0, -0.705/self.isoScale], scale = 0.05/self.isoScale)
 		
 	def updateTowerAttributeTexts(self, towerObj):
+		self.towerObj = towerObj
 		#Tower
 		self.labelShootPower["text"] = str(towerObj.listShootPower[VALUE])
 		self.labelTxShoot["text"] = str(towerObj.listTxShoot[VALUE])
@@ -247,6 +255,7 @@ class PlayScreenHUD (DirectObject):
 		self.labelResistence["text"] = "-"				
 		
 	def updateTroopAttributeTexts(self,troopObj):
+		self.towerObj = troopObj.sourceTower
 		self.troopObj = troopObj
 		self.updateTowerAttributeTexts(troopObj.sourceTower)
 		self.labelLife["text"] = str(int(troopObj.listLife[VALUE]))
@@ -254,7 +263,6 @@ class PlayScreenHUD (DirectObject):
 		self.labelResistence["text"] = str(troopObj.listResistence[VALUE])
 
 	def refreshTroopAttrb(self):
-		print " self.troopObj.listLife[VALUE] = ",self.troopObj.listLife[VALUE]
 		self.labelLife["text"] = str(int(self.troopObj.listLife[VALUE]))
 		self.labelSpeed["text"] = str(self.troopObj.listSpeed[VALUE])
 		self.labelResistence["text"] = str(self.troopObj.listResistence[VALUE])
@@ -285,6 +293,7 @@ class PlayScreenHUD (DirectObject):
 
 	def resetHUD(self):
 		self.troopObj = None
+		self.towerObj = None
 		self.resetAttributeTexts()
 
 	def addPlayerDataTexts(self):
@@ -297,8 +306,38 @@ class PlayScreenHUD (DirectObject):
 		self.labelName["text"] = currPlayer.name
 		self.labelCurrency["text"] = str(currPlayer.currency)
 
+	def addLifeBar(self):
+		scale = 0.02/self.isoScale
+		self.lifeBarFrameP1 = DirectFrame(self.playScreenFrame,
+								image = '../HUD images/lifeBar.png',
+								image_scale = (45.2,1,1),
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								pos = [-0.92/self.isoScale, 0, -0.945/self.isoScale],
+								scale = scale
+								)
+		self.lifeBarFrameP2 = DirectFrame(self.playScreenFrame,
+								image = '../HUD images/lifeBar.png',
+								image_scale = (45.2,1,1),
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								pos = [0.92/self.isoScale, 0, -0.945/self.isoScale],
+								scale = scale
+								)
+
+	def updateLifeBar(self):
+		p1 = player.Player.playerDict["Player1"]
+		p2 = player.Player.playerDict["Player2"]
+		print "p1 = ", p1.health
+		self.lifeBarFrameP1.setPos((-0.90 * (p1.health/100.0)-0.02)/self.isoScale, 0, -0.945/self.isoScale)
+		self.lifeBarFrameP1["image_scale"] = (45.2* (p1.health/100.0),1,1)
+		
+		self.lifeBarFrameP2.setPos((0.90 * (p2.health/100.0)+0.02)/self.isoScale, 0, -0.945/self.isoScale)
+		self.lifeBarFrameP2["image_scale"] = (45.2* (p2.health/100.0),1,1)
+		
 	def update(self):
 		self.updatePlayerDataTexts()
+		self.updateLifeBar()
 		if self.troopObj != None:
 			self.refreshTroopAttrb()
 		
@@ -370,16 +409,22 @@ class CreditScreenHUD(DirectObject):
 								pos = (0, 0, self.Z)
 								)		
 		button = DirectButton(self.creditScreenFrame, text=("BACK"), pos = [-0.18/self.isoScale,0,-1.8/self.isoScale], scale = 0.06/self.isoScale, command= self.changeScene)
-		creditsSong.play()
 		
 	def changeScene(self):
 		clickButtonSound.play()
 		self.gameScreenFSM.request("InitScreen")
-		creditsSong.stop()
 		print "Scene Changed"
 
 	def update(self):
 		return
+
+class EndScreenHUD(DirectObject):
+	def __init__(self):
+		pass
+	def __del__(self):
+		pass
+	def update(self):
+		pass
 
 #---------------------------------- BUTTONS ------------------------------------------------------------------
 
@@ -410,11 +455,7 @@ class sceneButton(gameButton):
 		self.button = DirectButton(text=("%s")%self.text, pos = self.position, scale = self.scale, command=self.changeScene)
 
 	def changeScene(self):
-		for tower in player.Player.currPlayer.getTowerList():
-			if tower.towerInicialized:
-				#tower.shootProjectile([10,0,13])
-				tower.createTroop()
-		print "Scene Changed"
-		
+		player.Player.currPlayer.updateHealth(-4)
+
 
 

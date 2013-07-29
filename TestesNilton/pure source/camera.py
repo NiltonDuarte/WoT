@@ -75,7 +75,7 @@ class MyCamera(DirectObject):
 				base.camera.setX(self.X)
 				
 			#Creating 2 invisible borders to the vertical axis (y axis)
-			print "self.upperBorder = ",self.upperBorder
+			#print "self.upperBorder = ",self.upperBorder
 			if(self.mouseY > 0.93 and self.Y < self.upperBorder):
 				self.Y += 3
 				base.camera.setY(self.Y)

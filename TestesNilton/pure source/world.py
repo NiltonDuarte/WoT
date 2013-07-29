@@ -81,7 +81,8 @@ class World(DirectObject):
 		for  pkey in Troop.troopDict.keys():
 			troop = Troop.troopDict[pkey]
 			if (troop.isDead):
-				del Troop.troopDict[pkey]
+				if (troop.isAnimationFinished()):
+					del Troop.troopDict[pkey]
 		
 		#this function returns Task.cont
 		return Task.cont

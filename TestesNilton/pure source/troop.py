@@ -11,9 +11,6 @@ import AI
 from particleSystem import *
 from Sound import *
 
-#Getting the sound effects for troop
-deathSound = Sound("../sounds/troopFire.wav")
-deathSound.setVolume(0.5)
 
 troopModelDict = {}
 troopDeathModelDict = {}
@@ -43,33 +40,13 @@ for element in cfRoot.findall('troop'):
 	
 	troopModelDict[troopType] = troopModel
 
-for element in cfRoot.findall('troop'):
-	troopType = element.get('type')
-	modelTag = element.find('model')
-	#Loading the troop model
-	troopModel = Actor(modelTag.find('path').text, {'walk' : modelTag.find('walkPath').text,
-														'death' : modelTag.find('deathPath').text})
-	print "troop ", troopType," instanced"
-	troopModel.clearModelNodes()
-	troopModel.flattenStrong()
-	
-	#Setting the position of the projectile 
-	troopModel.setPos(0,0,0)
-	
-	#Animating the troop
-	troopModel.loop('death')
-	
-	#Setting the texture to the troop
-	modelTexture = loader.loadTexture(modelTag.find('texture').text)
-	troopModel.setTexture(modelTexture, 1)
-	
-	troopDeathModelDict[troopType] = troopModel
 
 class TroopModel(DirectObject):
 	"""This class imports the tower model and do the needed transformations
 	   to show it on the game screen.
 	"""
-	def __init__(self, sourceTroop, position, modelType):
+	def __init__(self, sourceTroop, position, modelType, modelTag):
+		self.modelTag = modelTag
 		self.sourceTroop = sourceTroop
 		self.troopInstance = render.attachNewNode("Troop-Instance")
 		troopModelDict[modelType].instanceTo(self.troopInstance)
@@ -88,11 +65,29 @@ class TroopModel(DirectObject):
 		self.troopColliderNP.setTag("TroopID", ID)
 		collision.addCollider(self.troopColliderNP)
 
+	def loadDeadTroop(self, position):
+		self.deadTroopModel = Actor(self.modelTag.find('path').text, {'death' : modelTag.find('deathPath').text})
+		self.deadTroopModel.clearModelNodes()
+		self.deadTroopModel.flattenStrong()
+		self.deadTroopModel.reparentTo(render)
+		#Setting the position of the troop 
+		self.deadTroopModel.setPos(*position)
+		
+		#Setting the texture to the troop
+		modelTexture = loader.loadTexture(self.modelTag.find('texture').text)
+		self.deadTroopModel.setTexture(modelTexture, 1)
+
+		#Animating the troop
+		self.deadTroopModel.play('death')
+		
+
 class Troop:
 	"""This class defines all attributes and functions
 	of a troop
 	"""
 	troopDict = {}
+	deathSound = Sound("../sounds/troopFire.wav")
+	deathSound.setVolume(0.5)
 	def __init__(self, sourceTower, troopType, confFile = "troop.xml"):
 		self.name = "TroopClass"
 		self.ID = str(uuid.uuid4())
@@ -200,7 +195,7 @@ class Troop:
 		self.initialPoints = points
 
 	def initModel(self, position):
-		self.troopModel = TroopModel(self,position,self.modelType)
+		self.troopModel = TroopModel(self,position,self.modelType, self.modelTag)
 
 	def moveTroop(self,position):
 		self.position = position
@@ -221,12 +216,21 @@ class Troop:
 			self.isDead = True
 			self.troopModel.troopColliderNP.node().removeSolid(0)
 			self.troopModel.troopInstance.removeNode()
-			self.troopModel.troopInstance = render.attachNewNode("TroopDeath-Instance")
-			troopDeathModelDict[troopType].instanceTo(self.troopModel.troopInstance)
-			self.troopModel.troopInstance.setPos(*self.position)
+			self.troopModel.loadDeadTroop(self.position)
 			#Creating particle system for death animation
-			particleSystem = ParticleSystem(self.position, self.troopModel.troopInstance)
-			deathSound.play()
+			particleSystem = ParticleSystem(self.position, self.troopModel.deadTroopModel)
+			#Getting the sound effects for troop
+			Troop.deathSound.play()
+
+	def isAnimationFinished(self):
+		numFrames = self.troopModel.deadTroopModel.getNumFrames('death')
+		currFrame = self.troopModel.deadTroopModel.getCurrentFrame('death')
+
+		if (currFrame == numFrames-1):
+			self.troopModel.deadTroopModel.cleanup()
+			self.troopModel.deadTroopModel.removeNode()	
+			return True
+		return False
 			
 			
 

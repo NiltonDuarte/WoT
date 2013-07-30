@@ -13,9 +13,6 @@ wp.setSize(window_Width, window_Height)
 base.win.requestProperties(wp)
 
 
-
-sceneBtn = sceneButton("Teste Game",[-1.5, 0, -0.5],0.12)
-
 #gameScreenFSM = gameScreenFSM()
 #gameScreenFSM.request("InitScreen")
 gameScreenFSM = gameScreenFSM()

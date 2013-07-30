@@ -357,8 +357,8 @@ class InitialScreenHUD(DirectObject):
 								scale = self.scale
 								)
 
-		button = DirectButton(self.initialScreenFrame, image = '../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.55/self.isoScale], scale = 0.06/self.isoScale , command= self.creditsScreen)
-
+		button = DirectButton(self.initialScreenFrame, image = '../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.85/self.isoScale], scale = 0.06/self.isoScale , command= self.creditsScreen)
+		button = DirectButton(self.initialScreenFrame, image = '../HUD images/howtoButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.55/self.isoScale], scale = 0.06/self.isoScale , command= self.guideScreen)
 		button = DirectButton(self.initialScreenFrame, image = '../HUD images/playButton.png', image_scale = (3.75,1,1) , pos = [-0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.playGameScreen)
 
 	def playGameScreen(self):
@@ -370,6 +370,10 @@ class InitialScreenHUD(DirectObject):
 		clickButtonSound.play()
 		self.gameScreenFSM.request("CreditScreen")
 		# print "Scene Changed"
+		
+	def guideScreen(self):
+		clickButtonSound.play()
+		self.gameScreenFSM.request("GuideScreen")
 
 	def update(self):
 		return
@@ -416,12 +420,70 @@ class CreditScreenHUD(DirectObject):
 		return
 
 class EndScreenHUD(DirectObject):
-	def __init__(self):
-		pass
+	def __init__(self, gameScreenFSM, winnerPlayer):
+		self.gameScreenFSM = gameScreenFSM
+		self.endScreenFrame = None
+		self.isoScale = 3.2
+		self.scale = (self.isoScale,1,self.isoScale)
+		self.winnerName = winnerPlayer
 	def __del__(self):
-		pass
+		if (self.endScreenFrame != None):
+			self.endScreenFrame.destroy()
+	def initHUD(self):
+		self.endScreenFrame = DirectFrame(HUD_models,
+								image = '../HUD images/winnerScreen.png',
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								scale = self.scale
+								)
+		
+		#arjulianFont = loader.loadFont('../fonts/ARJULIAN.ttf')
+		self.winner = TextNode('Winner Name')
+		self.winner.setText(self.winnerName)
+		#self.winner.setFont(arjulianFont)
+		#self.winner.setSmallCaps(True)
+		self.winner.setTextColor(255, 255, 0, 1)
+		self.winner.setAlign(TextNode.ALeft)
+		textNodePath = aspect2d.attachNewNode(self.winner)
+		textNodePath.setScale(0.1)
+		textNodePath.setPos(-0.2,0,0)
+
+		button = DirectButton(self.endScreenFrame, image='../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.80/self.isoScale], scale = 0.06/self.isoScale , command= self.changeScene)
+
+	def changeScene(self):
+		clickButtonSound.play()
+		self.gameScreenFSM.request("CreditScreen")
+	
 	def update(self):
-		pass
+		return
+		
+class GuideScreenHUD(DirectObject):
+	def __init__(self, gameScreenFSM):
+		self.gameScreenFSM = gameScreenFSM
+		self.guideScreenFrame = None
+		self.isoScale = 3.2
+		self.scale = (self.isoScale,1,self.isoScale)
+		
+	def __del__(self):
+		if (self.guideScreenFrame != None):
+			self.guideScreenFrame.destroy()
+
+	def initHUD(self):
+		self.guideScreenFrame = DirectFrame(HUD_models,
+								image = '../HUD images/guideScreen.png',
+								frameColor=(0,0,0,0.0),
+								frameSize=(-1, 1, -1, 1),
+								scale = self.scale,
+								)		
+		button = DirectButton(self.guideScreenFrame, image = '../HUD images/menuButton.png', image_scale = (3.75,1,1) , pos = [1.5/self.isoScale,0,0.85/self.isoScale], scale = 0.06/self.isoScale , command= self.changeScene)
+		
+	def changeScene(self):
+		clickButtonSound.play()
+		self.gameScreenFSM.request("InitScreen")
+		print "Scene Changed"
+
+	def update(self):
+		return
 
 #---------------------------------- BUTTONS ------------------------------------------------------------------
 

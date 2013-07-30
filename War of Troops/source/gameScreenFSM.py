@@ -14,6 +14,7 @@ class gameScreenFSM(FSM):
 		self.currHUD = None
 		self.gamePlayFSM = None
 		self.looserPlayerObj = None
+		self.winnerPlayerObj = None
 		#Getting the main theme 
 		self.mainThemeSong = Sound("../sounds/mainTheme.wav")
 		self.mainThemeSong.setVolume(0.1)
@@ -52,18 +53,24 @@ class gameScreenFSM(FSM):
 		
 	def exitPlayScreen(self):
 		self.mainThemeSong.stop()
-		self.currHUD.__del__()
 		self.gamePlayFSM.__del__()
+		self.currHUD.__del__()
 		mousePicking.MousePicking.gameHUD = None
 		camera.MyCamera.cameraEnabled = False
 		
 	def enterEndScreen(self):
-		self.currHUD = EndScreenHUD()
-		return
-	
+		self.currHUD = EndScreenHUD(self, self.winnerPlayerObj.name)
+		self.currHUD.initHUD()
+			
 	def exitEndScreen(self):
 		self.currHUD.__del__()
-		return
+	
+	def enterGuideScreen(self):
+		self.currHUD = GuideScreenHUD(self)
+		self.currHUD.initHUD()
+		
+	def exitGuideScreen(self):
+		self.currHUD.__del__()
 
 	def update(self):
 		self.currHUD.update()
@@ -74,6 +81,8 @@ class gameScreenFSM(FSM):
 				if (playerObj.isDead):
 					self.looserPlayerObj = playerObj
 					self.request("EndScreen")
+				else:
+					self.winnerPlayerObj = playerObj
 		
 	
 	

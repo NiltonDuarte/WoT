@@ -154,6 +154,9 @@ class PlayScreenHUD (DirectObject):
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/readyButton.png', image_scale = (3.75,1,1), pos = position, scale = 0.06/self.isoScale, command=self.turnPass)
 		
 	def turnPass(self):
+		if self.mousePicking.towerFollowMouse == True:
+			self.mousePicking.towerFollowMouse = False
+			player.Player.currPlayer.getTower(-1).delete()
 		if len(troop.Troop.troopDict) == 0 and (self.time - self.timeLastTurn) > 10:
 			self.gameScreenFSM.gamePlayFSM.request(player.Player.inactivePlayer.playerNumber)
 			turnPass_Sound.play()
@@ -437,16 +440,13 @@ class EndScreenHUD(DirectObject):
 								scale = self.scale
 								)
 		
-		#arjulianFont = loader.loadFont('../fonts/ARJULIAN.ttf')
 		self.winner = TextNode('Winner Name')
 		self.winner.setText(self.winnerName)
-		#self.winner.setFont(arjulianFont)
-		#self.winner.setSmallCaps(True)
 		self.winner.setTextColor(255, 255, 0, 1)
 		self.winner.setAlign(TextNode.ALeft)
 		textNodePath = aspect2d.attachNewNode(self.winner)
 		textNodePath.setScale(0.1)
-		textNodePath.setPos(-0.2,0,0)
+		textNodePath.setPos(-0.1,0,0)
 
 		button = DirectButton(self.endScreenFrame, image='../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.80/self.isoScale], scale = 0.06/self.isoScale , command= self.changeScene)
 

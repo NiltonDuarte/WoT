@@ -116,7 +116,6 @@ class PlayScreenHUD (DirectObject):
 		scale = 0.14/self.isoScale
 		texture = loader.loadTexture("../HUD images/GamaTower_Button.png")
 		button = DirectButton(self.playScreenFrame, pos = position, scale = scale, image = texture, command=self.createTower, extraArgs = ["Gama Tower"])
-
 	def addOmegaTowerButton(self):
 		position = [-0.2/self.isoScale, 0, -0.74/self.isoScale]
 		scale = 0.14/self.isoScale
@@ -327,7 +326,6 @@ class PlayScreenHUD (DirectObject):
 	def updateLifeBar(self):
 		p1 = player.Player.playerDict["Player1"]
 		p2 = player.Player.playerDict["Player2"]
-		print "p1 = ", p1.health
 		self.lifeBarFrameP1.setPos((-0.90 * (p1.health/100.0)-0.02)/self.isoScale, 0, -0.945/self.isoScale)
 		self.lifeBarFrameP1["image_scale"] = (45.2* (p1.health/100.0),1,1)
 		
@@ -361,7 +359,7 @@ class InitialScreenHUD(DirectObject):
 
 		button = DirectButton(self.initialScreenFrame, image = '../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.55/self.isoScale], scale = 0.06/self.isoScale , command= self.creditsScreen)
 
-		button = DirectButton(self.initialScreenFrame, image = '../HUD images/playButton.png', image_scale = (3.75,1,1), pos = [-0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.playGameScreen)
+		button = DirectButton(self.initialScreenFrame, image = '../HUD images/playButton.png', image_scale = (3.75,1,1) , pos = [-0/self.isoScale,0,-0.25/self.isoScale], scale = 0.06/self.isoScale, command= self.playGameScreen)
 
 	def playGameScreen(self):
 		clickButtonSound.play()

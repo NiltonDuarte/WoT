@@ -39,7 +39,8 @@ clickButtonSound = Sound("../sounds/buttonClick.wav")
 clickButtonSound.setVolume(0.5)
 turnPass_Sound = Sound("../sounds/changeTurn.wav")
 turnPass_Sound.setVolume(0.5)
-
+error_Sound = Sound("../sounds/Error.wav")
+error_Sound.setVolume(0.1)
 
 
 
@@ -164,8 +165,8 @@ class PlayScreenHUD (DirectObject):
 				self.drawChangeTurn()
 			self.timeLastTurn = self.time
 		else:
-			pass
-			#error sound
+			error_Sound.play()
+
 		
 	def drawChangeTurn(self):
 		#Creating the change turn text 

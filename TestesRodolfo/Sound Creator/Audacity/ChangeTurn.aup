@@ -1,0 +1,35 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="ChangeTurn_data" version="1.3.0" audacityversion="2.0.3" sel0="1.6748068457" sel1="1.6748068457" vpos="0" h="0.0000000000" zoom="769.6409907392" rate="44100.0">
+	<tags>
+		<tag name="ARTIST" value="Rodolfo Machado"/>
+		<tag name="TITLE" value="WoT"/>
+		<tag name="YEAR" value="2013"/>
+	</tags>
+	<wavetrack name="Faixa de Áudio" channel="0" linked="1" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="60928">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000b91.au" len="33408" min="-0.153687" max="0.152283" rms="0.029701"/>
+				</waveblock>
+				<waveblock start="33408">
+					<simpleblockfile filename="e0000914.au" len="27520" min="-0.150269" max="0.136353" rms="0.023245"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="Faixa de Áudio" channel="1" linked="0" mute="0" solo="0" height="150" minimized="0" isSelected="1" rate="44100" gain="1.0" pan="0.0">
+		<waveclip offset="0.00000000">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="60928">
+				<waveblock start="0">
+					<simpleblockfile filename="e0000564.au" len="33408" min="-0.153687" max="0.152283" rms="0.029701"/>
+				</waveblock>
+				<waveblock start="33408">
+					<simpleblockfile filename="e0000eb1.au" len="27520" min="-0.150299" max="0.136383" rms="0.023245"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

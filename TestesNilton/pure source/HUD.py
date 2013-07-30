@@ -34,12 +34,13 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 #HUD_models holds all the models that HUD will use
 HUD_models = aspect2d.attachNewNode("HUD Models")
 
-#Getting the sound effects 
+#Getting the sound effects
 clickButtonSound = Sound("../sounds/buttonClick.wav")
 clickButtonSound.setVolume(0.5)
 turnPass_Sound = Sound("../sounds/changeTurn.wav")
 turnPass_Sound.setVolume(0.5)
-
+error_Sound = Sound("../sounds/Error.wav")
+error_Sound.setVolume(0.5)
 
 
 

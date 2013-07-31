@@ -73,6 +73,8 @@ class TowerModel(DirectObject):
 	'''
 	def __init__(self,sourceTower, position, modelTag, towerType):
 		self.sourceTower = sourceTower
+		self.nodeName = None
+		self.ID = None
 		self.colorTag = modelTag.find('color')
 		self.color = [float(self.colorTag.find('r').text), 
 					  float(self.colorTag.find('g').text),
@@ -114,14 +116,23 @@ class TowerModel(DirectObject):
 		self.towerInstance.setColor(*self.color)
 		
 	def setCollisionNode (self, nodeName, rangeView, ID):
-		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
-		self.towerCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
-		self.towerCollider.setCollideMask(self.sourceTower.sourcePlayer.playerBitMask)
-		self.towerCollider.setTag("TowerID", ID)
+		self.nodeName = nodeName
+		self.ID = ID
+		self.towerRangeCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_Rangecnode'))
+		self.towerRangeCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
+		self.towerRangeCollider.setCollideMask(self.sourceTower.sourcePlayer.playerBitMask)
+		self.towerRangeCollider.setTag("TowerID", ID)
 		self.towerCollider = self.towerInstance.attachNewNode(CollisionNode(nodeName + '_cnode'))
 		self.towerCollider.node().addSolid(CollisionBox(Point3(0,0,7.5),4,4,7.5))
 		self.towerCollider.setTag("TowerID", ID)
 		#print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
+	
+	def updateTowerRange(self,rangeView):
+		self.towerRangeCollider.node.removeNode()
+		self.towerRangeCollider = self.towerInstance.attachNewNode(CollisionNode(self.nodeName + '_Rangecnode'))
+		self.towerRangeCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
+		self.towerRangeCollider.setCollideMask(self.sourceTower.sourcePlayer.playerBitMask)
+		self.towerRangeCollider.setTag("TowerID", self.ID)
 		
 	def delete(self):
 		self.towerInstance.removeNode()

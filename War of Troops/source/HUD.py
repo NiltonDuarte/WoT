@@ -34,6 +34,17 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 #HUD_models holds all the models that HUD will use
 HUD_models = aspect2d.attachNewNode("HUD Models")
 
+<<<<<<< HEAD
+=======
+#Getting the sound effects 
+clickButtonSound = Sound("../sounds/buttonClick.wav")
+clickButtonSound.setVolume(0.5)
+turnPass_Sound = Sound("../sounds/changeTurn.wav")
+turnPass_Sound.setVolume(0.5)
+error_Sound = Sound("../sounds/Error.wav")
+error_Sound.setVolume(0.1)
+
+>>>>>>> 9be718469af5e28255ca56845349732c7468f577
 
 
 class PlayScreenHUD (DirectObject):
@@ -158,6 +169,10 @@ class PlayScreenHUD (DirectObject):
 			self.timeLastTurn = self.time
 		else:
 			error_Sound.play()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9be718469af5e28255ca56845349732c7468f577
 		
 	def drawChangeTurn(self):
 		#Creating the change turn text 

@@ -18,6 +18,8 @@ pickerNode.addSolid(pickerRay)
 #pickerNode.setFromCollideMask(BitMask32(0x1))
 #pickerNode.setFromCollideMask(BitMask32(0x2))
 collision.addCollider(pickerNP)
+error_Sound = Sound("../sounds/Error.wav")
+error_Sound.setVolume(0.1)
 
 #A struct like to solve reference pass problems
 class MousePicking:	
@@ -90,6 +92,10 @@ def mouse1Clicked():
 			navigationMesh.setObstacle(towerObj.position[0], towerObj.position[1])
 		else:
 			error_Sound.play()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9be718469af5e28255ca56845349732c7468f577
 	
 	#picking tower	
 	elif MousePicking.mousePickingOnTower and MousePicking.gameHUD != None:

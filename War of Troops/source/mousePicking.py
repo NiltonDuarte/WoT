@@ -89,8 +89,7 @@ def mouse1Clicked():
 			towerObj.initTower()
 			navigationMesh.setObstacle(towerObj.position[0], towerObj.position[1])
 		else:
-			pass
-			#play sound error
+			error_Sound.play()
 	
 	#picking tower	
 	elif MousePicking.mousePickingOnTower and MousePicking.gameHUD != None:

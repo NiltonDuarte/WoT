@@ -34,13 +34,6 @@ hudTexts = render2d.attachNewNode("HUD Texts")
 #HUD_models holds all the models that HUD will use
 HUD_models = aspect2d.attachNewNode("HUD Models")
 
-#Getting the sound effects 
-clickButtonSound = Sound("../sounds/buttonClick.wav")
-clickButtonSound.setVolume(0.5)
-turnPass_Sound = Sound("../sounds/changeTurn.wav")
-turnPass_Sound.setVolume(0.5)
-
-
 
 
 class PlayScreenHUD (DirectObject):
@@ -164,8 +157,7 @@ class PlayScreenHUD (DirectObject):
 				self.drawChangeTurn()
 			self.timeLastTurn = self.time
 		else:
-			pass
-			#error sound
+			error_Sound.play()
 		
 	def drawChangeTurn(self):
 		#Creating the change turn text 
@@ -437,7 +429,7 @@ class EndScreenHUD(DirectObject):
 								image = '../HUD images/winnerScreen.png',
 								frameColor=(0,0,0,0.0),
 								frameSize=(-1, 1, -1, 1),
-								scale = self.scale
+								scale = self.scale,
 								)
 		
 		self.winner = TextNode('Winner Name')
@@ -448,7 +440,8 @@ class EndScreenHUD(DirectObject):
 		textNodePath.setScale(0.1)
 		textNodePath.setPos(-0.1,0,0)
 
-		button = DirectButton(self.endScreenFrame, image='../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.80/self.isoScale], scale = 0.06/self.isoScale , command= self.changeScene)
+		button = DirectButton(HUD_models, image='../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.80/self.isoScale], scale = 0.06/self.isoScale , command= self.changeScene)
+
 
 	def changeScene(self):
 		clickButtonSound.play()

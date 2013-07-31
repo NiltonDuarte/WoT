@@ -3,6 +3,7 @@ import player
 import mousePicking
 import gamePlayFSM
 import camera
+from Sound import *
 from direct.fsm.FSM import FSM
 """This Module control the Play Finite State Machines. Player 1 and Player 2 state"""
 
@@ -15,15 +16,6 @@ class gameScreenFSM(FSM):
 		self.gamePlayFSM = None
 		self.looserPlayerObj = None
 		self.winnerPlayerObj = None
-		#Getting the main theme 
-		self.mainThemeSong = Sound("../sounds/mainTheme.wav")
-		self.mainThemeSong.setVolume(0.1)
-		self.mainThemeSong.setLoop(True)
-
-		#Getting the credits song
-		self.creditsSong = Sound("../sounds/creditsTheme.wav")
-		self.creditsSong.setVolume(0.1)
-		self.creditsSong.setLoop(True)
 		
 
 	def enterInitScreen(self):
@@ -34,16 +26,16 @@ class gameScreenFSM(FSM):
 		self.currHUD.__del__()
 
 	def enterCreditScreen(self):
-		self.creditsSong.play()
+		creditsSong.play()
 		self.currHUD = CreditScreenHUD(self)
 		self.currHUD.initHUD()
 		
 	def exitCreditScreen(self):
-		self.creditsSong.stop()
+		creditsSong.stop()
 		self.currHUD.__del__()
 		
 	def enterPlayScreen(self):
-		self.mainThemeSong.play()
+		mainThemeSong.play()
 		self.currHUD = PlayScreenHUD(self,mousePicking.MousePicking)
 		self.gamePlayFSM = gamePlayFSM.gamePlayFSM(self.currHUD)
 		self.currHUD.initHUD()
@@ -52,7 +44,7 @@ class gameScreenFSM(FSM):
 		camera.MyCamera.cameraEnabled = True
 		
 	def exitPlayScreen(self):
-		self.mainThemeSong.stop()
+		mainThemeSong.stop()
 		self.gamePlayFSM.__del__()
 		self.currHUD.__del__()
 		mousePicking.MousePicking.gameHUD = None

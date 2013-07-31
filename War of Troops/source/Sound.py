@@ -21,5 +21,20 @@ class Sound(DirectObject):
 		
 	def setLoop(self, isLoop):
 		self.sound.setLoop(isLoop)
-		
 
+#Getting the sound effects 
+clickButtonSound = Sound("../sounds/buttonClick.wav")
+clickButtonSound.setVolume(0.5)
+turnPass_Sound = Sound("../sounds/changeTurn.wav")
+turnPass_Sound.setVolume(0.5)
+error_Sound = Sound("../sounds/Error.wav")
+error_Sound.setVolume(0.5)
+		
+#Getting the main theme 
+mainThemeSong = Sound("../sounds/mainTheme.wav")
+mainThemeSong.setVolume(0.1)
+mainThemeSong.setLoop(True)
+#Getting the credits song
+creditsSong = Sound("../sounds/creditsTheme.wav")
+creditsSong.setVolume(0.1)
+creditsSong.setLoop(True)

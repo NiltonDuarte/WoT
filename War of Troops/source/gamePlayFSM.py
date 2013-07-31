@@ -47,7 +47,7 @@ class gamePlayFSM(FSM):
 		self.currPlayer.loadPlayer()
 		self.hudObj.updatePlayerDataTexts()
 		mousePicking.pickerNode.setFromCollideMask(self.currPlayer.playerBitMask)
-		print "Here is Player ", player.Player.currPlayer.name
+		#print "Here is Player ", player.Player.currPlayer.name
 
 
 
@@ -65,7 +65,7 @@ class gamePlayFSM(FSM):
 		self.currPlayer.loadPlayer()
 		self.hudObj.updatePlayerDataTexts()
 		mousePicking.pickerNode.setFromCollideMask(self.currPlayer.playerBitMask)
-		print "Here is Player ", player.Player.currPlayer.name
+		#print "Here is Player ", player.Player.currPlayer.name
 		
 				
 	def exitPlayer2(self):

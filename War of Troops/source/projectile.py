@@ -59,6 +59,7 @@ class Projectile:
 		self.name = "ProjectileClass"
 		self.ID = str(uuid.uuid4())
 		Projectile.projectileDict[self.ID] = self
+		
 
 		#Getting configuration
 		confFile = "projectile.xml"
@@ -127,6 +128,7 @@ class Projectile:
 		self.initModel(self.position)
 		self.initPhysics()
 		self.initCollisionNode()
+		taskMgr.add(self.delByPosition, "removeProjectileUnseen")
 	
 	def defineParameters(self,listParam):
 		"""Gets the values of listParam and puts them in this order
@@ -157,10 +159,21 @@ class Projectile:
 		self.actorNode, self.actorNodePath = physics.setPhysicNodes("Projectile_pnode", self.projectileModel.projectileInstance)
 		physics.setImpulseForce(self.actorNode,self.impulseForce)
 		physics.setMass(self.actorNode,self.mass)
-	
+		
 	def updatePosition(self, newPosition):
 		self.prevPosition = self.position
 		self.position = newPosition
-
+	
+	def delByPosition(self, task):
+		currentPosition = physics.getPosition(self.actorNode)
+		print "POSITION-Z = ",currentPosition[-1]
+		if currentPosition[-1] < -10 and self.colliding == False:
+			print "Z = ", currentPosition[-1]
+			self.projectileModel.projectileInstance.removeNode()
+			del Projectile.projectileDict[self.ID]
+			return Task.done
+		else:
+			return Task.cont
+		
 
 

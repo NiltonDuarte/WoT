@@ -28,7 +28,7 @@ clickButtonSound.setVolume(0.5)
 turnPass_Sound = Sound("../sounds/changeTurn.wav")
 turnPass_Sound.setVolume(0.5)
 error_Sound = Sound("../sounds/Error.wav")
-error_Sound.setVolume(0.5)
+error_Sound.setVolume(0.1)
 		
 #Getting the main theme 
 mainThemeSong = Sound("../sounds/mainTheme.wav")

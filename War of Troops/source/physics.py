@@ -47,4 +47,6 @@ def setImpulseForce(actorNode,impulseForce):
 def setMass(actorNode, mass):
 	actorNode.getPhysicsObject().setMass(mass)
 	
+def getPosition(actorNode):
+	return actorNode.getPhysicsObject().getLastPosition()
 

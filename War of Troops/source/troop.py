@@ -125,7 +125,7 @@ class Troop:
 		self.resistenceTag = self.typ.find('resistence')
 		self.resistence = 0
 		self.resistenceMin = int(self.resistenceTag.find('Min').text)
-		self.resistenceMax = int(self.resistenceTag.find('Min').text)
+		self.resistenceMax = int(self.resistenceTag.find('Max').text)
 		self.listResistence = [self.resistence, self.resistenceMax, self.resistenceMin]
 
 		self.listAttributes = [self.listLife, self.listSpeed, self.listResistence]

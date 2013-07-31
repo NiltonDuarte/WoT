@@ -497,7 +497,7 @@ class EndScreenHUD(DirectObject):
 		textNodePath.setScale(0.1)
 		textNodePath.setPos(-0.1,0,0)
 
-		button = DirectButton(HUD_models, image='../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.80/self.isoScale], scale = 0.06/self.isoScale , command= self.changeScene)
+		#button = DirectButton(HUD_models, image='../HUD images/creditsButton.png', image_scale = (3.75,1,1) , pos = [-0.0/self.isoScale,0,-0.80/self.isoScale], scale = 0.06/self.isoScale , command= self.changeScene)
 
 
 	def changeScene(self):

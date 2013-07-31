@@ -134,9 +134,9 @@ class PlayScreenHUD (DirectObject):
 		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["txShoot", 1])
 		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["txShoot"])
 		
-		#button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.695/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["rangeView", 1])
-		#button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["rangeView", 1])
-		#button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["rangeView"])
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.695/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["rangeView", 1])
+		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["rangeView", 1])
+		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["rangeView"])
 		
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.740/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["txTroops", 1])
 		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["txTroops", 1])
@@ -153,9 +153,9 @@ class PlayScreenHUD (DirectObject):
 		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["txShoot", -1])
 		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["txShoot"])
 		
-		#button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.695/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["rangeView", -1])
-		#button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["rangeView", -1])
-		#button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["rangeView"])
+		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.695/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["rangeView", -1])
+		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["rangeView", -1])
+		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["rangeView"])
 		
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.740/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["txTroops", -1])
 		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["txTroops", -1])

@@ -128,8 +128,8 @@ class TowerModel(DirectObject):
 		#print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
 	
 	def updateTowerRange(self,rangeView):
-		self.towerRangeCollider.node.removeNode()
-		self.towerRangeCollider = self.towerInstance.attachNewNode(CollisionNode(self.nodeName + '_Rangecnode'))
+		self.towerRangeCollider.node().clearSolids ()
+		#self.towerRangeCollider = self.towerInstance.attachNewNode(CollisionNode(self.nodeName + '_Rangecnode'))
 		self.towerRangeCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
 		self.towerRangeCollider.setCollideMask(self.sourceTower.sourcePlayer.playerBitMask)
 		self.towerRangeCollider.setTag("TowerID", self.ID)
@@ -383,6 +383,7 @@ class Tower():
 					self.sourcePlayer.currency -= self.rangeViewPrice*value
 					self.listRangeView[VALUE] += value
 					self.lastValueUpdated = attrType
+					self.towerModel.updateTowerRange(self.listRangeView[VALUE])
 				else:
 					error_Sound.play()
 				
@@ -415,6 +416,7 @@ class Tower():
 				if self.sourcePlayer.currency >= self.rangeViewPrice*value:
 					self.sourcePlayer.currency -= self.rangeViewPrice*value
 					self.listRangeView[VALUE] += value
+					self.towerModel.updateTowerRange(self.listRangeView[VALUE])
 					self.lastValueUpdated = None
 				else:
 					error_Sound.play()

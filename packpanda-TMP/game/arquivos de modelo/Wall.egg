@@ -1,0 +1,241 @@
+<CoordinateSystem> { Z-up } 
+<Material> Wall_Mat {
+  <Scalar> diffr { 0.640000 }
+  <Scalar> diffg { 0.640000 }
+  <Scalar> diffb { 0.640000 }
+  <Scalar> specr { 0.500000 }
+  <Scalar> specg { 0.500000 }
+  <Scalar> specb { 0.500000 }
+  <Scalar> shininess { 12.5 }
+  <Scalar> emitr { 0.000000 }
+  <Scalar> emitg { 0.000000 }
+  <Scalar> emitb { 0.000000 }
+}
+
+<Texture> Texture {
+  "../texturas/wall_of_fortune_Texture.png"
+  <Scalar> envtype { NORMAL }
+  <Scalar> minfilter { LINEAR_MIPMAP_LINEAR }
+  <Scalar> magfilter { LINEAR_MIPMAP_LINEAR }
+  <Scalar> wrap { REPEAT }
+}
+
+  <Group> Wall {
+    <Transform> {
+      <Matrix4> {
+        100.000000 0.000000 0.000000 0.000000 
+        0.000000 1.000000 0.000000 0.000000 
+        0.000000 0.000000 38.000000 0.000000 
+        0.000000 0.000000 38.000000 1.000000 
+      }
+    }
+    
+    <VertexPool> Wall {
+    
+      <Vertex> 0 {
+        -100.0 -1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 1 {
+        -100.0 1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 2 {
+        -100.0 1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 3 {
+        -100.0 -1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 4 {
+        -100.0 1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 5 {
+        100.0 1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 6 {
+        100.0 1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 7 {
+        -100.0 1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 8 {
+        100.0 1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 9 {
+        100.0 -1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 10 {
+        100.0 -1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 11 {
+        100.0 1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 12 {
+        100.0 -1.0 133.0
+        
+        <UV>  {
+          0.999900 0.999900
+        }
+      }
+      <Vertex> 13 {
+        -100.0 -1.0 133.0
+        
+        <UV>  {
+          0.000100 0.999900
+        }
+      }
+      <Vertex> 14 {
+        -100.0 -1.0 0.0
+        
+        <UV>  {
+          0.000100 0.500779
+        }
+      }
+      <Vertex> 15 {
+        100.0 -1.0 0.0
+        
+        <UV>  {
+          0.999900 0.500779
+        }
+      }
+      <Vertex> 16 {
+        -100.0 -1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 17 {
+        -100.0 1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 18 {
+        100.0 1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 19 {
+        100.0 -1.0 0.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 20 {
+        100.0 -1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 21 {
+        100.0 1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 22 {
+        -100.0 1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }
+      <Vertex> 23 {
+        -100.0 -1.0 133.0
+        
+        <UV>  {
+          0.000000 0.000000
+        }
+      }}
+    
+    
+    <Polygon> {
+      <TRef> { Texture }
+      <MRef> { Wall_Mat }
+      <Normal> {-1.000000 0.000000 0.000000}
+      <VertexRef> { 0 1 2 3 <Ref> { Wall }}
+    }
+    <Polygon> {
+      <TRef> { Texture }
+      <MRef> { Wall_Mat }
+      <Normal> {0.000000 1.000000 0.000000}
+      <VertexRef> { 4 5 6 7 <Ref> { Wall }}
+    }
+    <Polygon> {
+      <TRef> { Texture }
+      <MRef> { Wall_Mat }
+      <Normal> {1.000000 0.000000 0.000000}
+      <VertexRef> { 8 9 10 11 <Ref> { Wall }}
+    }
+    <Polygon> {
+      <TRef> { Texture }
+      <MRef> { Wall_Mat }
+      <Normal> {0.000000 -1.000000 0.000000}
+      <VertexRef> { 12 13 14 15 <Ref> { Wall }}
+    }
+    <Polygon> {
+      <TRef> { Texture }
+      <MRef> { Wall_Mat }
+      <Normal> {0.000000 0.000000 -1.000000}
+      <VertexRef> { 16 17 18 19 <Ref> { Wall }}
+    }
+    <Polygon> {
+      <TRef> { Texture }
+      <MRef> { Wall_Mat }
+      <Normal> {0.000000 0.000000 1.000000}
+      <VertexRef> { 20 21 22 23 <Ref> { Wall }}
+    }
+  }

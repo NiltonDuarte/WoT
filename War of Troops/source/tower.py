@@ -22,8 +22,6 @@ towerAttackSound.setVolume(0.5)
 towerPositioningSound = Sound("../sounds/towerPositioning.wav")
 towerPositioningSound.setVolume(0.5)
 
-error_Sound = Sound("../sounds/Error.wav")
-error_Sound.setVolume(0.1)
 
 towerModelDict = {}
 #Getting configuration
@@ -128,7 +126,7 @@ class TowerModel(DirectObject):
 		#print "CollisionNodeTag = ",self.towerCollider.getTag("TowerID")
 	
 	def updateTowerRange(self,rangeView):
-		self.towerRangeCollider.node().clearSolids ()
+		self.towerRangeCollider.node().clearSolids()
 		#self.towerRangeCollider = self.towerInstance.attachNewNode(CollisionNode(self.nodeName + '_Rangecnode'))
 		self.towerRangeCollider.node().addSolid(CollisionSphere(0,0,0,rangeView))
 		self.towerRangeCollider.setCollideMask(self.sourceTower.sourcePlayer.playerBitMask)
@@ -301,6 +299,7 @@ class Tower():
 		if self.towerModel != None:
 			self.towerModel.delete()
 			self.towerModel = None
+		del Tower.towerDict[self.ID]
 
 	def moveTower(self,position):
 		self.position = position

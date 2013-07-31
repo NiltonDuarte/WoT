@@ -31,7 +31,8 @@ class World(DirectObject):
 		base.enableSoundEffects(True)
 
 		#base.cTrav.showCollisions(render)
-		#base.oobeCull()
+		
+		#self.accept('a', base.oobe)
 		
 		#Closes game when esc key is pressed
 		self.accept('escape', sys.exit ) 

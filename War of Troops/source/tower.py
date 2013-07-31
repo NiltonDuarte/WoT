@@ -301,6 +301,8 @@ class Tower():
 		if self.towerModel != None:
 			self.towerModel.delete()
 			self.towerModel = None
+		del Tower.towerDict[self.ID]
+		del self.sourcePlayer.towerList[-1]
 
 	def moveTower(self,position):
 		self.position = position

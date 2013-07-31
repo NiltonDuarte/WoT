@@ -56,7 +56,7 @@ class Player:
 			self.towerList[-1].delete()
 			self.towerList.append(Tower(self,towerType))
 			self.towerList[-1].initModel([-300,-300,-300])
-			self.towerList[-1].towerModel.towerMovingColor()
+			self.towerList[-1].towerModel.towerMovingColor()	
 			
 	def getTower(self,index):
 		return	self.towerList[index]

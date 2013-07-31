@@ -22,6 +22,9 @@ towerAttackSound.setVolume(0.5)
 towerPositioningSound = Sound("../sounds/towerPositioning.wav")
 towerPositioningSound.setVolume(0.5)
 
+error_Sound = Sound("../sounds/Error.wav")
+error_Sound.setVolume(0.1)
+
 towerModelDict = {}
 #Getting configuration
 typ = None
@@ -196,12 +199,12 @@ class Tower():
 		self.listAttributes = [self.listShootPower, self.listTxShoot, self.listRangeView, self.listTxTroops]
 
 		#Tower price for purchase
-		self.price = 30
+		self.price = int(self.typ.find('price').text)
 		#Update prices
-		self.shootPowerPrice = 0
-		self.txShootPrice = 0
-		self.rangeViewPrice = 0
-		self.txTroopsPrice = 0
+		self.shootPowerPrice = int(self.shootPowerTag.find('price').text)
+		self.txShootPrice = int(self.txShootTag.find('price').text)
+		self.rangeViewPrice = int(self.rangeViewTag.find('price').text)
+		self.txTroopsPrice = int(self.txTroopsTag.find('price').text)
 
 		#Number of points that the tower will receive
 		self.initialPoints = int(self.typ.find('initialPoints').text)
@@ -343,24 +346,32 @@ class Tower():
 					self.sourcePlayer.currency -= self.shootPowerPrice*value
 					self.listShootPower[VALUE] += value
 					self.lastValueUpdated = attrType
+				else:
+					error_Sound.play()
 							
 			elif attrType == 'txShoot':
 				if self.sourcePlayer.currency >= self.txShootPrice*value:
 					self.sourcePlayer.currency -= self.txShootPrice*value
 					self.listTxShoot[VALUE] += value
 					self.lastValueUpdated = attrType
+				else:
+					error_Sound.play()
 				
 			elif attrType == 'rangeView':
 				if self.sourcePlayer.currency >= self.rangeViewPrice*value:
 					self.sourcePlayer.currency -= self.rangeViewPrice*value
 					self.listRangeView[VALUE] += value
 					self.lastValueUpdated = attrType
+				else:
+					error_Sound.play()
 				
 			elif attrType == 'txTroops':
 				if self.sourcePlayer.currency >= self.txTroopsPrice*value:
 					self.sourcePlayer.currency -= self.txTroopsPrice*value
 					self.listTxTroops[VALUE] += value
 					self.lastValueUpdated = attrType
+				else:
+					error_Sound.play()
 
 		elif self.lastValueUpdated != None:
 			if attrType == 'shootPower' and attrType == self.lastValueUpdated:
@@ -368,24 +379,32 @@ class Tower():
 					self.sourcePlayer.currency -= self.shootPowerPrice*value
 					self.listShootPower[VALUE] += value
 					self.lastValueUpdated = None
+				else:
+					error_Sound.play()
 							
 			elif attrType == 'txShoot' and attrType == self.lastValueUpdated:
 				if self.sourcePlayer.currency >= self.txShootPrice*value:
 					self.sourcePlayer.currency -= self.txShootPrice*value
 					self.listTxShoot[VALUE] += value
 					self.lastValueUpdated = None
+				else:
+					error_Sound.play()
 				
 			elif attrType == 'rangeView' and attrType == self.lastValueUpdated:
 				if self.sourcePlayer.currency >= self.rangeViewPrice*value:
 					self.sourcePlayer.currency -= self.rangeViewPrice*value
 					self.listRangeView[VALUE] += value
 					self.lastValueUpdated = None
+				else:
+					error_Sound.play()
 				
 			elif attrType == 'txTroops' and attrType == self.lastValueUpdated:
 				if self.sourcePlayer.currency >= self.txTroopsPrice*value:
 					self.sourcePlayer.currency -= self.txTroopsPrice*value
 					self.listTxTroops[VALUE] += value
 					self.lastValueUpdated = None
+				else:
+					error_Sound.play()
 			
 
 

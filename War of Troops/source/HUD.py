@@ -59,7 +59,6 @@ class PlayScreenHUD (DirectObject):
 	def __del__(self):
 		if (self.playScreenFrame != None):
 			self.playScreenFrame.destroy()	
-		return
 		
 	def timeCounter(self, task):
 		self.time = task.time

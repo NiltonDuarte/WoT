@@ -43,19 +43,24 @@ damage = 0.8*finalVelocity*ProjectileMass
         <shootPower>
             <Min>30</Min>
             <Max>70</Max>
+			<price>5</price>
         </shootPower>
         <txShoot>
             <Min>10</Min>
             <Max>40</Max>
+			<price>5</price>
         </txShoot>
         <rangeView>
             <Min>40</Min>
             <Max>60</Max>
+			<price>10</price>
         </rangeView>
         <txTroops>
             <Min>1</Min>
             <Max>4</Max>
+			<price>10</price>
         </txTroops>
+		<price>32</price>
         <troopType>Troop06</troopType>
         <projectileType>Projectile1</projectileType>
     </tower>
@@ -82,19 +87,24 @@ damage = 0.8*finalVelocity*ProjectileMass
         <shootPower>
             <Min>20</Min>
             <Max>80</Max>
+			<price>5</price>
         </shootPower>
         <txShoot>
             <Min>10</Min>
             <Max>30</Max>
+			<price>5</price>
         </txShoot>
         <rangeView>
             <Min>20</Min>
             <Max>70</Max>
+			<price>10</price>
         </rangeView>
         <txTroops>
             <Min>2</Min>
             <Max>7</Max>
+			<price>10</price>
         </txTroops>
+		<price>39</price>
         <troopType>Troop06</troopType>
         <projectileType>Projectile1</projectileType>
     </tower>
@@ -121,19 +131,24 @@ damage = 0.8*finalVelocity*ProjectileMass
         <shootPower>
             <Min>20</Min>
             <Max>80</Max>
+			<price>5</price>
         </shootPower>
         <txShoot>
             <Min>10</Min>
             <Max>50</Max>
+			<price>5</price>
         </txShoot>
         <rangeView>
             <Min>20</Min>
             <Max>70</Max>
+			<price>10</price>
         </rangeView>
         <txTroops>
             <Min>1</Min>
             <Max>5</Max>
+			<price>10</price>
         </txTroops>
+		<price>45</price>
         <troopType>Troop06</troopType>
         <projectileType>Projectile1</projectileType>
     </tower>
@@ -160,19 +175,24 @@ damage = 0.8*finalVelocity*ProjectileMass
         <shootPower>
             <Min>20</Min>
             <Max>80</Max>
+			<price>5</price>
         </shootPower>
         <txShoot>
             <Min>10</Min>
             <Max>40</Max>
+			<price>5</price>
         </txShoot>
         <rangeView>
             <Min>20</Min>
             <Max>70</Max>
+			<price>10</price>
         </rangeView>
         <txTroops>
             <Min>1</Min>
             <Max>3</Max>
+			<price>10</price>
         </txTroops>
+		<price>36</price>
         <troopType>Troop06</troopType>
         <projectileType>Projectile1</projectileType>
     </tower>

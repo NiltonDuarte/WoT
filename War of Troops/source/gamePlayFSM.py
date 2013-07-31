@@ -5,9 +5,10 @@ import player
 import troop
 import projectile
 import mousePicking
+import tower
 from pandaImports import *
 from direct.fsm.FSM import FSM
-import player
+
 """This Module control the Screens Finite State Machines. Initial state(initial screen) and the play screen state"""
 
 
@@ -39,6 +40,20 @@ class gamePlayFSM(FSM):
 		self.leftWall.destroy()
 		self.rightWall.destroy()
 		self.miniMap.destroy()
+		for  pkey in projectile.Projectile.projectileDict.keys():
+			p = projectile.Projectile.projectileDict[pkey]
+			p.projectileModel.projectileInstance.removeNode()
+			del projectile.Projectile.projectileDict[pkey]
+		for  pkey in troop.Troop.troopDict.keys():
+			troopObj = troop.Troop.troopDict[pkey]
+			troopObj.troopModel.troopInstance.removeNode()
+			del troop.Troop.troopDict[pkey]
+		for  pkey in tower.Tower.towerDict.keys():
+			towerObj = tower.Tower.towerDict[pkey]
+			towerObj.towerModel.towerInstance.removeNode()
+			del tower.Tower.towerDict[pkey]
+
+		
 		
 	def enterPlayer1(self):
 		player.Player.inactivePlayer = player.Player.currPlayer

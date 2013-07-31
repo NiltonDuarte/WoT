@@ -46,8 +46,8 @@ class gameScreenFSM(FSM):
 	def exitPlayScreen(self):
 		mainThemeSong.stop()
 		self.gamePlayFSM.__del__()
-		self.currHUD.__del__()
 		mousePicking.MousePicking.gameHUD = None
+		self.currHUD.__del__()
 		camera.MyCamera.cameraEnabled = False
 		
 	def enterEndScreen(self):
@@ -73,6 +73,7 @@ class gameScreenFSM(FSM):
 				if (playerObj.isDead):
 					self.looserPlayerObj = playerObj
 					self.request("EndScreen")
+					break
 				else:
 					self.winnerPlayerObj = playerObj
 		

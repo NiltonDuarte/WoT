@@ -350,6 +350,16 @@ class Tower():
 		aimImpulseForce = [self.listShootPower[0]*cosPhiAngle*cos(thetaAngle), self.listShootPower[0]*sinPhiAngle*cos(thetaAngle), self.listShootPower[0]*sin(thetaAngle)]
 		return aimImpulseForce
 
+	def getAttributePrice(self, attrType):
+		if attrType == 'shootPower':
+			return self.shootPowerPrice
+		elif attrType == 'txShoot':
+			return self.txShootPrice
+		elif attrType == 'rangeView':
+			return self.rangeViewPrice
+		elif attrType == 'txTroops':
+			return self.txTroopsPrice
+	
 	def updateAttribute(self, attrType, value):
 		if value > 0:
 			if attrType == 'shootPower':

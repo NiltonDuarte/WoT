@@ -60,7 +60,7 @@ damage = 0.8*finalVelocity*ProjectileMass
             <Max>4</Max>
 			<price>10</price>
         </txTroops>
-		<price>32</price>
+		<price>30</price>
         <troopType>Troop06</troopType>
         <projectileType>Projectile1</projectileType>
     </tower>
@@ -104,7 +104,7 @@ damage = 0.8*finalVelocity*ProjectileMass
             <Max>7</Max>
 			<price>10</price>
         </txTroops>
-		<price>39</price>
+		<price>40</price>
         <troopType>Troop06</troopType>
         <projectileType>Projectile1</projectileType>
     </tower>
@@ -192,7 +192,7 @@ damage = 0.8*finalVelocity*ProjectileMass
             <Max>3</Max>
 			<price>10</price>
         </txTroops>
-		<price>36</price>
+		<price>35</price>
         <troopType>Troop06</troopType>
         <projectileType>Projectile1</projectileType>
     </tower>

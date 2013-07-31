@@ -55,6 +55,10 @@ class PlayScreenHUD (DirectObject):
 		self.changeTurnTimer = 0
 		self.troopObj = None
 		self.towerObj = None
+		self.priceTagShootPower = None
+		self.priceTagTxShoot = None
+		self.priceTagRangeView = None
+		self.priceTagTxTroops = None
 		
 	def __del__(self):
 		if (self.playScreenFrame != None):
@@ -123,22 +127,76 @@ class PlayScreenHUD (DirectObject):
 		scale = 0.017/self.isoScale
 		text = "+"
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.605/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["shootPower", 1])
+		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["shootPower", 1])
+		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["shootPower"])
+		
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.650/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["txShoot", 1])
+		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["txShoot", 1])
+		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["txShoot"])
+		
 		#button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.695/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["rangeView", 1])
+		#button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["rangeView", 1])
+		#button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["rangeView"])
+		
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/plusButton.png', pos = [0.55/self.isoScale, 0, -0.740/self.isoScale ], scale = scale, command=self.updateTowerAttr, extraArgs = ["txTroops", 1])
+		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["txTroops", 1])
+		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["txTroops"])
 		
 	def minusAttribButton(self):
 		scale = 0.017/self.isoScale
 		text = "-"
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.605/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["shootPower", -1])
+		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["shootPower", -1])
+		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["shootPower"])
+		
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.650/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["txShoot", -1])
+		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["txShoot", -1])
+		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["txShoot"])
+		
 		#button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.695/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["rangeView", -1])
+		#button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["rangeView", -1])
+		#button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["rangeView"])
+		
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/minusButton.png', pos = [0.6/self.isoScale, 0, -0.740/self.isoScale], scale = scale, command=self.updateTowerAttr, extraArgs = ["txTroops", -1])
+		button.bind(DGG.WITHIN, self.showAttributePrice, extraArgs=["txTroops", -1])
+		button.bind(DGG.WITHOUT, self.destroyPriceTags, extraArgs=["txTroops"])
 
 	def updateTowerAttr(self, attrType, value):
 		if self.towerObj != None:
 			self.towerObj.updateAttribute(attrType, value)
 			self.updateTowerAttributeTexts(self.towerObj)
+	
+	def destroyPriceTags(self, attrType, noidea):
+			if attrType == 'shootPower' and self.priceTagShootPower != None:
+				self.priceTagShootPower.destroy()
+			elif attrType == 'txShoot' and self.priceTagTxShoot != None:
+				self.priceTagTxShoot.destroy()
+			elif attrType == 'rangeView' and self.priceTagRangeView != None:
+				self.priceTagRangeView.destroy()
+			elif attrType == 'txTroops' and self.priceTagTxTroops != None:
+				self.priceTagTxTroops.destroy()
+		
+	
+	def showAttributePrice(self, attrType, value, noidea):
+		if self.towerObj != None:
+			priceTag = self.towerObj.getAttributePrice(attrType)
+			priceTag = "$"+str(priceTag)
+			labelPosX = 0
+			if value < 0:
+				labelPosX = 0.667
+				priceTag = "+"+priceTag
+			else:
+				labelPosX = 0.617
+				priceTag = "-"+priceTag
+			if attrType == 'shootPower':
+				self.priceTagShootPower = DirectLabel(self.playScreenFrame, text=priceTag, text_bg = (255,255,255,0.8), frameColor = (0,0,0,0), pos = [labelPosX/self.isoScale, 0, -0.600/self.isoScale], scale = 0.05/self.isoScale)
+			elif attrType == 'txShoot':
+				self.priceTagTxShoot = DirectLabel(self.playScreenFrame, text=priceTag, text_bg = (255,255,255,0.8), frameColor = (0,0,0,0), pos = [labelPosX/self.isoScale, 0, -0.645/self.isoScale], scale = 0.05/self.isoScale)
+			elif attrType == 'rangeView':
+				self.priceTagRangeView = DirectLabel(self.playScreenFrame, text=priceTag, text_bg = (255,255,255,0.8), frameColor = (0,0,0,0), pos = [labelPosX/self.isoScale, 0, -0.690/self.isoScale], scale = 0.05/self.isoScale)
+			elif attrType == 'txTroops':
+				self.priceTagTxTroops = DirectLabel(self.playScreenFrame, text=priceTag, text_bg = (255,255,255,0.8), frameColor = (0,0,0,0), pos = [labelPosX/self.isoScale, 0, -0.735/self.isoScale], scale = 0.05/self.isoScale)
+		
 		
 	def turnPassButton(self):
 		position = [1.63/self.isoScale, 0, -0.485/self.isoScale]

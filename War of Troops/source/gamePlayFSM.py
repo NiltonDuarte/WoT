@@ -93,7 +93,12 @@ class gamePlayFSM(FSM):
 	def update(self):
 		for  pkey in projectile.Projectile.projectileDict.keys():
 			p = projectile.Projectile.projectileDict[pkey]
+			print "Z = ", p.getPositionZ()
+			print "projetileDict len = ", len(projectile.Projectile.projectileDict)
 			if (p.colliding == True):
+				p.projectileModel.projectileInstance.removeNode()
+				del projectile.Projectile.projectileDict[pkey]
+			elif (p.getPositionZ() < -15):
 				p.projectileModel.projectileInstance.removeNode()
 				del projectile.Projectile.projectileDict[pkey]
 		for  pkey in troop.Troop.troopDict.keys():

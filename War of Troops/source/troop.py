@@ -222,7 +222,8 @@ class Troop:
 	def killTroop(self):
 		self.listLife[0] = 0
 		self.isDead = True
-		self.troopModel.troopColliderNP.node().removeSolid(0)
+		if self.troopModel.troopColliderNP.node().getNumSolids() > 0:
+			self.troopModel.troopColliderNP.node().removeSolid(0)
 		self.troopModel.troopInstance.removeNode()
 		self.troopModel.loadDeadTroop(self.position)
 		#Creating particle system for death animation
@@ -239,7 +240,8 @@ class Troop:
 			self.troopModel.deadTroopModel.cleanup()
 			self.troopModel.deadTroopModel.removeNode()	
 			return True
-		return False
+		else:
+			return False
 			
 			
 

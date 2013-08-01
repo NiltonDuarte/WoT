@@ -128,7 +128,7 @@ class Projectile:
 		self.initModel(self.position)
 		self.initPhysics()
 		self.initCollisionNode()
-		taskMgr.add(self.delByPosition, "removeProjectileUnseen")
+		#taskMgr.add(self.delByPosition, "removeProjectileUnseen")
 	
 	def defineParameters(self,listParam):
 		"""Gets the values of listParam and puts them in this order
@@ -164,16 +164,10 @@ class Projectile:
 		self.prevPosition = self.position
 		self.position = newPosition
 	
-	def delByPosition(self, task):
+	def getPositionZ(self):
 		currentPosition = physics.getPosition(self.actorNode)
-		print "POSITION-Z = ",currentPosition[-1]
-		if currentPosition[-1] < -10 and self.colliding == False:
-			print "Z = ", currentPosition[-1]
-			self.projectileModel.projectileInstance.removeNode()
-			del Projectile.projectileDict[self.ID]
-			return Task.done
-		else:
-			return Task.cont
+		return currentPosition[-1]
+
 		
 
 

@@ -32,7 +32,7 @@ class World(DirectObject):
 
 		#base.cTrav.showCollisions(render)
 		
-		#self.accept('a', base.oobe)
+		self.accept('a', base.oobe)
 		
 		#Closes game when esc key is pressed
 		self.accept('escape', sys.exit ) 

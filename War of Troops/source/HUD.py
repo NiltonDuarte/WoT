@@ -7,6 +7,7 @@
 from tower import *
 import player
 import troop
+import projectile
 from commonFunctions import *
 from Sound import *
 
@@ -199,7 +200,7 @@ class PlayScreenHUD (DirectObject):
 		
 		
 	def turnPassButton(self):
-		position = [1.63/self.isoScale, 0, -0.485/self.isoScale]
+		position = [-0.0/self.isoScale, 0, 0.9/self.isoScale]
 		button = DirectButton(self.playScreenFrame, image = '../HUD images/readyButton.png', image_scale = (3.75,1,1), pos = position, scale = 0.06/self.isoScale, command=self.turnPass)
 		
 	def turnPass(self):
